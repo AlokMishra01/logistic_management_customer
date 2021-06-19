@@ -13,9 +13,22 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.3
+  google_fonts: ^2.1.0
 
   # API Consumption
   dio: ^4.0.0
+
+  # Connection
+  connectivity_plus: ^1.0.3
+
+  # Storage
+  shared_preferences: ^2.0.6
+
+  # provider
+  provider: ^5.0.0
+
+  # Utils
+  material_color_generator: ^1.1.0
 
 dev_dependencies:
   flutter_test:

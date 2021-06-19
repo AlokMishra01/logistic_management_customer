@@ -8,6 +8,7 @@ class Client {
     Dio _dio = Dio();
     _dio.interceptors.add(ApiInterceptors());
     _dio.options.baseUrl = apis.BASE_URL;
+    _dio.options.responseType = ResponseType.json;
     return _dio;
   }
 }
