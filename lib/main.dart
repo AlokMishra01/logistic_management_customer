@@ -9,6 +9,8 @@ import 'services/storage/preference_service.dart';
 import 'splash.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Provider.debugCheckInvalidValueType = null;
   runApp(MyApp());
 }
 
@@ -17,7 +19,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<NetworkConnection>(create: (_) => NetworkConnection()),
+        ListenableProvider<NetworkConnection>(
+            create: (_) => NetworkConnection()),
         Provider<PreferenceService>(create: (_) => PreferenceService()),
       ],
       child: MaterialApp(
