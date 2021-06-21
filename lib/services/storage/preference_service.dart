@@ -1,20 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PreferenceService extends ChangeNotifier {
+class PreferenceService {
   late SharedPreferences _sharedPreferences;
 
-  PreferenceService() {
-    _initSharedPreferences();
-  }
-
-  _initSharedPreferences() async {
+  init() async {
     _sharedPreferences = await SharedPreferences.getInstance();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   // Getter and Setters to store, manipulate, delete and get stored data

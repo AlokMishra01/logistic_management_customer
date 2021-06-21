@@ -29,6 +29,18 @@ dependencies:
 
   # Utils
   material_color_generator: ^1.1.0
+  flutter_multi_formatter: ^2.2.0
+  form_field_validator: ^1.1.0
+
+
+  # OLD
+  community_material_icon: ^5.9.55
+#  google_maps_flutter: ^2.0.6
+  permission_handler: ^8.1.1
+  geolocator: ^7.1.0
+  flutter_polyline_points: ^1.0.0
+  draggable_bottom_sheet: ^0.1.2
+  timeline_tile: ^2.0.0
 
 dev_dependencies:
   flutter_test:

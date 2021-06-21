@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
@@ -7,6 +9,8 @@ class CustomInput extends StatelessWidget {
   final TextEditingController controller;
   final String hint;
   final TextInputType type;
+  final List<TextInputFormatter> formatters;
+  final TextFieldValidator? validator;
   final bool obscureText;
 
   const CustomInput({
@@ -14,6 +18,8 @@ class CustomInput extends StatelessWidget {
     required this.controller,
     required this.hint,
     this.type = TextInputType.text,
+    this.formatters = const [],
+    this.validator,
     this.obscureText = false,
   }) : super(key: key);
 
@@ -56,6 +62,10 @@ class CustomInput extends StatelessWidget {
         fontWeight: FontWeight.w600,
         height: 1.5,
       ),
+      enableSuggestions: true,
+      inputFormatters: formatters,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: validator ?? MinLengthValidator(0, errorText: ''),
       keyboardType: type,
       obscureText: obscureText,
       controller: controller,
