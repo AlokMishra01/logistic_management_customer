@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import '../widgets/dialogs/bottom_dialog.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
+import '../constants/enums.dart' as enums;
 import '../widgets/custom_button.dart';
 import '../widgets/custom_input.dart';
 import '../widgets/header_text.dart';
@@ -98,7 +100,17 @@ class _LoginState extends State<Login> {
                 SizedBox(height: values.BASE_PADDING / 2),
                 CustomButton(
                   title: 'LOGIN',
-                  onTab: () {},
+                  onTab: () {
+                    showBottomDialog(
+                      context: context,
+                      dialogType: enums.DialogType.SUCCESS,
+                    );
+                    // var completer = Completer();
+                    // Future.delayed(Duration(seconds: 5)).then(
+                    //   (value) => completer.complete(),
+                    // );
+                    // showLoadingDialog(context: context, completer: completer);
+                  },
                 ),
                 SizedBox(height: values.BASE_PADDING),
                 CustomButton(
