@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:validators/validators.dart';
 
 import '../constants/values.dart' as values;
 import '../widgets/custom_button.dart';
@@ -20,6 +23,7 @@ class _RegisterState extends State<Register> {
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
   TextEditingController _confirmPassword = TextEditingController();
+  bool _showPassword = false;
 
   @override
   void dispose() {
@@ -51,31 +55,85 @@ class _RegisterState extends State<Register> {
                   child: HeaderText(text: 'Register'),
                 ),
                 SizedBox(height: size.height * 0.05),
-                CustomInput(hint: "Name", controller: _name),
+                CustomInput(
+                  hint: "Name",
+                  type: TextInputType.name,
+                  controller: _name,
+                  validator: (value) {
+                    if ((value as String).length < 3)
+                      return 'Name must contain atleast 3 characters';
+                  },
+                ),
                 SizedBox(height: values.BASE_PADDING),
-                CustomInput(hint: "Address", controller: _address),
+                CustomInput(
+                  hint: "Address",
+                  controller: _address,
+                  validator: (value) {
+                    if ((value as String).length < 3)
+                      return 'Name must contain atleast 3 characters';
+                  },
+                ),
                 SizedBox(height: values.BASE_PADDING),
-                CustomInput(hint: "Mobile Number", controller: _phone),
+                CustomInput(
+                  hint: "Mobile Number",
+                  controller: _phone,
+                  type: TextInputType.phone,
+                  formatters: [
+                    PhoneInputFormatter(allowEndlessPhone: false),
+                  ],
+                  validator: (value) {
+                    if (!isPhoneValid(value as String))
+                      return 'Please enter valid mobile number';
+                  },
+                ),
                 SizedBox(height: values.BASE_PADDING),
-                CustomInput(hint: "Email", controller: _email),
+                CustomInput(
+                  hint: "Email",
+                  controller: _email,
+                  type: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (!isEmail(value as String))
+                      return 'Please enter valid email';
+                  },
+                ),
                 SizedBox(height: values.BASE_PADDING),
                 CustomInput(
                   hint: "Password",
-                  controller: _email,
-                  obscureText: true,
+                  controller: _password,
+                  obscureText: !_showPassword,
+                  validator: (v) {
+                    if ((v as String).length < 6) {
+                      return 'Password must contail atleast 6 characters';
+                    }
+                  },
+                  icon: !_showPassword
+                      ? CupertinoIcons.eye_slash_fill
+                      : CupertinoIcons.eye_fill,
+                  onSuffixTab: () {
+                    _showPassword = !_showPassword;
+                    setState(() {});
+                  },
                 ),
                 SizedBox(height: values.BASE_PADDING),
                 CustomInput(
                   hint: "Confirm Password",
-                  controller: _email,
+                  controller: _confirmPassword,
                   obscureText: true,
+                  validator: (value) {
+                    if (_password.text != (value as String)) {
+                      return 'Password do not match';
+                    }
+                  },
                 ),
                 SizedBox(height: values.BASE_PADDING * 1.5),
                 CustomButton(
                   title: "CONFIRM",
                   onTab: () => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (cxt) => OTPVerification()),
+                    MaterialPageRoute(
+                      builder: (cxt) =>
+                          OTPVerification(phone: '+9779869050723'),
+                    ),
                   ),
                 )
               ],

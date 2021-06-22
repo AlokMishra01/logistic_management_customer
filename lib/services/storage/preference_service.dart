@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:logistic_management_customer/models/consumer_mode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../constants/preferences.dart' as preferences;
 
 class PreferenceService {
   late SharedPreferences _sharedPreferences;
@@ -7,5 +12,25 @@ class PreferenceService {
     _sharedPreferences = await SharedPreferences.getInstance();
   }
 
-  // Getter and Setters to store, manipulate, delete and get stored data
+  // Setters
+  setIsLogin(bool isLogin) => _sharedPreferences.setBool(
+        preferences.IS_LOGIN,
+        isLogin,
+      );
+
+  setUser(ConsumerModel consumer) => _sharedPreferences.setString(
+        preferences.CONSUMER,
+        jsonEncode(consumer.toJson()),
+      );
+
+  clearPreferences() => _sharedPreferences.clear();
+
+  // Getters
+  bool get isLogin => _sharedPreferences.getBool(preferences.IS_LOGIN) ?? false;
+
+  ConsumerModel get consumer => ConsumerModel.fromJson(
+        jsonDecode(
+          _sharedPreferences.getString(preferences.CONSUMER) ?? '{}',
+        ),
+      );
 }

@@ -30,8 +30,10 @@ dependencies:
   # Utils
   material_color_generator: ^1.1.0
   flutter_multi_formatter: ^2.2.0
-  form_field_validator: ^1.1.0
+  validators: ^3.0.0
 
+  # Debugging
+  pretty_json: ^2.0.0
 
   # OLD
   community_material_icon: ^5.9.55

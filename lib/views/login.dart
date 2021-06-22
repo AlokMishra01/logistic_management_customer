@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 
@@ -18,6 +19,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController _phone = TextEditingController();
   TextEditingController _password = TextEditingController();
+  bool _showPassword = false;
 
   @override
   void dispose() {
@@ -52,13 +54,29 @@ class _LoginState extends State<Login> {
                   formatters: [
                     PhoneInputFormatter(allowEndlessPhone: false),
                   ],
-                  validator: ,
+                  validator: (v) {
+                    if (!isPhoneValid(v as String)) {
+                      return 'Please enter valid mobile number';
+                    }
+                  },
                 ),
                 SizedBox(height: values.BASE_PADDING),
                 CustomInput(
                   hint: "Password",
-                  obscureText: true,
+                  obscureText: !_showPassword,
                   controller: _password,
+                  validator: (v) {
+                    if ((v as String).length < 6) {
+                      return 'Password must contail atleast 6 characters';
+                    }
+                  },
+                  icon: !_showPassword
+                      ? CupertinoIcons.eye_slash_fill
+                      : CupertinoIcons.eye_fill,
+                  onSuffixTab: () {
+                    _showPassword = !_showPassword;
+                    setState(() {});
+                  },
                 ),
                 SizedBox(height: values.BASE_PADDING / 2),
                 Row(

@@ -1,6 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
@@ -10,8 +10,11 @@ class CustomInput extends StatelessWidget {
   final String hint;
   final TextInputType type;
   final List<TextInputFormatter> formatters;
-  final TextFieldValidator? validator;
+  final FormFieldValidator<String>? validator;
   final bool obscureText;
+  final IconData? icon;
+  final VoidCallback? onSuffixTab;
+  final bool enabled;
 
   const CustomInput({
     Key? key,
@@ -21,11 +24,15 @@ class CustomInput extends StatelessWidget {
     this.formatters = const [],
     this.validator,
     this.obscureText = false,
+    this.icon,
+    this.onSuffixTab,
+    this.enabled = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: enabled,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(values.RADIUS),
@@ -56,6 +63,13 @@ class CustomInput extends StatelessWidget {
           fontWeight: FontWeight.w500,
           height: 1.5,
         ),
+        suffixIcon: icon != null
+            ? IconButton(
+                onPressed: onSuffixTab,
+                icon: Icon(icon),
+                color: colors.TEXT_BLUE,
+              )
+            : null,
       ),
       style: TextStyle(
         color: colors.TEXT_BLACK,
@@ -65,7 +79,7 @@ class CustomInput extends StatelessWidget {
       enableSuggestions: true,
       inputFormatters: formatters,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: validator ?? MinLengthValidator(0, errorText: ''),
+      validator: validator,
       keyboardType: type,
       obscureText: obscureText,
       controller: controller,
