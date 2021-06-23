@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:logistic_management_customer/widgets/old/Widgets/singleBlogCard.dart';
+import '../../../widgets/old/Widgets/singleBlogCard.dart';
 
 import '../../../constant.dart';
 

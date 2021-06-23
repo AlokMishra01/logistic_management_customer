@@ -8,9 +8,9 @@ import '../../constants/enums.dart' as enums;
 
 showBottomDialog({
   required BuildContext context,
-  required enums.DialogType dialogType,
-  String? title,
-  String? message,
+  enums.DialogType dialogType = enums.DialogType.SUCCESS,
+  String title = 'Successfully Completed',
+  String message = 'Your request is successfully compleded.',
 }) {
   showFlash(
     context: context,
@@ -24,8 +24,7 @@ showBottomDialog({
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(values.RADIUS),
         ),
-        backgroundColor: _getDialogColor(dialogType).withOpacity(0.1),
-        onTap: () => controller.dismiss(),
+        backgroundColor: colors.TEXT_WHITE,
         forwardAnimationCurve: Curves.easeInCirc,
         reverseAnimationCurve: Curves.bounceIn,
         child: DefaultTextStyle(
@@ -37,7 +36,7 @@ showBottomDialog({
           ),
           child: FlashBar(
             title: Text(
-              title ?? 'Successfully Completed',
+              title,
               style: TextStyle(
                 color: _getDialogColor(dialogType),
                 fontSize: values.TITLE_TEXT,
@@ -46,14 +45,14 @@ showBottomDialog({
               ),
             ),
             content: Text(
-              message ?? 'Your request is successfully compleded.',
+              message,
             ),
             indicatorColor: _getDialogColor(dialogType),
             actions: <Widget>[
               TextButton(
                 onPressed: () => controller.dismiss(),
                 child: Text(
-                  'Okay',
+                  ' Okay ',
                   style: TextStyle(
                     color: colors.TEXT_WHITE,
                     fontWeight: FontWeight.bold,

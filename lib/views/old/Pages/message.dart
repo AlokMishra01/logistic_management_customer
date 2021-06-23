@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:logistic_management_customer/widgets/old/Widgets/date_mssg.dart';
-import 'package:logistic_management_customer/widgets/old/Widgets/singlemessage.dart';
 
 import '../../../constant.dart';
+import '../../../widgets/old/Widgets/date_mssg.dart';
+import '../../../widgets/old/Widgets/singlemessage.dart';
 
 class Message extends StatefulWidget {
   @override

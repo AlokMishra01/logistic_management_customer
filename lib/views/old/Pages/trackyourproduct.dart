@@ -2,10 +2,10 @@ import 'package:draggable_bottom_sheet/draggable_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:logistic_management_customer/widgets/old/Widgets/Map.dart';
-import 'package:logistic_management_customer/widgets/old/Widgets/timeline_custom.dart';
 
 import '../../../constant.dart';
+import '../../../widgets/old/Widgets/Map.dart';
+import '../../../widgets/old/Widgets/timeline_custom.dart';
 
 class Trackyourproduct extends StatefulWidget {
   @override

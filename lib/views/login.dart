@@ -1,14 +1,21 @@
+import 'dart:async';
+
+import 'package:flash/flash.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
-import '../widgets/dialogs/bottom_dialog.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
-import '../constants/values.dart' as values;
 import '../constants/enums.dart' as enums;
+import '../constants/values.dart' as values;
+import '../models/consumer_mode.dart';
+import '../providers/authentication.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_input.dart';
+import '../widgets/dialogs/bottom_dialog.dart';
 import '../widgets/header_text.dart';
+import 'old/Pages/home.dart';
 import 'register.dart';
 
 class Login extends StatefulWidget {
@@ -22,6 +29,7 @@ class _LoginState extends State<Login> {
   TextEditingController _phone = TextEditingController();
   TextEditingController _password = TextEditingController();
   bool _showPassword = false;
+  bool _loading = false;
 
   @override
   void dispose() {
@@ -53,12 +61,15 @@ class _LoginState extends State<Login> {
                   hint: "Mobile Number",
                   controller: _phone,
                   type: TextInputType.phone,
-                  formatters: [
-                    PhoneInputFormatter(allowEndlessPhone: false),
-                  ],
+                  // formatters: [
+                  //   PhoneInputFormatter(allowEndlessPhone: false),
+                  // ],
                   validator: (v) {
-                    if (!isPhoneValid(v as String)) {
-                      return 'Please enter valid mobile number';
+                    // if (!isPhoneValid(v as String)) {
+                    //   return 'Please enter valid mobile number';
+                    // }
+                    if ((v as String).isEmpty) {
+                      return 'Please enter mobile number';
                     }
                   },
                 ),
@@ -68,11 +79,11 @@ class _LoginState extends State<Login> {
                   obscureText: !_showPassword,
                   controller: _password,
                   validator: (v) {
-                    if ((v as String).length < 6) {
-                      return 'Password must contail atleast 6 characters';
+                    if ((v as String).isEmpty) {
+                      return 'Please enter password';
                     }
                   },
-                  icon: !_showPassword
+                  icon: _showPassword
                       ? CupertinoIcons.eye_slash_fill
                       : CupertinoIcons.eye_fill,
                   onSuffixTab: () {
@@ -98,24 +109,13 @@ class _LoginState extends State<Login> {
                   ],
                 ),
                 SizedBox(height: values.BASE_PADDING / 2),
-                CustomButton(
-                  title: 'LOGIN',
-                  onTab: () {
-                    showBottomDialog(
-                      context: context,
-                      dialogType: enums.DialogType.SUCCESS,
-                    );
-                    // var completer = Completer();
-                    // Future.delayed(Duration(seconds: 5)).then(
-                    //   (value) => completer.complete(),
-                    // );
-                    // showLoadingDialog(context: context, completer: completer);
-                  },
-                ),
+                _loading
+                    ? Center(child: CircularProgressIndicator())
+                    : CustomButton(title: 'LOGIN', onTab: _login),
                 SizedBox(height: values.BASE_PADDING),
                 CustomButton(
                   title: "REGISTER",
-                  onTab: () => Navigator.push(
+                  onTab: () => Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (cxt) => Register()),
                   ),
@@ -126,5 +126,74 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  _login() async {
+    FocusScope.of(context).requestFocus(FocusNode());
+    // if (!isPhoneValid(_phone.text)) {
+    //   showBottomDialog(
+    //     context: context,
+    //     dialogType: enums.DialogType.ERROR,
+    //     title: 'ERROR!',
+    //     message: 'Please enter valid mobile number',
+    //   );
+    //   return;
+    // }
+    if (_phone.text.isEmpty) {
+      showBottomDialog(
+        context: context,
+        dialogType: enums.DialogType.ERROR,
+        title: 'ERROR!',
+        message: 'Please enter mobile number',
+      );
+      return;
+    }
+    if (_password.text.isEmpty) {
+      showBottomDialog(
+        context: context,
+        dialogType: enums.DialogType.ERROR,
+        title: 'ERROR!',
+        message: 'Please enter password',
+      );
+      return;
+    }
+
+    _loading = true;
+    setState(() {});
+
+    var loginResult = await context.read<AuthenticationProvider>().login(
+          phone: _phone.text.replaceAll(' ', ''),
+          password: _password.text,
+        );
+
+    if (loginResult is ConsumerModel) {
+      // showBottomDialog(
+      //   context: context,
+      //   dialogType: enums.DialogType.SUCCESS,
+      //   title: 'Login Success',
+      //   message: prettyJson(loginResult.toJson()),
+      // );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => Home()),
+      );
+    } else if (loginResult is String) {
+      showBottomDialog(
+        context: context,
+        dialogType: enums.DialogType.ERROR,
+        title: 'Login Error',
+        message: loginResult,
+      );
+    } else {
+      showBottomDialog(
+        context: context,
+        dialogType: enums.DialogType.ERROR,
+        title: 'Login Error',
+        message: 'Oops! Something went wrong. Please try again.',
+      );
+    }
+
+    _loading = false;
+    setState(() {});
   }
 }

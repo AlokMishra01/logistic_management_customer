@@ -1,9 +1,9 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logistic_management_customer/widgets/old/Widgets/delivery_input.dart';
 
 import '../../../constant.dart';
+import '../../../widgets/old/Widgets/delivery_input.dart';
 
 class Delivery extends StatefulWidget {
   @override

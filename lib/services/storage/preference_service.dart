@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:logistic_management_customer/models/consumer_mode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/preferences.dart' as preferences;
+import '../../models/consumer_mode.dart';
 
 class PreferenceService {
   late SharedPreferences _sharedPreferences;
@@ -23,6 +23,11 @@ class PreferenceService {
         jsonEncode(consumer.toJson()),
       );
 
+  setToken(String token) => _sharedPreferences.setString(
+        preferences.TOKEN,
+        token,
+      );
+
   clearPreferences() => _sharedPreferences.clear();
 
   // Getters
@@ -33,4 +38,6 @@ class PreferenceService {
           _sharedPreferences.getString(preferences.CONSUMER) ?? '{}',
         ),
       );
+
+  String get token => _sharedPreferences.getString(preferences.TOKEN) ?? '';
 }

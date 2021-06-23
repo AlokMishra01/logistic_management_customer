@@ -11,41 +11,23 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  cupertino_icons: ^1.0.3
-  google_fonts: ^2.1.0
-
-
-  flash: ^2.0.0
-
-  # API Consumption
-  dio: ^4.0.0
-
-  # Connection
-  connectivity_plus: ^1.0.3
-
-  # Storage
-  shared_preferences: ^2.0.6
-
-  # provider
-  provider: ^5.0.0
-
-  # Utils
-  material_color_generator: ^1.1.0
-  flutter_multi_formatter: ^2.2.0
-  validators: ^3.0.0
-
-  # Debugging
-  pretty_json: ^2.0.0
-
-  # OLD
   community_material_icon: ^5.9.55
-#  google_maps_flutter: ^2.0.6
-  permission_handler: ^8.1.1
-  geolocator: ^7.1.0
-  flutter_polyline_points: ^1.0.0
+  connectivity_plus: ^1.0.3
+  cupertino_icons: ^1.0.3
+  dio: ^4.0.0
   draggable_bottom_sheet: ^0.1.2
+  flash: ^2.0.1
+  flutter_multi_formatter: ^2.2.0
+  flutter_polyline_points: ^1.0.0
+  geolocator: ^7.1.0
+  google_fonts: ^2.1.0
+  material_color_generator: ^1.1.0
+  permission_handler: ^8.1.1
+  pretty_json: ^2.0.0
+  provider: ^5.0.0
+  shared_preferences: ^2.0.6
   timeline_tile: ^2.0.0
+  validators: ^3.0.0
 
 dev_dependencies:
   flutter_test:

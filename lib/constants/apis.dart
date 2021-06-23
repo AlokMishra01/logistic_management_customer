@@ -1,4 +1,4 @@
-const BASE_URL = 'https://cargo.intopros.com.np/api/';
+const BASE_URL = 'http://cargo.intopros.com.np/api/';
 const LOGIN = 'consumerlogin';
 const REGISTER = 'consumerregister';
 const VERIFY_OTP = 'verify_otp';

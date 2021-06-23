@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:logistic_management_customer/widgets/old/Widgets/customButton.dart';
-import 'package:logistic_management_customer/widgets/old/Widgets/custominput.dart';
 
 import '../../../constant.dart';
+import '../../../widgets/old/Widgets/customButton.dart';
+import '../../../widgets/old/Widgets/custominput.dart';
 
 class LoginPage extends StatefulWidget {
   @override

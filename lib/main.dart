@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:logistic_management_customer/providers/authentication.dart';
 import 'package:material_color_generator/material_color_generator.dart';
 import 'package:provider/provider.dart';
 
 import 'constants/colors.dart' as colors;
+import 'providers/authentication.dart';
 import 'services/connectivity/network_connection.dart';
 import 'splash.dart';
 
@@ -21,10 +21,8 @@ class MyApp extends StatelessWidget {
         ListenableProvider<NetworkConnection>(
           create: (_) => NetworkConnection(),
         ),
-        ProxyProvider<NetworkConnection, AuthenticationProvider>(
-          update: (_, authentication, __) => AuthenticationProvider(
-            authentication,
-          ),
+        ListenableProxyProvider<NetworkConnection, AuthenticationProvider>(
+          update: (_, a, __) => AuthenticationProvider(a),
         ),
       ],
       child: MaterialApp(
