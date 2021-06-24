@@ -22,7 +22,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final auth = context.watch<AuthenticationProvider>();
     return Scaffold(
       body: Column(

@@ -81,8 +81,8 @@ class _ComposeMessageState extends State<ComposeMessage> {
                         controller: _message,
                         hint: '',
                         type: TextInputType.multiline,
-                        minLines: 10,
-                        maxLines: 10,
+                        minLines: 8,
+                        maxLines: 8,
                       ),
                       SizedBox(height: values.BASE_PADDING * 2),
                       CustomButton(

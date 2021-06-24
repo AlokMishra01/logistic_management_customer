@@ -16,7 +16,7 @@ class Message extends StatelessWidget {
         title: 'Message',
         trailing: Padding(
           padding: const EdgeInsets.symmetric(horizontal: values.BASE_PADDING),
-          child: TextButton.icon(
+          child: TextButton(
             onPressed: () {
               Navigator.push(
                 context,
@@ -25,21 +25,25 @@ class Message extends StatelessWidget {
                 ),
               );
             },
-            icon: Icon(
-              CupertinoIcons.pencil_outline,
-              color: colors.TEXT_BLUE,
-              size: 20,
+            child: Row(
+              children: [
+                Icon(
+                  CupertinoIcons.pencil_outline,
+                  color: colors.TEXT_BLUE,
+                  size: values.BUTTON_TEXT,
+                ),
+                Text(' Compose '),
+              ],
             ),
-            label: Text('Compose '),
             style: TextButton.styleFrom(
               backgroundColor: colors.FIELD_BACKGROUND,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(values.RADIUS * 2),
+                borderRadius: BorderRadius.circular(values.RADIUS),
               ),
-              padding: EdgeInsets.all(12.0),
+              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
               textStyle: TextStyle(
                 color: colors.TEXT_BLUE,
-                fontSize: values.TITLE_TEXT - 2,
+                fontSize: values.BUTTON_TEXT,
                 fontWeight: FontWeight.w500,
                 height: 1.25,
               ),

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/colors.dart' as colors;
-import '../views/old/Pages/Profile.dart';
+import 'profile.dart';
 import '../views/old/Pages/delivery.dart';
 import '../views/old/Pages/track.dart';
 import 'home.dart';

@@ -8,9 +8,9 @@ import 'package:logistic_management_customer/widgets/header.dart';
 import 'package:logistic_management_customer/widgets/profile_info_heading.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants/colors.dart' as colors;
-import '../../../constants/values.dart' as values;
-import '../../../widgets/old/Widgets/single_personaldetail.dart';
+import '../constants/colors.dart' as colors;
+import '../constants/values.dart' as values;
+import '../widgets/old/Widgets/single_personaldetail.dart';
 
 class Profile extends StatelessWidget {
   @override
@@ -133,6 +133,7 @@ class Profile extends StatelessWidget {
                     },
                   ),
                 ),
+                SizedBox(height: 120),
               ],
             ),
           ),

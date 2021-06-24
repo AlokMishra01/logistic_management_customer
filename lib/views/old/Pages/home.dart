@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../constant.dart';
 import '../../../widgets/old/Widgets/custom_iconBtn.dart';
 import '../../message.dart';
-import 'Profile.dart';
+import '../../profile.dart';
 import 'delivery.dart';
 import 'homeFragment.dart';
 import 'track.dart';
