@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../views/old/Pages/Profile.dart';
-import '../views/old/Pages/delivery.dart';
-import '../views/old/Pages/homeFragment.dart';
-import '../views/old/Pages/message.dart';
-import '../views/old/Pages/track.dart';
 
 import '../constants/colors.dart' as colors;
+import '../views/old/Pages/Profile.dart';
+import '../views/old/Pages/delivery.dart';
+import '../views/old/Pages/track.dart';
+import 'home.dart';
+import 'message.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -79,7 +79,7 @@ class _MainPageState extends State<MainPage> {
   _getCurrentPage() {
     switch (_currentIndex) {
       case 0:
-        return HomeFragment();
+        return Home();
       case 1:
         return Delivery();
       case 2:

@@ -15,6 +15,8 @@ class CustomInput extends StatelessWidget {
   final IconData? icon;
   final VoidCallback? onSuffixTab;
   final bool enabled;
+  final int? maxLines;
+  final int? minLines;
 
   const CustomInput({
     Key? key,
@@ -27,6 +29,8 @@ class CustomInput extends StatelessWidget {
     this.icon,
     this.onSuffixTab,
     this.enabled = true,
+    this.maxLines,
+    this.minLines,
   }) : super(key: key);
 
   @override
@@ -76,6 +80,8 @@ class CustomInput extends StatelessWidget {
         fontWeight: FontWeight.w600,
         height: 1.5,
       ),
+      maxLines: maxLines,
+      minLines: minLines,
       enableSuggestions: true,
       inputFormatters: formatters,
       autovalidateMode: AutovalidateMode.onUserInteraction,

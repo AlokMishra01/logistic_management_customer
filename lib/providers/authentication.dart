@@ -19,16 +19,17 @@ class AuthenticationProvider extends ChangeNotifier {
   ConsumerModel? _consumer;
 
   AuthenticationProvider(this._network) {
-    _initilize();
+    _init();
   }
 
-  _initilize() async {
+  _init() async {
     _dio = Client().init();
     await _preferenceService.init();
     _isLoggedIn = _preferenceService.isLogin;
     log('$_isLoggedIn', name: 'Logged');
     if (_isLoggedIn) {
       _consumer = _preferenceService.consumer;
+      getConsumerInfo(id: _consumer!.id ?? 0);
     }
   }
 

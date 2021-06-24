@@ -30,7 +30,7 @@ class Header extends StatelessWidget {
               CupertinoIcons.chevron_left,
               color: colors.TEXT_BLUE,
             ),
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 28),
           ),
         Padding(
           padding: EdgeInsets.all(!backButton ? 16.0 : 0),
@@ -39,7 +39,7 @@ class Header extends StatelessWidget {
             style: TextStyle(
               color: colors.TEXT_BLUE,
               fontSize: values.SUB_HEADER_TEXT,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
               height: 1.5,
             ),
           ),

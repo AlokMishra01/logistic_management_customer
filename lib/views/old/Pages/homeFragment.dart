@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logistic_management_customer/views/old/Pages/allblogs.dart';
+import 'package:logistic_management_customer/views/all_blogs.dart';
+import 'package:logistic_management_customer/widgets/blog_list_item.dart';
 import 'package:logistic_management_customer/widgets/header.dart';
 
 import '../../../constant.dart';
-import '../../../widgets/old/Widgets/singleBlogCard.dart';
 
 class HomeFragment extends StatefulWidget {
   @override
@@ -78,8 +78,8 @@ class _HomeFragmentState extends State<HomeFragment> {
             ],
           ),
         ),
-        SingleBlogCard(),
-        SingleBlogCard(),
+        BlogListItem(),
+        BlogListItem(),
         Container(
           width: MediaQuery.of(context).size.width,
           margin: const EdgeInsets.only(left: 21, right: 21, top: 15),

@@ -28,6 +28,7 @@ dependencies:
   timeline_tile: ^2.0.0
   validators: ^3.0.0
   ars_dialog: ^1.0.8
+  carousel_slider: ^4.0.0
 
 dev_dependencies:
   flutter_test:

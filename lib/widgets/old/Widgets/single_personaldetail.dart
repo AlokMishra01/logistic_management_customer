@@ -1,51 +1,43 @@
 import 'package:flutter/material.dart';
 
-import '../../../constant.dart';
+import '../../../constants/colors.dart' as colors;
+import '../../../constants/values.dart' as values;
 
-class DetailUserSingle extends StatelessWidget {
-  String? title, value;
-  DetailUserSingle({this.title, this.value});
+class ProfileDetailRow extends StatelessWidget {
+  final String title;
+  final String value;
+
+  const ProfileDetailRow({
+    Key? key,
+    required this.title,
+    required this.value,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(left: 21, right: 21, top: 9),
-      width: MediaQuery.of(context).size.width,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: RichText(
         text: TextSpan(
-            text: title ?? ' ' + " :",
-            style: TextStyle(
-                fontSize: 14,
-                color: Colors.black87,
-                fontWeight: FontWeight.w300),
-            children: [
-              TextSpan(
-                  text: value,
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87))
-            ]),
-      ),
-    );
-  }
-}
-
-class Heading extends StatelessWidget {
-  String info;
-  Heading(this.info);
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(6),
-      margin: EdgeInsets.only(left: 21, right: 21, top: 26),
-      width: MediaQuery.of(context).size.width,
-      height: 28,
-      decoration: BoxDecoration(
-        color: Constant.grey1,
-      ),
-      child: Text(
-        info,
-        style: TextStyle(fontSize: 14, color: Constant.theme_col),
+          text: '$title : ',
+          style: TextStyle(
+            fontSize: values.DETAILS_TEXT + 2,
+            color: colors.TEXT_SECONDARY,
+            fontWeight: FontWeight.w400,
+            height: 2,
+          ),
+          children: [
+            TextSpan(
+              text: value,
+              style: TextStyle(
+                fontSize: values.DETAILS_TEXT + 2,
+                fontWeight: FontWeight.w500,
+                color: colors.TEXT_BLACK,
+                height: 2,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
