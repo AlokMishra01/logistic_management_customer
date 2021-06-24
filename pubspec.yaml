@@ -12,13 +12,13 @@ dependencies:
   flutter:
     sdk: flutter
   community_material_icon: ^5.9.55
-  connectivity_plus: ^1.0.3
+  connectivity_plus: ^1.0.4
   cupertino_icons: ^1.0.3
   dio: ^4.0.0
   flash: ^2.0.1
   flutter_multi_formatter: ^2.2.0
   flutter_polyline_points: ^1.0.0
-  geolocator: ^7.1.0
+  geolocator: ^7.1.1
   google_fonts: ^2.1.0
   material_color_generator: ^1.1.0
   permission_handler: ^8.1.1
