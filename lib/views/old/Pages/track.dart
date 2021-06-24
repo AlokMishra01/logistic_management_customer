@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logistic_management_customer/views/old/Pages/trackyourproduct.dart';
 
 import '../../../constant.dart';
 
@@ -127,7 +128,7 @@ class _TrackState extends State<Track> {
                     });
                   },
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.415,
+                    width: (MediaQuery.of(context).size.width - 70) / 2,
                     height: 44,
                     decoration: BoxDecoration(
                         color: (val == 0) ? Colors.white : Colors.transparent,
@@ -145,9 +146,6 @@ class _TrackState extends State<Track> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: 5,
-                ),
                 GestureDetector(
                   onTap: () {
                     setState(() {
@@ -155,7 +153,7 @@ class _TrackState extends State<Track> {
                     });
                   },
                   child: Container(
-                    width: MediaQuery.of(context).size.width * 0.41,
+                    width: (MediaQuery.of(context).size.width - 70) / 2,
                     height: 45,
                     decoration: BoxDecoration(
                         color: (val == 1) ? Colors.white : Colors.transparent,
@@ -180,7 +178,6 @@ class _TrackState extends State<Track> {
             padding: EdgeInsets.all(10),
             margin: EdgeInsets.only(top: 20, left: 34, right: 34),
             width: MediaQuery.of(context).size.width,
-            height: 107,
             decoration: BoxDecoration(
                 color: Constant.grey1, borderRadius: BorderRadius.circular(6)),
             child: Column(
@@ -244,7 +241,7 @@ class _TrackState extends State<Track> {
                   height: 8,
                 ),
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       RichText(
@@ -267,9 +264,16 @@ class _TrackState extends State<Track> {
                             ]),
                         softWrap: true,
                       ),
+                    ]),
+                SizedBox(
+                  height: 8,
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Container(
-                        width: 100,
-                        height: 25,
+                        height: 28,
                         margin: EdgeInsets.only(bottom: 5),
                         decoration: BoxDecoration(
                             color: Constant.green,
@@ -279,12 +283,17 @@ class _TrackState extends State<Track> {
                             "Track Product",
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 9,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w400),
                             softWrap: true,
                           ),
                           onPressed: () {
-                            Navigator.of(context).pushNamed('track_ur_prod');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => Trackyourproduct(),
+                              ),
+                            );
                           },
                         ),
                       )

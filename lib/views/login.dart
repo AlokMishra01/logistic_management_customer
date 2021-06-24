@@ -1,9 +1,6 @@
-import 'dart:async';
-
-import 'package:flash/flash.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import '../widgets/dialogs/loading_dialog.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
@@ -15,7 +12,7 @@ import '../widgets/custom_button.dart';
 import '../widgets/custom_input.dart';
 import '../widgets/dialogs/bottom_dialog.dart';
 import '../widgets/header_text.dart';
-import 'old/Pages/home.dart';
+import 'main_page.dart';
 import 'register.dart';
 
 class Login extends StatefulWidget {
@@ -29,7 +26,6 @@ class _LoginState extends State<Login> {
   TextEditingController _phone = TextEditingController();
   TextEditingController _password = TextEditingController();
   bool _showPassword = false;
-  bool _loading = false;
 
   @override
   void dispose() {
@@ -109,13 +105,11 @@ class _LoginState extends State<Login> {
                   ],
                 ),
                 SizedBox(height: values.BASE_PADDING / 2),
-                _loading
-                    ? Center(child: CircularProgressIndicator())
-                    : CustomButton(title: 'LOGIN', onTab: _login),
+                CustomButton(title: 'LOGIN', onTab: _login),
                 SizedBox(height: values.BASE_PADDING),
                 CustomButton(
                   title: "REGISTER",
-                  onTab: () => Navigator.pushReplacement(
+                  onTab: () => Navigator.push(
                     context,
                     MaterialPageRoute(builder: (cxt) => Register()),
                   ),
@@ -158,8 +152,8 @@ class _LoginState extends State<Login> {
       return;
     }
 
-    _loading = true;
-    setState(() {});
+    var progressDialog = getProgressDialog(context: context);
+    progressDialog.show(useSafeArea: false);
 
     var loginResult = await context.read<AuthenticationProvider>().login(
           phone: _phone.text.replaceAll(' ', ''),
@@ -173,11 +167,14 @@ class _LoginState extends State<Login> {
       //   title: 'Login Success',
       //   message: prettyJson(loginResult.toJson()),
       // );
-      Navigator.pushReplacement(
+      progressDialog.dismiss();
+      Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => Home()),
+        MaterialPageRoute(builder: (_) => MainPage()),
+        (route) => false,
       );
     } else if (loginResult is String) {
+      progressDialog.dismiss();
       showBottomDialog(
         context: context,
         dialogType: enums.DialogType.ERROR,
@@ -185,6 +182,7 @@ class _LoginState extends State<Login> {
         message: loginResult,
       );
     } else {
+      progressDialog.dismiss();
       showBottomDialog(
         context: context,
         dialogType: enums.DialogType.ERROR,
@@ -192,8 +190,5 @@ class _LoginState extends State<Login> {
         message: 'Oops! Something went wrong. Please try again.',
       );
     }
-
-    _loading = false;
-    setState(() {});
   }
 }

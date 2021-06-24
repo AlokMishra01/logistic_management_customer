@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logistic_management_customer/views/old/Pages/compose_mss.dart';
 
 import '../../../constant.dart';
 import '../../../widgets/old/Widgets/date_mssg.dart';
@@ -31,7 +32,12 @@ class _MessageState extends State<Message> {
                   color: Constant.grey2),
               child: FlatButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('compose_mssg');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ComposeMessage(),
+                    ),
+                  );
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -44,9 +50,10 @@ class _MessageState extends State<Message> {
                     Text(
                       "Compose",
                       style: TextStyle(
-                          fontSize: 12,
-                          color: Constant.theme_col,
-                          fontWeight: FontWeight.w700),
+                        fontSize: 12,
+                        color: Constant.theme_col,
+                        fontWeight: FontWeight.w700,
+                      ),
                     )
                   ],
                 ),

@@ -15,7 +15,6 @@ dependencies:
   connectivity_plus: ^1.0.3
   cupertino_icons: ^1.0.3
   dio: ^4.0.0
-  draggable_bottom_sheet: ^0.1.2
   flash: ^2.0.1
   flutter_multi_formatter: ^2.2.0
   flutter_polyline_points: ^1.0.0
@@ -28,6 +27,7 @@ dependencies:
   shared_preferences: ^2.0.6
   timeline_tile: ^2.0.0
   validators: ^3.0.0
+  ars_dialog: ^1.0.8
 
 dev_dependencies:
   flutter_test:
@@ -36,3 +36,6 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+
+  assets:
+    - images/

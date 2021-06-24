@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logistic_management_customer/providers/authentication.dart';
-import 'package:logistic_management_customer/views/login.dart';
-import 'package:logistic_management_customer/widgets/old/Widgets/customButton.dart';
-import 'package:provider/provider.dart';
+import 'package:logistic_management_customer/views/old/Pages/allblogs.dart';
+import 'package:logistic_management_customer/widgets/header.dart';
 
 import '../../../constant.dart';
 import '../../../widgets/old/Widgets/singleBlogCard.dart';
@@ -19,13 +17,7 @@ class _HomeFragmentState extends State<HomeFragment> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          margin: EdgeInsets.only(left: 21, top: 33),
-          child: Text(
-            "Home",
-            style: TextStyle(color: Constant.theme_col, fontSize: 24),
-          ),
-        ),
+        Header(title: 'Home'),
         Container(
           margin: EdgeInsets.symmetric(horizontal: 21, vertical: 16),
           child: Text(
@@ -54,25 +46,32 @@ class _HomeFragmentState extends State<HomeFragment> {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamed('view_all');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => AllBlogs()),
+                  );
                 },
                 child: Container(
                   width: 70,
-                  height: 24,
-                  padding: EdgeInsets.only(left: 5, top: 2.3),
+                  height: 28,
                   decoration: BoxDecoration(
-                      color: Constant.grey1,
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(
-                          color: Constant.grey2,
-                          width: 1,
-                          style: BorderStyle.solid)),
+                    color: Constant.grey1,
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(
+                      color: Constant.grey2,
+                      width: 1,
+                      style: BorderStyle.solid,
+                    ),
+                  ),
                   child: Center(
-                    child: Text("View All",
-                        style: TextStyle(
-                            color: Constant.theme_col,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400)),
+                    child: Text(
+                      "View All",
+                      style: TextStyle(
+                        color: Constant.theme_col,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
                   ),
                 ),
               )
@@ -100,49 +99,29 @@ class _HomeFragmentState extends State<HomeFragment> {
                           "Be our prime minister and get one day delivery service and more",
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 10,
+                          fontSize: 12,
                           fontWeight: FontWeight.w400)),
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(right: 14),
-                width: 70,
-                height: 24,
+                margin: EdgeInsets.only(right: 12),
+                height: 28,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(6)),
                 child: FlatButton(
                   onPressed: () {},
-                  minWidth: 60,
-                  height: 24,
-                  child: RichText(
-                    text: TextSpan(
-                      text: "Buy now",
-                      style: TextStyle(
-                          color: Constant.theme_col,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400),
+                  child: Text(
+                    "Buy now",
+                    style: TextStyle(
+                      color: Constant.theme_col,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ),
               )
             ],
-          ),
-        ),
-        Center(
-          child: TextButton(
-            onPressed: () {
-              context.read<AuthenticationProvider>().logOut();
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => Login()),
-                (route) => false,
-              );
-            },
-            child: Text(
-              'Logout',
-              style: TextStyle(color: Colors.red),
-            ),
           ),
         ),
       ],

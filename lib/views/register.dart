@@ -1,8 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:logistic_management_customer/widgets/dialogs/loading_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:validators/validators.dart';
 
@@ -31,8 +29,6 @@ class _RegisterState extends State<Register> {
   TextEditingController _password = TextEditingController();
   TextEditingController _confirmPassword = TextEditingController();
   bool _showPassword = false;
-
-  bool _loading = false;
 
   @override
   void dispose() {
@@ -138,9 +134,7 @@ class _RegisterState extends State<Register> {
                   },
                 ),
                 SizedBox(height: values.BASE_PADDING * 1.5),
-                _loading
-                    ? Center(child: CircularProgressIndicator())
-                    : CustomButton(title: "CONFIRM", onTab: _register),
+                CustomButton(title: "CONFIRM", onTab: _register),
               ],
             ),
           ),
@@ -215,8 +209,8 @@ class _RegisterState extends State<Register> {
       return;
     }
 
-    _loading = true;
-    setState(() {});
+    var progressDialog = getProgressDialog(context: context);
+    progressDialog.show(useSafeArea: false);
 
     var result = await context.read<AuthenticationProvider>().register(
           firstName: _firstName.text,
@@ -228,6 +222,7 @@ class _RegisterState extends State<Register> {
 
     if (result is ConsumerModel) {
       if (result.id != null && result.token != null) {
+        progressDialog.dismiss();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -238,6 +233,7 @@ class _RegisterState extends State<Register> {
           ),
         );
       } else {
+        progressDialog.dismiss();
         showBottomDialog(
           context: context,
           dialogType: enums.DialogType.ERROR,
@@ -246,6 +242,7 @@ class _RegisterState extends State<Register> {
         );
       }
     } else if (result is String) {
+      progressDialog.dismiss();
       showBottomDialog(
         context: context,
         dialogType: enums.DialogType.ERROR,
@@ -253,6 +250,7 @@ class _RegisterState extends State<Register> {
         message: result,
       );
     } else {
+      progressDialog.dismiss();
       showBottomDialog(
         context: context,
         dialogType: enums.DialogType.ERROR,
@@ -260,7 +258,5 @@ class _RegisterState extends State<Register> {
         message: 'Oops! Something went wrong. Please try again.',
       );
     }
-    _loading = false;
-    setState(() {});
   }
 }

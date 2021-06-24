@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logistic_management_customer/views/old/Pages/singleNotice.dart';
 
 import '../../../constant.dart';
 
@@ -57,7 +58,10 @@ class SingleBlogCard extends StatelessWidget {
             ],
           ),
           onTap: () {
-            Navigator.of(context).pushNamed('single_notice');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => SingleNotice()),
+            );
           },
         ));
   }

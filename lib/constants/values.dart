@@ -1,4 +1,5 @@
 const HEADER_TEXT = 40.0;
+const SUB_HEADER_TEXT = 28.0;
 const TITLE_TEXT = 18.0;
 const DETAILS_TEXT = 14.0;
 const BUTTON_TEXT = 16.0;

@@ -36,44 +36,52 @@ class _HomeState extends State<Home> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              CustomIconBtn(
-                index: index,
-                title: "Home",
-                help: () {
+              InkWell(
+                onTap: () {
                   help(0);
                 },
-                curr_index: 0,
-                iconData: CommunityMaterialIcons.home,
+                child: CustomIconBtn(
+                  index: index,
+                  title: "Home",
+                  curr_index: 0,
+                  iconData: CommunityMaterialIcons.home_outline,
+                ),
               ),
-              CustomIconBtn(
-                index: index,
-                title: "Delivery",
-                help: () {
+              InkWell(
+                onTap: () {
                   help(1);
                 },
-                curr_index: 1,
-                iconData: CommunityMaterialIcons.truck_delivery_outline,
+                child: CustomIconBtn(
+                  index: index,
+                  title: "Delivery",
+                  curr_index: 1,
+                  iconData: CommunityMaterialIcons.truck_delivery_outline,
+                ),
               ),
               SizedBox(
                 width: 50,
               ),
-              CustomIconBtn(
-                index: index,
-                title: "Message",
-                help: () {
+              InkWell(
+                onTap: () {
                   help(2);
                 },
-                curr_index: 2,
-                iconData: CommunityMaterialIcons.message_outline,
+                child: CustomIconBtn(
+                  index: index,
+                  title: "Message",
+                  curr_index: 2,
+                  iconData: CommunityMaterialIcons.message_outline,
+                ),
               ),
-              CustomIconBtn(
-                index: index,
-                title: "Profile",
-                help: () {
+              InkWell(
+                onTap: () {
                   help(3);
                 },
-                curr_index: 3,
-                iconData: CommunityMaterialIcons.account_outline,
+                child: CustomIconBtn(
+                  index: index,
+                  title: "Profile",
+                  curr_index: 3,
+                  iconData: CommunityMaterialIcons.account_outline,
+                ),
               ),
             ],
           ),
@@ -101,22 +109,16 @@ class _HomeState extends State<Home> {
     switch (curr_index) {
       case 0:
         return HomeFragment();
-        break;
       case 1:
         return Delivery();
-        break;
       case 2:
         return Message();
-        break;
       case 3:
         return Profile();
-        break;
       case 4:
         return Track();
-        break;
       default:
         return Home();
-        break;
     }
   }
 }

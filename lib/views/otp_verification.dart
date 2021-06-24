@@ -1,8 +1,6 @@
-import 'dart:async';
-
-import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import '../widgets/dialogs/loading_dialog.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/enums.dart' as enums;
@@ -14,7 +12,7 @@ import '../widgets/custom_button_outline.dart';
 import '../widgets/custom_input.dart';
 import '../widgets/dialogs/bottom_dialog.dart';
 import '../widgets/header_text.dart';
-import 'old/Pages/home.dart';
+import 'main_page.dart';
 
 class OTPVerification extends StatefulWidget {
   final int id;
@@ -33,7 +31,6 @@ class OTPVerification extends StatefulWidget {
 class _OTPVerificationState extends State<OTPVerification> {
   TextEditingController _phone = TextEditingController();
   TextEditingController _otp = TextEditingController();
-  bool _loading = false;
 
   @override
   void initState() {
@@ -91,9 +88,7 @@ class _OTPVerificationState extends State<OTPVerification> {
                   onTab: () {},
                 ),
                 SizedBox(height: values.BASE_PADDING),
-                _loading
-                    ? Center(child: CircularProgressIndicator())
-                    : CustomButton(title: "NEXT", onTab: _verifyOTP),
+                CustomButton(title: "NEXT", onTab: _verifyOTP),
               ],
             ),
           ),
@@ -114,8 +109,8 @@ class _OTPVerificationState extends State<OTPVerification> {
       return;
     }
 
-    _loading = true;
-    setState(() {});
+    var progressDialog = getProgressDialog(context: context);
+    progressDialog.show(useSafeArea: false);
 
     var loginResult = await context.read<AuthenticationProvider>().verifyOTP(
           id: widget.id,
@@ -123,12 +118,14 @@ class _OTPVerificationState extends State<OTPVerification> {
         );
 
     if (loginResult is ConsumerModel) {
+      progressDialog.dismiss();
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => Home()),
+        MaterialPageRoute(builder: (_) => MainPage()),
         (route) => false,
       );
     } else if (loginResult is String) {
+      progressDialog.dismiss();
       showBottomDialog(
         context: context,
         dialogType: enums.DialogType.ERROR,
@@ -136,6 +133,7 @@ class _OTPVerificationState extends State<OTPVerification> {
         message: loginResult,
       );
     } else {
+      progressDialog.dismiss();
       showBottomDialog(
         context: context,
         dialogType: enums.DialogType.ERROR,
@@ -143,8 +141,5 @@ class _OTPVerificationState extends State<OTPVerification> {
         message: 'Oops! Something went wrong. Please try again.',
       );
     }
-
-    _loading = false;
-    setState(() {});
   }
 }

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:logistic_management_customer/providers/authentication.dart';
-import 'package:logistic_management_customer/views/old/Pages/home.dart';
+import 'package:logistic_management_customer/views/main_page.dart';
 import 'package:provider/provider.dart';
 
 import 'constants/colors.dart' as colors;
@@ -26,7 +26,7 @@ class _SplashState extends State<Splash> {
       if (context.read<AuthenticationProvider>().isLoggedIn)
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (cxt) => Home()),
+          MaterialPageRoute(builder: (cxt) => MainPage()),
         );
       else
         Navigator.pushReplacement(
