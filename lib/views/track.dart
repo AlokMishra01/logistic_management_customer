@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:logistic_management_customer/views/old/Pages/trackyourproduct.dart';
-import 'package:logistic_management_customer/widgets/header.dart';
+import 'old/Pages/trackyourproduct.dart';
+import '../widgets/header.dart';
 
-import '../../../constants/colors.dart' as colors;
-import '../../../constants/values.dart' as values;
-import '../../../constant.dart';
+import '../constants/colors.dart' as colors;
+import '../constants/values.dart' as values;
 
 class Track extends StatefulWidget {
   @override
@@ -62,7 +61,7 @@ class _TrackState extends State<Track> {
                     style: BorderStyle.solid,
                   ),
                 ),
-                focusColor: Constant.grey01,
+                focusColor: colors.FIELD_BACKGROUND,
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(values.RADIUS),
                   borderSide: BorderSide(
@@ -156,8 +155,8 @@ class _TrackState extends State<Track> {
                             fontSize: values.TITLE_TEXT,
                             fontWeight: FontWeight.bold,
                             color: (val == 0)
-                                ? Constant.theme_col
-                                : Constant.unselected,
+                                ? colors.TEXT_BLUE
+                                : colors.TEXT_SECONDARY,
                           ),
                         ),
                       ),
@@ -185,8 +184,8 @@ class _TrackState extends State<Track> {
                             fontSize: values.TITLE_TEXT,
                             fontWeight: FontWeight.bold,
                             color: (val == 1)
-                                ? Constant.theme_col
-                                : Constant.unselected,
+                                ? colors.TEXT_BLUE
+                                : colors.TEXT_SECONDARY,
                           ),
                         ),
                       ),
