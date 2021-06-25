@@ -6,11 +6,11 @@ import 'package:logistic_management_customer/widgets/custom_button.dart';
 import 'package:logistic_management_customer/widgets/custom_button_outline.dart';
 import 'package:logistic_management_customer/widgets/header.dart';
 import 'package:logistic_management_customer/widgets/profile_info_heading.dart';
+import 'package:logistic_management_customer/widgets/single_personal_detail.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
-import '../widgets/old/Widgets/single_personaldetail.dart';
 
 class Profile extends StatelessWidget {
   @override

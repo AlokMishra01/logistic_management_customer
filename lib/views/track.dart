@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'old/Pages/trackyourproduct.dart';
+import 'package:logistic_management_customer/views/track_product.dart';
 import '../widgets/header.dart';
 
 import '../constants/colors.dart' as colors;
@@ -296,7 +296,7 @@ class _TrackState extends State<Track> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => Trackyourproduct(),
+                            builder: (_) => TrackProduct(),
                           ),
                         );
                       },

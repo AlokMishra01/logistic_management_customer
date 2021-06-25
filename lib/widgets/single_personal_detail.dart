@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/colors.dart' as colors;
-import '../../../constants/values.dart' as values;
+import '../constants/colors.dart' as colors;
+import '../constants/values.dart' as values;
 
 class ProfileDetailRow extends StatelessWidget {
   final String title;
