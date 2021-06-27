@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:logistic_management_customer/models/blog_model.dart';
 import 'package:logistic_management_customer/views/blog_details.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
 
 class BlogListItem extends StatelessWidget {
+  final BlogModel model;
+
+  const BlogListItem({Key? key, required this.model}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -12,7 +17,11 @@ class BlogListItem extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => BlogDetails()),
+          MaterialPageRoute(
+            builder: (_) => BlogDetails(
+              model: model,
+            ),
+          ),
         );
       },
       child: Container(
@@ -30,7 +39,7 @@ class BlogListItem extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(values.RADIUS),
                   child: Image.asset(
-                    "images/banner2.png",
+                    model.image ?? '',
                     height: size.width * 0.2,
                     width: size.width * 0.2,
                     fit: BoxFit.cover,
@@ -47,7 +56,7 @@ class BlogListItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Opening day delivery',
+                      model.title ?? '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -58,7 +67,7 @@ class BlogListItem extends StatelessWidget {
                     ),
                     SizedBox(height: 8.0),
                     Text(
-                      'Our delivery started from the date of 2nd Jan,2021',
+                      model.description ?? '',
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(

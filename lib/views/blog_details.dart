@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:logistic_management_customer/models/blog_model.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
 import '../widgets/header.dart';
 
 class BlogDetails extends StatelessWidget {
+  final BlogModel model;
+
+  const BlogDetails({Key? key, required this.model}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'providers/about_us_provider.dart';
+import 'providers/blog_provider.dart';
 import 'package:material_color_generator/material_color_generator.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +24,13 @@ class MyApp extends StatelessWidget {
           create: (_) => NetworkConnection(),
         ),
         ListenableProxyProvider<NetworkConnection, AuthenticationProvider>(
-          update: (_, a, __) => AuthenticationProvider(a),
+          update: (_, n, __) => AuthenticationProvider(n),
+        ),
+        ListenableProxyProvider<NetworkConnection, BlogProvider>(
+          update: (_, n, __) => BlogProvider(n),
+        ),
+        ListenableProxyProvider<NetworkConnection, AboutUsProvider>(
+          update: (_, n, __) => AboutUsProvider(n),
         ),
       ],
       child: MaterialApp(

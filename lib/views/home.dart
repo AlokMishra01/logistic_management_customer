@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logistic_management_customer/providers/blog_provider.dart';
 import 'package:logistic_management_customer/widgets/blog_list_item.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +24,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthenticationProvider>();
+    final blog = context.watch<BlogProvider>();
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,9 +142,11 @@ class _HomeState extends State<Home> {
             child: ListView.separated(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: 1,
+              itemCount: blog.blogs.length > 1 ? 1 : blog.blogs.length,
               itemBuilder: (_, i) {
-                return BlogListItem();
+                return BlogListItem(
+                  model: blog.blogs[i],
+                );
               },
               separatorBuilder: (_, i) {
                 return SizedBox(height: values.BASE_PADDING / 2);
