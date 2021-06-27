@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:logistic_management_customer/services/api_service/client.dart';
 
 import '../models/about_us_model.dart';
 import '../services/connectivity/network_connection.dart';
@@ -15,6 +16,7 @@ class AboutUsProvider extends ChangeNotifier {
   AboutUsModel? _aboutUs;
 
   AboutUsProvider(this._network) {
+    _dio = Client().init();
     fetchAboutUs(init: true);
   }
 

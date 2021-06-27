@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:logistic_management_customer/services/api_service/client.dart';
 import '../models/blog_model.dart';
 import '../services/connectivity/network_connection.dart';
 import 'package:pretty_json/pretty_json.dart';
@@ -18,6 +19,7 @@ class BlogProvider extends ChangeNotifier {
   List<BlogModel> _blogs = <BlogModel>[];
 
   BlogProvider(this._network) {
+    _dio = Client().init();
     fetchBlogs(init: true, reload: true);
   }
 
