@@ -28,7 +28,7 @@ class Delivery extends StatelessWidget {
                   ),
                   child: Text(
                     'You can request for the pickup / delivery and schedule '
-                    'time as per your prefrence for pickup / delivery ',
+                    'time as per your preference for pickup / delivery',
                     style: TextStyle(
                       fontSize: values.TITLE_TEXT,
                       color: colors.TEXT_SECONDARY,

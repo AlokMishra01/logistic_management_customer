@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
+import '../widgets/delivery_form_step.dart';
 import '../widgets/header.dart';
 import 'delivery_form_four.dart';
 import 'delivery_form_one.dart';
@@ -20,6 +21,7 @@ class DeliveryForm extends StatefulWidget {
 
 class _DeliveryFormState extends State<DeliveryForm> {
   PageController _pageController = PageController();
+  int _page = 0;
 
   TextEditingController _firstName = TextEditingController();
   TextEditingController _lastName = TextEditingController();
@@ -124,7 +126,9 @@ class _DeliveryFormState extends State<DeliveryForm> {
                 ),
               ),
             ),
-            SizedBox(height: values.BASE_PADDING),
+            DeliveryFormStep(
+              position: _page,
+            ),
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
@@ -142,22 +146,28 @@ class _DeliveryFormState extends State<DeliveryForm> {
   }
 
   _prePage() {
-    if (_pageController.page!.toInt() > 0)
+    if (_pageController.page!.toInt() > 0) {
+      _page = _pageController.page!.toInt() - 1;
+      setState(() {});
       _pageController
         ..animateToPage(
           _pageController.page!.toInt() - 1,
           duration: Duration(milliseconds: 300),
           curve: Curves.easeIn,
         );
+    }
   }
 
   _nextPage() {
-    if (_pageController.page!.toInt() < 3)
+    if (_pageController.page!.toInt() < 3) {
+      _page = _pageController.page!.toInt() + 1;
+      setState(() {});
       _pageController
         ..animateToPage(
           _pageController.page!.toInt() + 1,
           duration: Duration(milliseconds: 300),
           curve: Curves.easeIn,
         );
+    }
   }
 }
