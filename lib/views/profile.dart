@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logistic_management_customer/providers/authentication.dart';
 import 'package:logistic_management_customer/views/login.dart';
+import 'package:logistic_management_customer/views/my_request.dart';
 import 'package:logistic_management_customer/widgets/custom_button.dart';
 import 'package:logistic_management_customer/widgets/custom_button_outline.dart';
 import 'package:logistic_management_customer/widgets/header.dart';
@@ -112,14 +113,29 @@ class Profile extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(values.BASE_PADDING),
+                  child: CustomButton(
+                    title: 'My Requests',
+                    onTab: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => MyRequest(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(values.BASE_PADDING),
                   child: CustomButton(
                     title: 'Be Our PrimeMinister',
                     onTab: () {},
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: values.BASE_PADDING),
                   child: CustomButtonOutline(
                     title: 'Logout',
                     color: colors.RED,

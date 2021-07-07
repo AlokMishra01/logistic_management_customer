@@ -10,3 +10,4 @@ const BUTTON_GREEN = const Color(0xFF0D9E1C);
 const FIELD_BACKGROUND = const Color(0xFFEFEEEE);
 const RED = const Color(0xFFC21807);
 const YELLOW = const Color(0xFFED7014);
+const PURPLE_LIGHT = const Color(0xFF605D82);

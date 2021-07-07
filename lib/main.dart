@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'providers/about_us_provider.dart';
-import 'providers/blog_provider.dart';
 import 'package:material_color_generator/material_color_generator.dart';
 import 'package:provider/provider.dart';
 
 import 'constants/colors.dart' as colors;
+import 'providers/about_us_provider.dart';
 import 'providers/authentication.dart';
+import 'providers/blog_provider.dart';
 import 'services/connectivity/network_connection.dart';
 import 'splash.dart';
 
@@ -38,7 +38,9 @@ class MyApp extends StatelessWidget {
         title: 'Logistic Management Customer',
         theme: ThemeData(
           primarySwatch: generateMaterialColor(color: colors.BUTTON_BLUE),
-          textTheme: GoogleFonts.comfortaaTextTheme(),
+          textTheme: GoogleFonts.comfortaaTextTheme(
+            Theme.of(context).textTheme,
+          ),
         ),
         home: Splash(),
       ),

@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/colors.dart' as colors;
-import 'profile.dart';
-import '../views/old/Pages/delivery.dart';
-import 'track.dart';
+import 'delivery.dart';
 import 'home.dart';
 import 'message.dart';
+import 'profile.dart';
+import 'track.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
