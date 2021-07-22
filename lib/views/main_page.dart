@@ -9,7 +9,14 @@ import 'profile.dart';
 import 'track.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+  final int index;
+  final Widget? dialog;
+
+  const MainPage({
+    Key? key,
+    this.index = 0,
+    this.dialog,
+  }) : super(key: key);
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -17,6 +24,23 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.index;
+    if (widget.dialog != null) {
+      Future.delayed(
+        Duration.zero,
+        () => showDialog(
+          context: context,
+          builder: (_) {
+            return widget.dialog ?? Container();
+          },
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

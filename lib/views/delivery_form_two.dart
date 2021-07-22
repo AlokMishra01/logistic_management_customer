@@ -8,6 +8,10 @@ import '../widgets/custom_input.dart';
 class DeliveryFormTwo extends StatelessWidget {
   final TextEditingController type;
   final TextEditingController description;
+  final bool fragile;
+  final ValueChanged<bool?> onChangedFragile;
+  final bool express;
+  final ValueChanged<bool?> onChangedExpress;
   final TextEditingController height;
   final TextEditingController length;
   final TextEditingController width;
@@ -19,17 +23,20 @@ class DeliveryFormTwo extends StatelessWidget {
     Key? key,
     required this.type,
     required this.description,
+    this.fragile = false,
+    this.express = false,
     required this.height,
     required this.length,
     required this.width,
     required this.weight,
     required this.onPre,
     required this.onNext,
+    required this.onChangedFragile,
+    required this.onChangedExpress,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Padding(
@@ -57,6 +64,64 @@ class DeliveryFormTwo extends StatelessWidget {
             CustomInput(
               controller: description,
               hint: 'Package Description',
+            ),
+            SizedBox(height: values.BASE_PADDING / 2),
+            Material(
+              color: colors.FIELD_BACKGROUND,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(values.RADIUS),
+              ),
+              child: ListTile(
+                contentPadding: EdgeInsets.only(
+                  left: values.BASE_PADDING,
+                  top: values.BASE_PADDING / 4,
+                  bottom: values.BASE_PADDING / 4,
+                  right: values.BASE_PADDING / 2,
+                ),
+                title: Text(
+                  'Fragile ',
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: colors.TEXT_SECONDARY,
+                    fontSize: values.TITLE_TEXT,
+                  ),
+                ),
+                trailing: CupertinoSwitch(
+                  value: fragile,
+                  onChanged: onChangedFragile,
+                  trackColor: colors.RED,
+                  activeColor: colors.BUTTON_GREEN,
+                ),
+              ),
+            ),
+            SizedBox(height: values.BASE_PADDING / 2),
+            Material(
+              color: colors.FIELD_BACKGROUND,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(values.RADIUS),
+              ),
+              child: ListTile(
+                contentPadding: EdgeInsets.only(
+                  left: values.BASE_PADDING,
+                  top: values.BASE_PADDING / 4,
+                  bottom: values.BASE_PADDING / 4,
+                  right: values.BASE_PADDING / 2,
+                ),
+                title: Text(
+                  'Express ',
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: colors.TEXT_SECONDARY,
+                    fontSize: values.TITLE_TEXT,
+                  ),
+                ),
+                trailing: CupertinoSwitch(
+                  value: express,
+                  onChanged: onChangedExpress,
+                  trackColor: colors.RED,
+                  activeColor: colors.BUTTON_GREEN,
+                ),
+              ),
             ),
             SizedBox(height: values.BASE_PADDING * 2),
             Text(
@@ -128,7 +193,7 @@ class DeliveryFormTwo extends StatelessWidget {
                         size: values.BUTTON_TEXT,
                       ),
                       Text(
-                        '  Next ',
+                        '  Prev ',
                         style: TextStyle(
                           color: colors.TEXT_WHITE,
                           fontSize: values.BUTTON_TEXT,

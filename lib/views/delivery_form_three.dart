@@ -9,6 +9,9 @@ class DeliveryFormThree extends StatelessWidget {
   final TextEditingController pickupDate;
   final TextEditingController pickupTime;
   final TextEditingController deliveryTime;
+  final VoidCallback onPickUpTab;
+  final VoidCallback onPickUpTimeTab;
+  final VoidCallback onDeliveryTimeTab;
   final VoidCallback onPre;
   final VoidCallback onNext;
 
@@ -17,13 +20,15 @@ class DeliveryFormThree extends StatelessWidget {
     required this.pickupDate,
     required this.pickupTime,
     required this.deliveryTime,
+    required this.onPickUpTab,
+    required this.onPickUpTimeTab,
+    required this.onDeliveryTimeTab,
     required this.onPre,
     required this.onNext,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Padding(
@@ -46,11 +51,15 @@ class DeliveryFormThree extends StatelessWidget {
             CustomInput(
               controller: pickupDate,
               hint: 'Pickup Date',
+              enabled: false,
+              onTab: onPickUpTab,
             ),
             SizedBox(height: values.BASE_PADDING / 2),
             CustomInput(
               controller: pickupTime,
               hint: 'Pickup Time',
+              enabled: false,
+              onTab: onPickUpTimeTab,
             ),
             SizedBox(height: values.BASE_PADDING * 2),
             Text(
@@ -66,6 +75,8 @@ class DeliveryFormThree extends StatelessWidget {
             CustomInput(
               controller: deliveryTime,
               hint: 'Delivery Time',
+              enabled: false,
+              onTab: onDeliveryTimeTab,
             ),
             SizedBox(height: values.BASE_PADDING),
             Row(
@@ -80,7 +91,7 @@ class DeliveryFormThree extends StatelessWidget {
                         size: values.BUTTON_TEXT,
                       ),
                       Text(
-                        '  Next ',
+                        '  Prev ',
                         style: TextStyle(
                           color: colors.TEXT_WHITE,
                           fontSize: values.BUTTON_TEXT,

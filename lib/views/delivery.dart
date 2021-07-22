@@ -95,7 +95,7 @@ class Delivery extends StatelessWidget {
                     horizontal: values.BASE_PADDING,
                   ),
                   child: Text(
-                    'You are few steps away from delevering your package.',
+                    'You are few steps away from delivering your package.',
                     style: TextStyle(
                       fontSize: values.TITLE_TEXT,
                       color: colors.TEXT_SECONDARY,
@@ -153,7 +153,7 @@ class Delivery extends StatelessWidget {
                             backgroundColor: colors.PURPLE_LIGHT,
                             radius: 18,
                             child: Text(
-                              '1',
+                              '2',
                               style: TextStyle(
                                 color: colors.TEXT_WHITE,
                                 fontWeight: FontWeight.w600,
@@ -188,7 +188,7 @@ class Delivery extends StatelessWidget {
                             backgroundColor: colors.PURPLE_LIGHT,
                             radius: 18,
                             child: Text(
-                              '1',
+                              '3',
                               style: TextStyle(
                                 color: colors.TEXT_WHITE,
                                 fontWeight: FontWeight.w600,
@@ -223,7 +223,7 @@ class Delivery extends StatelessWidget {
                             backgroundColor: colors.PURPLE_LIGHT,
                             radius: 18,
                             child: Text(
-                              '1',
+                              '4',
                               style: TextStyle(
                                 color: colors.TEXT_WHITE,
                                 fontWeight: FontWeight.w600,

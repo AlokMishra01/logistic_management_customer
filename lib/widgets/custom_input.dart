@@ -14,6 +14,7 @@ class CustomInput extends StatelessWidget {
   final bool obscureText;
   final IconData? icon;
   final VoidCallback? onSuffixTab;
+  final VoidCallback? onTab;
   final bool enabled;
   final int? maxLines;
   final int? minLines;
@@ -28,6 +29,7 @@ class CustomInput extends StatelessWidget {
     this.obscureText = false,
     this.icon,
     this.onSuffixTab,
+    this.onTab,
     this.enabled = true,
     this.maxLines,
     this.minLines,
@@ -35,60 +37,71 @@ class CustomInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      enabled: enabled,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(values.RADIUS),
-          borderSide: BorderSide(width: 0),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(values.RADIUS),
-          borderSide: BorderSide(
-            color: Colors.white,
-            width: 1,
-            style: BorderStyle.solid,
+    return InkWell(
+      onTap: onTab,
+      child: TextFormField(
+        enabled: enabled,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(values.RADIUS),
+            borderSide: BorderSide(width: 0),
           ),
-        ),
-        fillColor: colors.FIELD_BACKGROUND,
-        filled: true,
-        focusColor: colors.TEXT_SECONDARY,
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(values.RADIUS),
-          borderSide: BorderSide(
-            color: Colors.white,
-            width: 1,
-            style: BorderStyle.solid,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(values.RADIUS),
+            borderSide: BorderSide(
+              color: Colors.white,
+              width: 1,
+              style: BorderStyle.solid,
+            ),
           ),
+          disabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(values.RADIUS),
+            borderSide: BorderSide(
+              color: Colors.white,
+              width: 1,
+              style: BorderStyle.solid,
+            ),
+          ),
+          fillColor: colors.FIELD_BACKGROUND,
+          filled: true,
+          focusColor: colors.TEXT_SECONDARY,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(values.RADIUS),
+            borderSide: BorderSide(
+              color: Colors.white,
+              width: 1,
+              style: BorderStyle.solid,
+            ),
+          ),
+          hintText: hint,
+          hintStyle: TextStyle(
+            color: colors.TEXT_SECONDARY,
+            fontWeight: FontWeight.w500,
+            height: 1.5,
+          ),
+          suffixIcon: icon != null
+              ? IconButton(
+                  onPressed: onSuffixTab,
+                  icon: Icon(icon),
+                  color: colors.TEXT_BLUE,
+                )
+              : null,
         ),
-        hintText: hint,
-        hintStyle: TextStyle(
-          color: colors.TEXT_SECONDARY,
-          fontWeight: FontWeight.w500,
+        style: TextStyle(
+          color: colors.TEXT_BLACK,
+          fontWeight: FontWeight.w600,
           height: 1.5,
         ),
-        suffixIcon: icon != null
-            ? IconButton(
-                onPressed: onSuffixTab,
-                icon: Icon(icon),
-                color: colors.TEXT_BLUE,
-              )
-            : null,
+        maxLines: !obscureText ? maxLines : 1,
+        minLines: !obscureText ? minLines : 1,
+        enableSuggestions: true,
+        inputFormatters: formatters,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: validator,
+        keyboardType: type,
+        obscureText: obscureText,
+        controller: controller,
       ),
-      style: TextStyle(
-        color: colors.TEXT_BLACK,
-        fontWeight: FontWeight.w600,
-        height: 1.5,
-      ),
-      maxLines: !obscureText ? maxLines : 1,
-      minLines: !obscureText ? minLines : 1,
-      enableSuggestions: true,
-      inputFormatters: formatters,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: validator,
-      keyboardType: type,
-      obscureText: obscureText,
-      controller: controller,
     );
   }
 }

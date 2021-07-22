@@ -5,9 +5,12 @@ import '../storage/preference_service.dart';
 class ApiInterceptors extends Interceptor {
   @override
   void onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     PreferenceService p = PreferenceService();
     await p.init();
+    print(p.token);
     String token = p.token;
     options.headers['Authorization'] = 'Bearer $token';
     handler.next(options);

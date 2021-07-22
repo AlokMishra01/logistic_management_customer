@@ -2,28 +2,38 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:logistic_management_customer/widgets/place_picker.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
 import '../widgets/custom_input.dart';
 
 class DeliveryFormFour extends StatelessWidget {
-  final TextEditingController firstName;
-  final TextEditingController lastName;
+  final TextEditingController name;
+  // final TextEditingController lastName;
   final TextEditingController mobile;
   final TextEditingController address;
   final Completer<GoogleMapController> mapController;
+  final double lat;
+  final double long;
+  final CameraPositionCallback onCameraMove;
+  final VoidCallback onSelect;
   final VoidCallback onPre;
   final VoidCallback onNext;
 
   const DeliveryFormFour({
     Key? key,
-    required this.firstName,
-    required this.lastName,
+    required this.name,
+    // required this.lastName,
     required this.mobile,
     required this.address,
     required this.mapController,
+    required this.lat,
+    required this.long,
+    required this.onCameraMove,
+    required this.onSelect,
     required this.onPre,
     required this.onNext,
   }) : super(key: key);
@@ -51,18 +61,19 @@ class DeliveryFormFour extends StatelessWidget {
             ),
             SizedBox(height: values.BASE_PADDING),
             CustomInput(
-              controller: firstName,
-              hint: 'First Name',
+              controller: name,
+              hint: 'Name',
             ),
-            SizedBox(height: values.BASE_PADDING / 2),
-            CustomInput(
-              controller: lastName,
-              hint: 'Last Name',
-            ),
+            // SizedBox(height: values.BASE_PADDING / 2),
+            // CustomInput(
+            //   controller: lastName,
+            //   hint: 'Last Name',
+            // ),
             SizedBox(height: values.BASE_PADDING / 2),
             CustomInput(
               controller: mobile,
               hint: 'Mobile Number',
+              formatters: [PhoneInputFormatter()],
             ),
             SizedBox(height: values.BASE_PADDING / 2),
             CustomInput(
@@ -92,16 +103,26 @@ class DeliveryFormFour extends StatelessWidget {
                   myLocationEnabled: true,
                   rotateGesturesEnabled: false,
                   tiltGesturesEnabled: false,
+                  zoomGesturesEnabled: true,
+                  onTap: (_) => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => PlacePicker(
+                        initLocation: LatLng(lat, long),
+                        onCameraMove: onCameraMove,
+                        onSelect: onSelect,
+                      ),
+                    ),
+                  ),
                   initialCameraPosition: CameraPosition(
-                    target: LatLng(27.68830, 85.33556),
+                    target: LatLng(lat, long),
                     zoom: 5,
                   ),
                   onMapCreated: (controller) {
-                    mapController.complete(controller);
                     controller.animateCamera(
                       CameraUpdate.newCameraPosition(
                         CameraPosition(
-                          target: LatLng(27.68830, 85.33556),
+                          target: LatLng(lat, long),
                           zoom: 15,
                         ),
                       ),
@@ -123,7 +144,7 @@ class DeliveryFormFour extends StatelessWidget {
                         size: values.BUTTON_TEXT,
                       ),
                       Text(
-                        '  Next ',
+                        '  Prev ',
                         style: TextStyle(
                           color: colors.TEXT_WHITE,
                           fontSize: values.BUTTON_TEXT,

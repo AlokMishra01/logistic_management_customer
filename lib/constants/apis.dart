@@ -6,3 +6,5 @@ const CHANGE_PASSWORD = 'changepassword';
 const CONSUMER_INFO = 'consumerinfo';
 const BLOGS = 'blogs';
 const ABOUT_US = 'page/about-us';
+const PACKAGE = 'package';
+const REQUEST_DELIVERY = 'requestdelivery';
