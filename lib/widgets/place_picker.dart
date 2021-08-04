@@ -32,14 +32,9 @@ class _PlacePickerState extends State<PlacePicker> {
       body: SafeArea(
         child: Column(
           children: [
-            Positioned(
-              top: 0,
-              right: 0,
-              left: 0,
-              child: Header(
-                title: 'Pick Location',
-                backButton: true,
-              ),
+            Header(
+              title: 'Pick Location',
+              backButton: true,
             ),
             Expanded(
               child: Stack(

@@ -1,14 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:logistic_management_customer/constants/enums.dart';
+import 'package:logistic_management_customer/providers/authentication.dart';
 import 'package:logistic_management_customer/providers/delivery_provider.dart';
+import 'package:logistic_management_customer/providers/request_provider.dart';
 import 'package:logistic_management_customer/utils/string_time_to_time_of_day.dart';
-import 'package:logistic_management_customer/views/main_page.dart';
 import 'package:logistic_management_customer/widgets/custom_button.dart';
 import 'package:logistic_management_customer/widgets/custom_date_picker.dart';
 import 'package:logistic_management_customer/widgets/custom_time_picker.dart';
+import 'package:logistic_management_customer/widgets/dialogs/bottom_dialog.dart';
 import 'package:logistic_management_customer/widgets/dialogs/loading_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +22,7 @@ import 'delivery_form_four.dart';
 import 'delivery_form_one.dart';
 import 'delivery_form_three.dart';
 import 'delivery_form_two.dart';
+import 'main_page.dart';
 
 class DeliveryForm extends StatefulWidget {
   const DeliveryForm({Key? key}) : super(key: key);
@@ -202,7 +205,7 @@ class _DeliveryFormState extends State<DeliveryForm> {
                 'Please fill up the form to request '
                 'for pickup or delivery.',
                 style: TextStyle(
-                  fontSize: values.TITLE_TEXT,
+                  fontSize: values.DETAILS_TEXT,
                   color: colors.TEXT_SECONDARY,
                   fontWeight: FontWeight.w600,
                 ),
@@ -243,7 +246,7 @@ class _DeliveryFormState extends State<DeliveryForm> {
   _nextPage(int index) {
     if (index == 0) {
       if (_senderName.text.length < 2) return;
-      if (!isPhoneValid(_mobile.text)) return;
+      if (_mobile.text.isEmpty) return;
       if (_address.text.length < 2) return;
       if (_lat == null) return;
       if (_long == null) return;
@@ -263,7 +266,7 @@ class _DeliveryFormState extends State<DeliveryForm> {
       _toNextPage();
     } else {
       if (_nameDrop.text.length < 2) return;
-      if (!isPhoneValid(_mobileDrop.text)) return;
+      if (_mobileDrop.text.isEmpty) return;
       if (_addressDrop.text.length < 2) return;
       if (_latDrop == null) return;
       if (_longDrop == null) return;
@@ -309,165 +312,124 @@ class _DeliveryFormState extends State<DeliveryForm> {
           fragile: _fragile ? 1 : 0,
           express: _express ? 1 : 0,
         );
-    progressDialog.dismiss();
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (_) => MainPage(
-          index: 1,
-          dialog: Padding(
-            padding: const EdgeInsets.all(
-              values.BASE_PADDING * 2,
-            ),
-            child: Center(
-              child: Material(
-                color: colors.TEXT_WHITE,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                    values.RADIUS / 2,
+
+    if (result is bool) {
+      context.read<RequestProvider>().fetchPending(
+            userId: context.read<AuthenticationProvider>().consumer!.id ?? 43,
+          );
+      context.read<RequestProvider>().fetchApproved(
+            userId: context.read<AuthenticationProvider>().consumer!.id ?? 43,
+          );
+      progressDialog.dismiss();
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) {
+          return WillPopScope(
+            onWillPop: () async {
+              Navigator.pop(context);
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => MainPage(
+                    index: 1,
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(
-                    values.BASE_PADDING,
+                (route) => false,
+              );
+              return true;
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(
+                values.BASE_PADDING * 2,
+              ),
+              child: Center(
+                child: Material(
+                  color: colors.TEXT_WHITE,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                      values.RADIUS / 2,
+                    ),
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(height: values.BASE_PADDING),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: values.BASE_PADDING * 2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(
+                      values.BASE_PADDING,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(height: values.BASE_PADDING),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: values.BASE_PADDING * 2,
+                          ),
+                          child: Image.asset(
+                            'images/delivered.png',
+                            width: double.infinity,
+                            fit: BoxFit.fitWidth,
+                          ),
                         ),
-                        child: Image.asset(
-                          'images/delivered.png',
-                          width: double.infinity,
-                          fit: BoxFit.fitWidth,
+                        SizedBox(height: values.BASE_PADDING),
+                        Text(
+                          'Delivery request has been sent successfully !!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: values.TITLE_TEXT,
+                            fontWeight: FontWeight.w600,
+                            color: colors.TEXT_BLUE,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: values.BASE_PADDING),
-                      Text(
-                        'Delivery request has been sent successfully !!',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: values.TITLE_TEXT,
-                          fontWeight: FontWeight.w600,
-                          color: colors.TEXT_BLUE,
+                        SizedBox(height: values.BASE_PADDING),
+                        Text(
+                          'Our customer service will contact you once your request is verified.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: values.DETAILS_TEXT,
+                            color: colors.YELLOW,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: values.BASE_PADDING),
-                      Text(
-                        'Our customer service will contact you once your request is verified.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: values.DETAILS_TEXT,
-                          color: colors.YELLOW,
+                        SizedBox(height: values.BASE_PADDING),
+                        CustomButton(
+                          title: 'Finish',
+                          onTab: () {
+                            Navigator.pop(context);
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => MainPage(
+                                  index: 1,
+                                ),
+                              ),
+                              (route) => false,
+                            );
+                          },
                         ),
-                      ),
-                      SizedBox(height: values.BASE_PADDING),
-                      CustomButton(
-                        title: 'Finish',
-                        onTab: () => Navigator.pop(context),
-                      ),
-                      SizedBox(height: values.BASE_PADDING),
-                    ],
+                        SizedBox(height: values.BASE_PADDING),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ),
-      ),
-      (route) => false,
-    );
-    // if (result is bool) {
-    //   progressDialog.dismiss();
-    //   Navigator.pushAndRemoveUntil(
-    //     context,
-    //     MaterialPageRoute(
-    //       builder: (_) => MainPage(
-    //         index: 1,
-    //         dialog: Padding(
-    //           padding: const EdgeInsets.all(
-    //             values.BASE_PADDING * 2,
-    //           ),
-    //           child: Center(
-    //             child: Material(
-    //               color: colors.TEXT_WHITE,
-    //               shape: RoundedRectangleBorder(
-    //                 borderRadius: BorderRadius.circular(
-    //                   values.RADIUS / 2,
-    //                 ),
-    //               ),
-    //               child: Padding(
-    //                 padding: const EdgeInsets.all(
-    //                   values.BASE_PADDING,
-    //                 ),
-    //                 child: Column(
-    //                   mainAxisSize: MainAxisSize.min,
-    //                   children: [
-    //                     SizedBox(height: values.BASE_PADDING),
-    //                     Padding(
-    //                       padding: const EdgeInsets.symmetric(
-    //                         horizontal: values.BASE_PADDING * 2,
-    //                       ),
-    //                       child: Image.asset(
-    //                         'images/delivered.png',
-    //                         width: double.infinity,
-    //                         fit: BoxFit.fitWidth,
-    //                       ),
-    //                     ),
-    //                     SizedBox(height: values.BASE_PADDING),
-    //                     Text(
-    //                       'Delivery request has been sent successfully !!',
-    //                       textAlign: TextAlign.center,
-    //                       style: TextStyle(
-    //                         fontSize: values.TITLE_TEXT,
-    //                         fontWeight: FontWeight.w600,
-    //                         color: colors.TEXT_BLUE,
-    //                       ),
-    //                     ),
-    //                     SizedBox(height: values.BASE_PADDING),
-    //                     Text(
-    //                       'Our customer service will contact you once your request is verified.',
-    //                       textAlign: TextAlign.center,
-    //                       style: TextStyle(
-    //                         fontSize: values.DETAILS_TEXT,
-    //                         color: colors.YELLOW,
-    //                       ),
-    //                     ),
-    //                     SizedBox(height: values.BASE_PADDING),
-    //                     CustomButton(
-    //                       title: 'Finish',
-    //                       onTab: () => Navigator.pop(context),
-    //                     ),
-    //                     SizedBox(height: values.BASE_PADDING),
-    //                   ],
-    //                 ),
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //       ),
-    //     ),
-    //     (route) => false,
-    //   );
-    // } else if (result is String) {
-    //   progressDialog.dismiss();
-    //   showBottomDialog(
-    //     context: context,
-    //     dialogType: DialogType.ERROR,
-    //     title: 'Delivery Request Error',
-    //     message: result,
-    //   );
-    // } else {
-    //   progressDialog.dismiss();
-    //   showBottomDialog(
-    //     context: context,
-    //     dialogType: DialogType.ERROR,
-    //     title: 'Delivery Request Error',
-    //     message: 'Oops! Something went wrong. Please try again.',
-    //   );
-    // }
+          );
+        },
+      );
+    } else if (result is String) {
+      progressDialog.dismiss();
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error',
+        message: result,
+      );
+    } else {
+      progressDialog.dismiss();
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error',
+        message: 'Oops! Something went wrong. Please try again.',
+      );
+    }
   }
 }

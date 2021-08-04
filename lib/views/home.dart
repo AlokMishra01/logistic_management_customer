@@ -142,7 +142,7 @@ class _HomeState extends State<Home> {
             child: ListView.separated(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: blog.blogs.length > 1 ? 1 : blog.blogs.length,
+              itemCount: blog.blogs.length > 2 ? 2 : blog.blogs.length,
               itemBuilder: (_, i) {
                 return BlogListItem(
                   model: blog.blogs[i],

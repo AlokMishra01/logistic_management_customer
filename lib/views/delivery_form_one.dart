@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logistic_management_customer/widgets/place_picker.dart';
 
@@ -57,7 +56,7 @@ class DeliveryFormOne extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: values.BASE_PADDING),
+            SizedBox(height: values.BASE_PADDING / 2),
             CustomInput(
               controller: name,
               hint: 'Name',
@@ -73,7 +72,7 @@ class DeliveryFormOne extends StatelessWidget {
               hint: 'Mobile Number',
               type: TextInputType.phone,
               formatters: [
-                PhoneInputFormatter(),
+                // PhoneInputFormatter(),
               ],
             ),
             SizedBox(height: values.BASE_PADDING / 2),
@@ -81,7 +80,7 @@ class DeliveryFormOne extends StatelessWidget {
               controller: address,
               hint: 'Address',
             ),
-            SizedBox(height: values.BASE_PADDING * 2),
+            SizedBox(height: values.BASE_PADDING),
             Align(
               alignment: Alignment.center,
               child: Text(
@@ -94,17 +93,18 @@ class DeliveryFormOne extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: values.BASE_PADDING),
+            SizedBox(height: values.BASE_PADDING / 2),
             SizedBox(
-              height: size.width - (values.BASE_PADDING * 2),
+              height: (size.width - (values.BASE_PADDING * 2)) / 2,
               width: size.width - (values.BASE_PADDING * 2),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(values.RADIUS),
                 child: GoogleMap(
-                  myLocationEnabled: true,
+                  myLocationEnabled: false,
                   rotateGesturesEnabled: false,
                   tiltGesturesEnabled: false,
-                  zoomGesturesEnabled: true,
+                  zoomGesturesEnabled: false,
+                  zoomControlsEnabled: false,
                   onTap: (_) => Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -132,7 +132,7 @@ class DeliveryFormOne extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: values.BASE_PADDING),
+            SizedBox(height: values.BASE_PADDING / 2),
             Row(
               children: [
                 Expanded(child: Container()),

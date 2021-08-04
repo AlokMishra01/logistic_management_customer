@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../widgets/dialogs/loading_dialog.dart';
+import 'package:logistic_management_customer/providers/request_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
@@ -11,6 +11,7 @@ import '../providers/authentication.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_input.dart';
 import '../widgets/dialogs/bottom_dialog.dart';
+import '../widgets/dialogs/loading_dialog.dart';
 import '../widgets/header_text.dart';
 import 'main_page.dart';
 import 'register.dart';
@@ -167,6 +168,13 @@ class _LoginState extends State<Login> {
       //   title: 'Login Success',
       //   message: prettyJson(loginResult.toJson()),
       // );
+      context.read<RequestProvider>().fetchPending(
+            userId: context.read<AuthenticationProvider>().consumer!.id ?? 43,
+          );
+      context.read<RequestProvider>().fetchApproved(
+            userId: context.read<AuthenticationProvider>().consumer!.id ?? 43,
+          );
+      await Future.delayed(Duration(seconds: 3));
       progressDialog.dismiss();
       Navigator.pushAndRemoveUntil(
         context,

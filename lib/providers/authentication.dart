@@ -91,6 +91,7 @@ class AuthenticationProvider extends ChangeNotifier {
         Response response = await _dio.post(apis.CONSUMER_INFO, data: {
           'id': id,
         });
+        log(response.data.toString(), name: 'Info');
         if (response.statusCode! >= 200 && response.statusCode! < 300) {
           if (response.data['response'] is Map) {
             var c = ConsumerModel.fromJson(response.data['response']);
@@ -179,6 +180,7 @@ class AuthenticationProvider extends ChangeNotifier {
         }
       } catch (error) {
         if (error is DioError) {
+          log(error.error.data.toString(), name: 'Detail Error');
           log(
             error.message,
             name: 'Register Error',

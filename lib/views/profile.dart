@@ -42,8 +42,8 @@ class Profile extends StatelessWidget {
               children: [
                 Center(
                   child: CircleAvatar(
-                    backgroundImage: AssetImage(
-                      "images/user.png",
+                    backgroundImage: NetworkImage(
+                      'https://media.carphonewarehouse.com/is/image/cpw2/essentials-bundle-for-google-pixel-4aNA?\$accessories\$',
                     ),
                     radius: size.width * 0.2,
                     backgroundColor: colors.TEXT_BLUE.withOpacity(0.2),
@@ -113,7 +113,9 @@ class Profile extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(values.BASE_PADDING),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: values.BASE_PADDING,
+                  ),
                   child: CustomButton(
                     title: 'My Requests',
                     onTab: () {

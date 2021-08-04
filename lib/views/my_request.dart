@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:logistic_management_customer/providers/authentication.dart';
+import 'package:logistic_management_customer/providers/request_provider.dart';
 import 'package:logistic_management_customer/widgets/request_item.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
@@ -18,6 +21,7 @@ class _MyRequestState extends State<MyRequest> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<RequestProvider>();
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -75,20 +79,49 @@ class _MyRequestState extends State<MyRequest> {
                 padding: const EdgeInsets.symmetric(
                   horizontal: values.BASE_PADDING,
                 ),
-                child: ListView.separated(
-                  physics: BouncingScrollPhysics(),
-                  itemCount: 5,
-                  separatorBuilder: (_, i) => SizedBox(
-                    height: values.BASE_PADDING / 2,
+                child: RefreshIndicator(
+                  onRefresh: () => _selected == 0
+                      ? request.fetchPending(
+                          userId: context
+                                  .read<AuthenticationProvider>()
+                                  .consumer!
+                                  .id ??
+                              43,
+                        )
+                      : request.fetchApproved(
+                          userId: context
+                                  .read<AuthenticationProvider>()
+                                  .consumer!
+                                  .id ??
+                              43,
+                        ),
+                  child: ListView.separated(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    itemCount: _selected == 0
+                        ? request.pendingList.length
+                        : request.approvedList.length,
+                    separatorBuilder: (_, i) => SizedBox(
+                      height: values.BASE_PADDING / 2,
+                    ),
+                    itemBuilder: (_, i) {
+                      final r = _selected == 0
+                          ? request.pendingList[i]
+                          : request.approvedList[i];
+                      return Padding(
+                        padding: EdgeInsets.only(
+                            bottom: i + 1 ==
+                                    (_selected == 0
+                                        ? request.pendingList.length
+                                        : request.approvedList.length)
+                                ? 120
+                                : 0),
+                        child: RequestItem(
+                          approved: _selected == 1,
+                          request: r,
+                        ),
+                      );
+                    },
                   ),
-                  itemBuilder: (_, i) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: i == 4 ? 120 : 0),
-                      child: RequestItem(
-                        approved: _selected == 1,
-                      ),
-                    );
-                  },
                 ),
               ),
             ),

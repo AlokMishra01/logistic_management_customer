@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logistic_management_customer/providers/delivery_provider.dart';
+import 'package:logistic_management_customer/providers/request_provider.dart';
 import 'package:material_color_generator/material_color_generator.dart';
 import 'package:provider/provider.dart';
 
@@ -32,6 +33,9 @@ class MyApp extends StatelessWidget {
         ),
         ListenableProxyProvider<NetworkConnection, BlogProvider>(
           update: (_, n, __) => BlogProvider(n),
+        ),
+        ListenableProxyProvider<NetworkConnection, RequestProvider>(
+          update: (_, n, __) => RequestProvider(n),
         ),
         ListenableProxyProvider<NetworkConnection, AboutUsProvider>(
           update: (_, n, __) => AboutUsProvider(n),

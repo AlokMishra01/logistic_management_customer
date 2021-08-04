@@ -1,4 +1,5 @@
-const BASE_URL = 'http://cargo.intopros.com.np/api/';
+// const BASE_URL = 'http://cargo.intopros.com.np/api/';
+const BASE_URL = 'http://logistics.intopros.com.np/api/';
 const LOGIN = 'consumerlogin';
 const REGISTER = 'consumerregister';
 const VERIFY_OTP = 'verify_otp';
@@ -8,3 +9,5 @@ const BLOGS = 'blogs';
 const ABOUT_US = 'page/about-us';
 const PACKAGE = 'package';
 const REQUEST_DELIVERY = 'requestdelivery';
+const REQUEST_PENDING = 'pendingrequest';
+const REQUEST_APPROVED = 'approvedrequest';

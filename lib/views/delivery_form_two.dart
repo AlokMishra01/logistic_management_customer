@@ -55,7 +55,7 @@ class DeliveryFormTwo extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: values.BASE_PADDING),
+            SizedBox(height: values.BASE_PADDING / 2),
             CustomInput(
               controller: type,
               hint: 'Type of Package',
@@ -123,7 +123,7 @@ class DeliveryFormTwo extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: values.BASE_PADDING * 2),
+            SizedBox(height: values.BASE_PADDING),
             Text(
               'Size of package',
               textAlign: TextAlign.center,
@@ -133,7 +133,7 @@ class DeliveryFormTwo extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: values.BASE_PADDING),
+            SizedBox(height: values.BASE_PADDING / 2),
             Row(
               children: [
                 Flexible(
@@ -180,7 +180,7 @@ class DeliveryFormTwo extends StatelessWidget {
               controller: weight,
               hint: 'Weight',
             ),
-            SizedBox(height: values.BASE_PADDING),
+            SizedBox(height: values.BASE_PADDING / 2),
             Row(
               children: [
                 TextButton(

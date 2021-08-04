@@ -18,26 +18,27 @@ class DeliveryFormStep extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: values.BASE_PADDING,
-        vertical: values.BASE_PADDING * 2,
+        vertical: values.BASE_PADDING,
       ),
       child: Stack(
         children: [
           SizedBox(
-            height: (size.width - (values.BASE_PADDING * 2)) / 6,
+            height: (size.width - (values.BASE_PADDING * 2)) / 7,
             width: double.infinity,
           ),
           ClipPath(
             clipper: DeliveryFormStepClipStart(),
             child: Container(
-              width: (size.width - (values.BASE_PADDING * 2)) / 5,
-              height: (size.width - (values.BASE_PADDING * 2)) / 6,
+              width: (size.width - (values.BASE_PADDING * 2)) / 6,
+              height: (size.width - (values.BASE_PADDING * 2)) / 7,
               color:
                   position >= 0 ? colors.BUTTON_BLUE : colors.FIELD_BACKGROUND,
               child: Center(
                 child: Padding(
                   padding: EdgeInsets.only(
-                      right: ((size.width - (values.BASE_PADDING * 2)) / 5) *
-                          0.25),
+                    right:
+                        ((size.width - (values.BASE_PADDING * 2)) / 6) * 0.25,
+                  ),
                   child: Text(
                     '1',
                     style: TextStyle(
@@ -51,13 +52,13 @@ class DeliveryFormStep extends StatelessWidget {
             ),
           ),
           Positioned(
-            left: (((size.width - (values.BASE_PADDING * 2)) / 5) * 0.75) +
+            left: (((size.width - (values.BASE_PADDING * 2)) / 6) * 0.75) +
                 (values.BASE_PADDING / 2),
             child: ClipPath(
               clipper: DeliveryFormStepClipOther(),
               child: Container(
-                width: (size.width - (values.BASE_PADDING * 2)) / 5,
-                height: (size.width - (values.BASE_PADDING * 2)) / 6,
+                width: (size.width - (values.BASE_PADDING * 2)) / 6,
+                height: (size.width - (values.BASE_PADDING * 2)) / 7,
                 color: position >= 1
                     ? colors.BUTTON_BLUE
                     : colors.FIELD_BACKGROUND,
@@ -75,13 +76,13 @@ class DeliveryFormStep extends StatelessWidget {
             ),
           ),
           Positioned(
-            left: (((size.width - (values.BASE_PADDING * 2)) / 5) * 0.75) * 2 +
+            left: (((size.width - (values.BASE_PADDING * 2)) / 6) * 0.75) * 2 +
                 (values.BASE_PADDING / 2) * 2,
             child: ClipPath(
               clipper: DeliveryFormStepClipOther(),
               child: Container(
-                width: (size.width - (values.BASE_PADDING * 2)) / 5,
-                height: (size.width - (values.BASE_PADDING * 2)) / 6,
+                width: (size.width - (values.BASE_PADDING * 2)) / 6,
+                height: (size.width - (values.BASE_PADDING * 2)) / 7,
                 color: position >= 2
                     ? colors.BUTTON_BLUE
                     : colors.FIELD_BACKGROUND,
@@ -99,13 +100,13 @@ class DeliveryFormStep extends StatelessWidget {
             ),
           ),
           Positioned(
-            left: (((size.width - (values.BASE_PADDING * 2)) / 5) * 0.75) * 3 +
+            left: (((size.width - (values.BASE_PADDING * 2)) / 6) * 0.75) * 3 +
                 (values.BASE_PADDING / 2) * 3,
             child: ClipPath(
               clipper: DeliveryFormStepClipOther(),
               child: Container(
-                width: (size.width - (values.BASE_PADDING * 2)) / 5,
-                height: (size.width - (values.BASE_PADDING * 2)) / 6,
+                width: (size.width - (values.BASE_PADDING * 2)) / 6,
+                height: (size.width - (values.BASE_PADDING * 2)) / 7,
                 color: position >= 3
                     ? colors.BUTTON_BLUE
                     : colors.FIELD_BACKGROUND,

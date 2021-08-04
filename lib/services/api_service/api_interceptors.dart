@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 
 import '../storage/preference_service.dart';
@@ -8,6 +10,7 @@ class ApiInterceptors extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
+    log(options.uri.toString(), name: 'URL');
     PreferenceService p = PreferenceService();
     await p.init();
     print(p.token);
@@ -18,6 +21,7 @@ class ApiInterceptors extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
+    log('${response.data}', name: 'RESPONSE DATA');
     handler.next(response);
   }
 

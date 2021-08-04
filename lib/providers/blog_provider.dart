@@ -3,10 +3,11 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:logistic_management_customer/services/api_service/client.dart';
+import 'package:pretty_json/pretty_json.dart';
+
+import '../constants/apis.dart' as apis;
 import '../models/blog_model.dart';
 import '../services/connectivity/network_connection.dart';
-import 'package:pretty_json/pretty_json.dart';
-import '../constants/apis.dart' as apis;
 
 class BlogProvider extends ChangeNotifier {
   NetworkConnection _network = NetworkConnection();
@@ -41,10 +42,11 @@ class BlogProvider extends ChangeNotifier {
       try {
         Response r = await _dio.get('${apis.BLOGS}?page=$_page');
 
-        if (r.statusCode! >= 200 && r.statusCode! < 300) {
+        if (r.statusCode! == 200) {
           if (r.data['response'] is Map) {
+            print(r.data['response']['data'].toString());
             List<BlogModel> blogs = List<BlogModel>.from(
-              r.data['data'].map((m) => BlogModel.fromJson(m)),
+              r.data['response']['data'].map((m) => BlogModel.fromJson(m)),
             );
             if (reload)
               _blogs = blogs;
@@ -59,6 +61,9 @@ class BlogProvider extends ChangeNotifier {
           } else {
             _error = r.data['message'] as String;
           }
+        } else {
+          _error = r.statusMessage ??
+              'Oops! Some thing went wrong. Please try again.';
         }
       } catch (e) {
         if (e is DioError) {

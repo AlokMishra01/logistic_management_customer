@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:logistic_management_customer/models/request_model.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
 
 class RequestItem extends StatelessWidget {
   final bool approved;
+  final RequestModel request;
 
   const RequestItem({
     Key? key,
     this.approved = false,
+    required this.request,
   }) : super(key: key);
 
   @override
@@ -33,7 +36,7 @@ class RequestItem extends StatelessWidget {
               ),
               children: [
                 TextSpan(
-                  text: "Raj Kumar Thapa",
+                  text: "${request.recieverName}",
                   style: TextStyle(
                     fontSize: values.DETAILS_TEXT,
                     fontWeight: FontWeight.w600,
@@ -56,7 +59,7 @@ class RequestItem extends StatelessWidget {
               ),
               children: [
                 TextSpan(
-                  text: "Kathamandu, Nepal",
+                  text: "${request.recieverAddress}",
                   style: TextStyle(
                     fontSize: values.DETAILS_TEXT,
                     fontWeight: FontWeight.w600,
@@ -103,7 +106,7 @@ class RequestItem extends StatelessWidget {
                 ),
                 children: [
                   TextSpan(
-                    text: "Rs. 500",
+                    text: "", // TODO: add price
                     style: TextStyle(
                       fontSize: values.DETAILS_TEXT,
                       fontWeight: FontWeight.w600,

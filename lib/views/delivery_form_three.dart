@@ -47,7 +47,7 @@ class DeliveryFormThree extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: values.BASE_PADDING),
+            SizedBox(height: values.BASE_PADDING / 2),
             CustomInput(
               controller: pickupDate,
               hint: 'Pickup Date',
@@ -61,7 +61,7 @@ class DeliveryFormThree extends StatelessWidget {
               enabled: false,
               onTab: onPickUpTimeTab,
             ),
-            SizedBox(height: values.BASE_PADDING * 2),
+            SizedBox(height: values.BASE_PADDING),
             Text(
               'Schedule Delivery',
               textAlign: TextAlign.center,
@@ -71,14 +71,14 @@ class DeliveryFormThree extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: values.BASE_PADDING),
+            SizedBox(height: values.BASE_PADDING / 2),
             CustomInput(
               controller: deliveryTime,
               hint: 'Delivery Time',
               enabled: false,
               onTab: onDeliveryTimeTab,
             ),
-            SizedBox(height: values.BASE_PADDING),
+            SizedBox(height: values.BASE_PADDING / 2),
             Row(
               children: [
                 TextButton(
