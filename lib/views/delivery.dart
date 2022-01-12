@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/colors.dart' as colors;
@@ -16,14 +15,14 @@ class Delivery extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Header(title: 'Delivery'),
+        const Header(title: 'Delivery'),
         Expanded(
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
+                const Padding(
+                  padding: EdgeInsets.symmetric(
                     horizontal: values.BASE_PADDING,
                   ),
                   child: Text(
@@ -36,7 +35,7 @@ class Delivery extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: values.BASE_PADDING),
+                const SizedBox(height: values.BASE_PADDING),
                 Align(
                   alignment: Alignment.center,
                   child: Padding(
@@ -50,7 +49,7 @@ class Delivery extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: values.BASE_PADDING),
+                const SizedBox(height: values.BASE_PADDING),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: values.BASE_PADDING,
@@ -71,11 +70,11 @@ class Delivery extends StatelessWidget {
                         style: OutlinedButton.styleFrom(
                           backgroundColor: colors.TEXT_WHITE,
                           primary: colors.BUTTON_BLUE,
-                          side: BorderSide(
+                          side: const BorderSide(
                             color: colors.BUTTON_BLUE,
                             width: 2,
                           ),
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             fontSize: values.TITLE_TEXT,
                             fontWeight: FontWeight.w600,
                             letterSpacing: 1,
@@ -84,14 +83,14 @@ class Delivery extends StatelessWidget {
                             borderRadius: BorderRadius.circular(40),
                           ),
                         ),
-                        child: Text(' Steps '),
+                        child: const Text(' Steps '),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: values.BASE_PADDING),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
+                const SizedBox(height: values.BASE_PADDING),
+                const Padding(
+                  padding: EdgeInsets.symmetric(
                     horizontal: values.BASE_PADDING,
                   ),
                   child: Text(
@@ -103,7 +102,7 @@ class Delivery extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: values.BASE_PADDING),
+                const SizedBox(height: values.BASE_PADDING),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: values.BASE_PADDING,
@@ -112,7 +111,7 @@ class Delivery extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Row(
-                        children: [
+                        children: const [
                           SizedBox(width: values.BASE_PADDING),
                           CircleAvatar(
                             backgroundColor: colors.PURPLE_LIGHT,
@@ -128,7 +127,7 @@ class Delivery extends StatelessWidget {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                 horizontal: values.BASE_PADDING,
                               ),
                               child: Text(
@@ -145,9 +144,9 @@ class Delivery extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: values.BASE_PADDING),
+                      const SizedBox(height: values.BASE_PADDING),
                       Row(
-                        children: [
+                        children: const [
                           SizedBox(width: values.BASE_PADDING),
                           CircleAvatar(
                             backgroundColor: colors.PURPLE_LIGHT,
@@ -163,7 +162,7 @@ class Delivery extends StatelessWidget {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                 horizontal: values.BASE_PADDING,
                               ),
                               child: Text(
@@ -180,9 +179,9 @@ class Delivery extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: values.BASE_PADDING),
+                      const SizedBox(height: values.BASE_PADDING),
                       Row(
-                        children: [
+                        children: const [
                           SizedBox(width: values.BASE_PADDING),
                           CircleAvatar(
                             backgroundColor: colors.PURPLE_LIGHT,
@@ -198,7 +197,7 @@ class Delivery extends StatelessWidget {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                 horizontal: values.BASE_PADDING,
                               ),
                               child: Text(
@@ -215,9 +214,9 @@ class Delivery extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: values.BASE_PADDING),
+                      const SizedBox(height: values.BASE_PADDING),
                       Row(
-                        children: [
+                        children: const [
                           SizedBox(width: values.BASE_PADDING),
                           CircleAvatar(
                             backgroundColor: colors.PURPLE_LIGHT,
@@ -233,7 +232,7 @@ class Delivery extends StatelessWidget {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                 horizontal: values.BASE_PADDING,
                               ),
                               child: Text(
@@ -250,7 +249,7 @@ class Delivery extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: values.BASE_PADDING),
+                      const SizedBox(height: values.BASE_PADDING),
                     ],
                   ),
                 ),
@@ -262,13 +261,13 @@ class Delivery extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (cxt) => DeliveryForm(),
+                          builder: (cxt) => const DeliveryForm(),
                         ),
                       );
                     },
                   ),
                 ),
-                SizedBox(height: 120),
+                const SizedBox(height: 120),
               ],
             ),
           ),

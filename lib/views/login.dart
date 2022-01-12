@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logistic_management_customer/providers/request_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
-import '../constants/enums.dart' as enums;
+import '../constants/enums.dart';
 import '../constants/values.dart' as values;
-import '../models/consumer_mode.dart';
-import '../providers/authentication.dart';
+import '../controllers/authentication_controller.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_input.dart';
 import '../widgets/dialogs/bottom_dialog.dart';
@@ -24,8 +22,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController _phone = TextEditingController();
-  TextEditingController _password = TextEditingController();
+  final TextEditingController _phone = TextEditingController();
+  final TextEditingController _password = TextEditingController();
   bool _showPassword = false;
 
   @override
@@ -49,8 +47,8 @@ class _LoginState extends State<Login> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: size.height * 0.1),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: HeaderText(text: 'Login'),
                 ),
                 SizedBox(height: size.height * 0.05),
@@ -70,7 +68,7 @@ class _LoginState extends State<Login> {
                     }
                   },
                 ),
-                SizedBox(height: values.BASE_PADDING),
+                const SizedBox(height: values.BASE_PADDING),
                 CustomInput(
                   hint: "Password",
                   obscureText: !_showPassword,
@@ -88,12 +86,12 @@ class _LoginState extends State<Login> {
                     setState(() {});
                   },
                 ),
-                SizedBox(height: values.BASE_PADDING / 2),
+                const SizedBox(height: values.BASE_PADDING / 2),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                      child: Text(
+                      child: const Text(
                         'Forgot Password?',
                         style: TextStyle(
                           color: colors.TEXT_BLUE,
@@ -105,14 +103,16 @@ class _LoginState extends State<Login> {
                     ),
                   ],
                 ),
-                SizedBox(height: values.BASE_PADDING / 2),
+                const SizedBox(height: values.BASE_PADDING / 2),
                 CustomButton(title: 'LOGIN', onTab: _login),
-                SizedBox(height: values.BASE_PADDING),
+                const SizedBox(height: values.BASE_PADDING),
                 CustomButton(
                   title: "REGISTER",
                   onTab: () => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (cxt) => Register()),
+                    MaterialPageRoute(
+                      builder: (cxt) => const Register(),
+                    ),
                   ),
                 )
               ],
@@ -125,19 +125,10 @@ class _LoginState extends State<Login> {
 
   _login() async {
     FocusScope.of(context).requestFocus(FocusNode());
-    // if (!isPhoneValid(_phone.text)) {
-    //   showBottomDialog(
-    //     context: context,
-    //     dialogType: enums.DialogType.ERROR,
-    //     title: 'ERROR!',
-    //     message: 'Please enter valid mobile number',
-    //   );
-    //   return;
-    // }
     if (_phone.text.isEmpty) {
       showBottomDialog(
         context: context,
-        dialogType: enums.DialogType.ERROR,
+        dialogType: DialogType.ERROR,
         title: 'ERROR!',
         message: 'Please enter mobile number',
       );
@@ -146,7 +137,7 @@ class _LoginState extends State<Login> {
     if (_password.text.isEmpty) {
       showBottomDialog(
         context: context,
-        dialogType: enums.DialogType.ERROR,
+        dialogType: DialogType.ERROR,
         title: 'ERROR!',
         message: 'Please enter password',
       );
@@ -156,46 +147,33 @@ class _LoginState extends State<Login> {
     var progressDialog = getProgressDialog(context: context);
     progressDialog.show(useSafeArea: false);
 
-    var loginResult = await context.read<AuthenticationProvider>().login(
+    var result = await context.read<AuthenticationController>().login(
           phone: _phone.text.replaceAll(' ', ''),
           password: _password.text,
         );
 
-    if (loginResult is ConsumerModel) {
-      // showBottomDialog(
-      //   context: context,
-      //   dialogType: enums.DialogType.SUCCESS,
-      //   title: 'Login Success',
-      //   message: prettyJson(loginResult.toJson()),
-      // );
-      context.read<RequestProvider>().fetchPending(
-            userId: context.read<AuthenticationProvider>().consumer!.id ?? 43,
-          );
-      context.read<RequestProvider>().fetchApproved(
-            userId: context.read<AuthenticationProvider>().consumer!.id ?? 43,
-          );
-      await Future.delayed(Duration(seconds: 3));
-      progressDialog.dismiss();
+    progressDialog.dismiss();
+
+    if (result.isEmpty) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.SUCCESS,
+        title: 'Login Success',
+        message: 'You are successfully logged in.',
+      );
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => MainPage()),
+        MaterialPageRoute(
+          builder: (_) => const MainPage(),
+        ),
         (route) => false,
       );
-    } else if (loginResult is String) {
-      progressDialog.dismiss();
-      showBottomDialog(
-        context: context,
-        dialogType: enums.DialogType.ERROR,
-        title: 'Login Error',
-        message: loginResult,
-      );
     } else {
-      progressDialog.dismiss();
       showBottomDialog(
         context: context,
-        dialogType: enums.DialogType.ERROR,
+        dialogType: DialogType.ERROR,
         title: 'Login Error',
-        message: 'Oops! Something went wrong. Please try again.',
+        message: result,
       );
     }
   }

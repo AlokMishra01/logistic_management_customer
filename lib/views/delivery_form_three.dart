@@ -6,10 +6,10 @@ import '../constants/values.dart' as values;
 import '../widgets/custom_input.dart';
 
 class DeliveryFormThree extends StatelessWidget {
-  final TextEditingController pickupDate;
+  // final TextEditingController pickupDate;
   final TextEditingController pickupTime;
   final TextEditingController deliveryTime;
-  final VoidCallback onPickUpTab;
+  // final VoidCallback onPickUpTab;
   final VoidCallback onPickUpTimeTab;
   final VoidCallback onDeliveryTimeTab;
   final VoidCallback onPre;
@@ -17,10 +17,10 @@ class DeliveryFormThree extends StatelessWidget {
 
   const DeliveryFormThree({
     Key? key,
-    required this.pickupDate,
+    // required this.pickupDate,
     required this.pickupTime,
     required this.deliveryTime,
-    required this.onPickUpTab,
+    // required this.onPickUpTab,
     required this.onPickUpTimeTab,
     required this.onDeliveryTimeTab,
     required this.onPre,
@@ -48,13 +48,13 @@ class DeliveryFormThree extends StatelessWidget {
               ),
             ),
             SizedBox(height: values.BASE_PADDING / 2),
-            CustomInput(
-              controller: pickupDate,
-              hint: 'Pickup Date',
-              enabled: false,
-              onTab: onPickUpTab,
-            ),
-            SizedBox(height: values.BASE_PADDING / 2),
+            // CustomInput(
+            //   controller: pickupDate,
+            //   hint: 'Pickup Date',
+            //   enabled: false,
+            //   onTab: onPickUpTab,
+            // ),
+            // SizedBox(height: values.BASE_PADDING / 2),
             CustomInput(
               controller: pickupTime,
               hint: 'Pickup Time',

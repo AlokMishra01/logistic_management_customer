@@ -1,18 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logistic_management_customer/widgets/dialogs/loading_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:validators/validators.dart';
 
-import '../constants/enums.dart' as enums;
+import '../constants/enums.dart';
 import '../constants/values.dart' as values;
-import '../models/consumer_mode.dart';
-import '../providers/authentication.dart';
+import '../controllers/authentication_controller.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_input.dart';
 import '../widgets/dialogs/bottom_dialog.dart';
+import '../widgets/dialogs/loading_dialog.dart';
 import '../widgets/header_text.dart';
-import 'otp_verification.dart';
+import 'main_page.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -22,12 +21,12 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  TextEditingController _firstName = TextEditingController();
-  TextEditingController _lastName = TextEditingController();
-  TextEditingController _phone = TextEditingController();
-  TextEditingController _email = TextEditingController();
-  TextEditingController _password = TextEditingController();
-  TextEditingController _confirmPassword = TextEditingController();
+  final TextEditingController _firstName = TextEditingController();
+  final TextEditingController _lastName = TextEditingController();
+  final TextEditingController _phone = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _confirmPassword = TextEditingController();
   bool _showPassword = false;
 
   @override
@@ -55,8 +54,8 @@ class _RegisterState extends State<Register> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: size.height * 0.1),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: HeaderText(text: 'Register'),
                 ),
                 SizedBox(height: size.height * 0.05),
@@ -65,20 +64,22 @@ class _RegisterState extends State<Register> {
                   type: TextInputType.name,
                   controller: _firstName,
                   validator: (value) {
-                    if ((value as String).isEmpty)
+                    if ((value as String).isEmpty) {
                       return 'Please enter first name';
+                    }
                   },
                 ),
-                SizedBox(height: values.BASE_PADDING),
+                const SizedBox(height: values.BASE_PADDING),
                 CustomInput(
                   hint: "Last Name",
                   controller: _lastName,
                   validator: (value) {
-                    if ((value as String).isEmpty)
+                    if ((value as String).isEmpty) {
                       return 'Please enter last name';
+                    }
                   },
                 ),
-                SizedBox(height: values.BASE_PADDING),
+                const SizedBox(height: values.BASE_PADDING),
                 CustomInput(
                   hint: "Mobile Number",
                   controller: _phone,
@@ -94,17 +95,18 @@ class _RegisterState extends State<Register> {
                     }
                   },
                 ),
-                SizedBox(height: values.BASE_PADDING),
+                const SizedBox(height: values.BASE_PADDING),
                 CustomInput(
                   hint: "Email",
                   controller: _email,
                   type: TextInputType.emailAddress,
                   validator: (value) {
-                    if (!isEmail(value as String))
+                    if (!isEmail(value as String)) {
                       return 'Please enter valid email';
+                    }
                   },
                 ),
-                SizedBox(height: values.BASE_PADDING),
+                const SizedBox(height: values.BASE_PADDING),
                 CustomInput(
                   hint: "Password",
                   controller: _password,
@@ -122,7 +124,7 @@ class _RegisterState extends State<Register> {
                     setState(() {});
                   },
                 ),
-                SizedBox(height: values.BASE_PADDING),
+                const SizedBox(height: values.BASE_PADDING),
                 CustomInput(
                   hint: "Confirm Password",
                   controller: _confirmPassword,
@@ -133,7 +135,7 @@ class _RegisterState extends State<Register> {
                     }
                   },
                 ),
-                SizedBox(height: values.BASE_PADDING * 1.5),
+                const SizedBox(height: values.BASE_PADDING * 1.5),
                 CustomButton(title: "CONFIRM", onTab: _register),
               ],
             ),
@@ -148,7 +150,7 @@ class _RegisterState extends State<Register> {
     if (_firstName.text.isEmpty) {
       showBottomDialog(
         context: context,
-        dialogType: enums.DialogType.ERROR,
+        dialogType: DialogType.ERROR,
         title: 'ERROR!',
         message: 'Please enter first name',
       );
@@ -157,25 +159,16 @@ class _RegisterState extends State<Register> {
     if (_lastName.text.isEmpty) {
       showBottomDialog(
         context: context,
-        dialogType: enums.DialogType.ERROR,
+        dialogType: DialogType.ERROR,
         title: 'ERROR!',
         message: 'Please enter last name',
       );
       return;
     }
-    // if (!isPhoneValid(_phone.text)) {
-    //   showBottomDialog(
-    //     context: context,
-    //     dialogType: enums.DialogType.ERROR,
-    //     title: 'ERROR!',
-    //     message: 'Please enter valid mobile number',
-    //   );
-    //   return;
-    // }
     if (_phone.text.isEmpty) {
       showBottomDialog(
         context: context,
-        dialogType: enums.DialogType.ERROR,
+        dialogType: DialogType.ERROR,
         title: 'ERROR!',
         message: 'Please enter mobile number',
       );
@@ -184,7 +177,7 @@ class _RegisterState extends State<Register> {
     if (!isEmail(_email.text)) {
       showBottomDialog(
         context: context,
-        dialogType: enums.DialogType.ERROR,
+        dialogType: DialogType.ERROR,
         title: 'ERROR!',
         message: 'Please enter valid email',
       );
@@ -193,7 +186,7 @@ class _RegisterState extends State<Register> {
     if (_password.text.isEmpty) {
       showBottomDialog(
         context: context,
-        dialogType: enums.DialogType.ERROR,
+        dialogType: DialogType.ERROR,
         title: 'ERROR!',
         message: 'Please enter password',
       );
@@ -202,7 +195,7 @@ class _RegisterState extends State<Register> {
     if (_password.text != _password.text) {
       showBottomDialog(
         context: context,
-        dialogType: enums.DialogType.ERROR,
+        dialogType: DialogType.ERROR,
         title: 'ERROR!',
         message: 'Password do not match',
       );
@@ -212,50 +205,35 @@ class _RegisterState extends State<Register> {
     var progressDialog = getProgressDialog(context: context);
     progressDialog.show(useSafeArea: false);
 
-    var result = await context.read<AuthenticationProvider>().register(
-          firstName: _firstName.text,
-          lastName: _lastName.text,
+    var result = await context.read<AuthenticationController>().register(
+          name: '${_firstName.text} ${_lastName.text}',
           email: _email.text,
           phone: _phone.text.replaceAll(' ', ''),
           password: _password.text,
         );
 
-    if (result is ConsumerModel) {
-      if (result.id != null && result.token != null) {
-        progressDialog.dismiss();
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => OTPVerification(
-              id: result.id!,
-              phone: _phone.text,
-            ),
-          ),
-        );
-      } else {
-        progressDialog.dismiss();
-        showBottomDialog(
-          context: context,
-          dialogType: enums.DialogType.ERROR,
-          title: 'Register Error',
-          message: 'Oops! Something went wrong. Please try again.',
-        );
-      }
-    } else if (result is String) {
-      progressDialog.dismiss();
+    progressDialog.dismiss();
+
+    if (result.isEmpty) {
       showBottomDialog(
         context: context,
-        dialogType: enums.DialogType.ERROR,
-        title: 'Register Error',
-        message: result,
+        dialogType: DialogType.SUCCESS,
+        title: 'Register Success',
+        message: 'You are successfully registered.',
+      );
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const MainPage(),
+        ),
+        (route) => false,
       );
     } else {
-      progressDialog.dismiss();
       showBottomDialog(
         context: context,
-        dialogType: enums.DialogType.ERROR,
+        dialogType: DialogType.ERROR,
         title: 'Register Error',
-        message: 'Oops! Something went wrong. Please try again.',
+        message: result,
       );
     }
   }

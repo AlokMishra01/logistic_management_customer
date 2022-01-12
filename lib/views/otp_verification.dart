@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
-import '../widgets/dialogs/loading_dialog.dart';
-import 'package:provider/provider.dart';
 
-import '../constants/enums.dart' as enums;
 import '../constants/values.dart' as values;
-import '../models/consumer_mode.dart';
-import '../providers/authentication.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_button_outline.dart';
 import '../widgets/custom_input.dart';
-import '../widgets/dialogs/bottom_dialog.dart';
 import '../widgets/header_text.dart';
-import 'main_page.dart';
 
 class OTPVerification extends StatefulWidget {
   final int id;
@@ -99,47 +92,47 @@ class _OTPVerificationState extends State<OTPVerification> {
 
   _verifyOTP() async {
     FocusScope.of(context).requestFocus(FocusNode());
-    if (_otp.text.isEmpty) {
-      showBottomDialog(
-        context: context,
-        dialogType: enums.DialogType.ERROR,
-        title: 'ERROR!',
-        message: 'Please enter verification code (OTP)',
-      );
-      return;
-    }
-
-    var progressDialog = getProgressDialog(context: context);
-    progressDialog.show(useSafeArea: false);
-
-    var loginResult = await context.read<AuthenticationProvider>().verifyOTP(
-          id: widget.id,
-          otp: _otp.text,
-        );
-
-    if (loginResult is ConsumerModel) {
-      progressDialog.dismiss();
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (_) => MainPage()),
-        (route) => false,
-      );
-    } else if (loginResult is String) {
-      progressDialog.dismiss();
-      showBottomDialog(
-        context: context,
-        dialogType: enums.DialogType.ERROR,
-        title: 'Verify OTP Error',
-        message: loginResult,
-      );
-    } else {
-      progressDialog.dismiss();
-      showBottomDialog(
-        context: context,
-        dialogType: enums.DialogType.ERROR,
-        title: 'Verify OTP Error',
-        message: 'Oops! Something went wrong. Please try again.',
-      );
-    }
+    // if (_otp.text.isEmpty) {
+    //   showBottomDialog(
+    //     context: context,
+    //     dialogType: enums.DialogType.ERROR,
+    //     title: 'ERROR!',
+    //     message: 'Please enter verification code (OTP)',
+    //   );
+    //   return;
+    // }
+    //
+    // var progressDialog = getProgressDialog(context: context);
+    // progressDialog.show(useSafeArea: false);
+    //
+    // var loginResult = await context.read<AuthenticationProvider>().verifyOTP(
+    //       id: widget.id,
+    //       otp: _otp.text,
+    //     );
+    //
+    // if (loginResult is ConsumerModel) {
+    //   progressDialog.dismiss();
+    //   Navigator.pushAndRemoveUntil(
+    //     context,
+    //     MaterialPageRoute(builder: (_) => MainPage()),
+    //     (route) => false,
+    //   );
+    // } else if (loginResult is String) {
+    //   progressDialog.dismiss();
+    //   showBottomDialog(
+    //     context: context,
+    //     dialogType: enums.DialogType.ERROR,
+    //     title: 'Verify OTP Error',
+    //     message: loginResult,
+    //   );
+    // } else {
+    //   progressDialog.dismiss();
+    //   showBottomDialog(
+    //     context: context,
+    //     dialogType: enums.DialogType.ERROR,
+    //     title: 'Verify OTP Error',
+    //     message: 'Oops! Something went wrong. Please try again.',
+    //   );
+    // }
   }
 }

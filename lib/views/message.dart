@@ -1,16 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logistic_management_customer/controllers/notification_controller.dart';
 import 'package:logistic_management_customer/views/compose_message.dart';
 import 'package:logistic_management_customer/widgets/header.dart';
 import 'package:logistic_management_customer/widgets/message_list_item.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
-import '../widgets/date_text.dart';
 
 class Message extends StatelessWidget {
+  const Message({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    final notifications = context.watch<NotificationController>();
     return Column(children: [
       Header(
         title: 'Message',
@@ -26,7 +30,7 @@ class Message extends StatelessWidget {
               );
             },
             child: Row(
-              children: [
+              children: const [
                 Icon(
                   CupertinoIcons.pencil_outline,
                   color: colors.TEXT_BLUE,
@@ -40,8 +44,9 @@ class Message extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(values.RADIUS),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-              textStyle: TextStyle(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+              textStyle: const TextStyle(
                 color: colors.TEXT_BLUE,
                 fontSize: values.BUTTON_TEXT,
                 fontWeight: FontWeight.w500,
@@ -51,26 +56,28 @@ class Message extends StatelessWidget {
           ),
         ),
       ),
-      SizedBox(height: values.BASE_PADDING / 4),
-      DateText(date: "2nd Jan,2021"),
+      const SizedBox(height: values.BASE_PADDING / 4),
+      // const DateText(date: "2nd Jan,2021"),
       ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: 2,
+        itemCount: notifications.notifications.length,
         itemBuilder: (_, i) {
-          return MessageListItem();
+          return MessageListItem(
+            notice: notifications.notifications[i],
+          );
         },
       ),
-      SizedBox(height: values.BASE_PADDING / 4),
-      DateText(date: "1st Jan,2021"),
-      ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: 1,
-        itemBuilder: (_, i) {
-          return MessageListItem();
-        },
-      ),
+      // const SizedBox(height: values.BASE_PADDING / 4),
+      // const DateText(date: "1st Jan,2021"),
+      // ListView.builder(
+      //   physics: const NeverScrollableScrollPhysics(),
+      //   shrinkWrap: true,
+      //   itemCount: 1,
+      //   itemBuilder: (_, i) {
+      //     return MessageListItem();
+      //   },
+      // ),
     ]);
   }
 }

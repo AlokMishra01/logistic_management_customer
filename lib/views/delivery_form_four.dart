@@ -72,6 +72,7 @@ class DeliveryFormFour extends StatelessWidget {
             CustomInput(
               controller: mobile,
               hint: 'Mobile Number',
+              type: TextInputType.phone,
               // formatters: [PhoneInputFormatter()],
             ),
             SizedBox(height: values.BASE_PADDING / 2),
@@ -98,36 +99,47 @@ class DeliveryFormFour extends StatelessWidget {
               width: size.width - (values.BASE_PADDING * 2),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(values.RADIUS),
-                child: GoogleMap(
-                  myLocationEnabled: false,
-                  rotateGesturesEnabled: false,
-                  tiltGesturesEnabled: false,
-                  zoomGesturesEnabled: false,
-                  zoomControlsEnabled: false,
-                  onTap: (_) => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => PlacePicker(
-                        initLocation: LatLng(lat, long),
-                        onCameraMove: onCameraMove,
-                        onSelect: onSelect,
-                      ),
-                    ),
-                  ),
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(lat, long),
-                    zoom: 5,
-                  ),
-                  onMapCreated: (controller) {
-                    controller.animateCamera(
-                      CameraUpdate.newCameraPosition(
-                        CameraPosition(
-                          target: LatLng(lat, long),
-                          zoom: 15,
+                child: Stack(
+                  children: [
+                    GoogleMap(
+                      myLocationEnabled: false,
+                      rotateGesturesEnabled: false,
+                      tiltGesturesEnabled: false,
+                      zoomGesturesEnabled: false,
+                      zoomControlsEnabled: false,
+                      onTap: (_) => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => PlacePicker(
+                            initLocation: LatLng(lat, long),
+                            onCameraMove: onCameraMove,
+                            onSelect: onSelect,
+                          ),
                         ),
                       ),
-                    );
-                  },
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(lat, long),
+                        zoom: 5,
+                      ),
+                      onMapCreated: (controller) {
+                        controller.animateCamera(
+                          CameraUpdate.newCameraPosition(
+                            CameraPosition(
+                              target: LatLng(lat, long),
+                              zoom: 15,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    Center(
+                      child: Image.asset(
+                        'images/pin.png',
+                        width: size.width * 0.1,
+                        height: size.width * 0.1,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

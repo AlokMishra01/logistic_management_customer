@@ -1,14 +1,13 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logistic_management_customer/constants/enums.dart';
-import 'package:logistic_management_customer/providers/authentication.dart';
-import 'package:logistic_management_customer/providers/delivery_provider.dart';
-import 'package:logistic_management_customer/providers/request_provider.dart';
+import 'package:logistic_management_customer/controllers/package_controller.dart';
+import 'package:logistic_management_customer/models/package_type_model.dart';
 import 'package:logistic_management_customer/utils/string_time_to_time_of_day.dart';
 import 'package:logistic_management_customer/widgets/custom_button.dart';
-import 'package:logistic_management_customer/widgets/custom_date_picker.dart';
 import 'package:logistic_management_customer/widgets/custom_time_picker.dart';
 import 'package:logistic_management_customer/widgets/dialogs/bottom_dialog.dart';
 import 'package:logistic_management_customer/widgets/dialogs/loading_dialog.dart';
@@ -32,47 +31,43 @@ class DeliveryForm extends StatefulWidget {
 }
 
 class _DeliveryFormState extends State<DeliveryForm> {
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
   int _page = 0;
 
-  TextEditingController _senderName = TextEditingController();
-  // TextEditingController _lastName = TextEditingController();
-  TextEditingController _mobile = TextEditingController();
-  TextEditingController _address = TextEditingController();
+  final TextEditingController _senderName = TextEditingController();
+  final TextEditingController _mobile = TextEditingController();
+  final TextEditingController _address = TextEditingController();
   double? _lat;
   double? _long;
-  Completer<GoogleMapController> _mapController = Completer();
+  final Completer<GoogleMapController> _mapController = Completer();
 
-  TextEditingController _type = TextEditingController();
-  TextEditingController _description = TextEditingController();
+  PackageTypeModel? _type;
+  final TextEditingController _description = TextEditingController();
   bool _fragile = false;
   bool _express = false;
-  TextEditingController _height = TextEditingController();
-  TextEditingController _length = TextEditingController();
-  TextEditingController _width = TextEditingController();
-  TextEditingController _weight = TextEditingController();
+  final TextEditingController _height = TextEditingController();
+  final TextEditingController _length = TextEditingController();
+  final TextEditingController _width = TextEditingController();
+  final TextEditingController _weight = TextEditingController();
 
-  TextEditingController _pickupDate = TextEditingController();
-  TextEditingController _pickupTime = TextEditingController();
-  TextEditingController _deliveryTime = TextEditingController();
+  final TextEditingController _pickupDate = TextEditingController();
+  final TextEditingController _pickupTime = TextEditingController();
+  final TextEditingController _deliveryTime = TextEditingController();
 
-  TextEditingController _nameDrop = TextEditingController();
-  // TextEditingController _lastNameDrop = TextEditingController();
-  TextEditingController _mobileDrop = TextEditingController();
-  TextEditingController _addressDrop = TextEditingController();
+  final TextEditingController _nameDrop = TextEditingController();
+  final TextEditingController _mobileDrop = TextEditingController();
+  final TextEditingController _addressDrop = TextEditingController();
   double? _latDrop;
   double? _longDrop;
-  Completer<GoogleMapController> _mapControllerDrop = Completer();
+  final Completer<GoogleMapController> _mapControllerDrop = Completer();
 
   CameraPosition? _pos;
 
   @override
   void dispose() {
     _senderName.dispose();
-    // _lastName.dispose();
     _mobile.dispose();
     _address.dispose();
-    _type.dispose();
     _description.dispose();
     _height.dispose();
     _length.dispose();
@@ -82,7 +77,6 @@ class _DeliveryFormState extends State<DeliveryForm> {
     _pickupTime.dispose();
     _deliveryTime.dispose();
     _nameDrop.dispose();
-    // _lastNameDrop.dispose();
     _mobileDrop.dispose();
     _addressDrop.dispose();
     super.dispose();
@@ -93,7 +87,6 @@ class _DeliveryFormState extends State<DeliveryForm> {
     final List<Widget> _buildPages = [
       DeliveryFormOne(
         name: _senderName,
-        // lastName: _lastName,
         mobile: _mobile,
         address: _address,
         mapController: _mapController,
@@ -114,6 +107,10 @@ class _DeliveryFormState extends State<DeliveryForm> {
       ),
       DeliveryFormTwo(
         type: _type,
+        onChanged: (type) {
+          _type = type;
+          setState(() {});
+        },
         description: _description,
         fragile: _fragile,
         onChangedFragile: (value) {
@@ -133,19 +130,19 @@ class _DeliveryFormState extends State<DeliveryForm> {
         onNext: () => _nextPage(_page),
       ),
       DeliveryFormThree(
-        pickupDate: _pickupDate,
+        // pickupDate: _pickupDate,
         pickupTime: _pickupTime,
         deliveryTime: _deliveryTime,
-        onPickUpTab: () async {
-          String? d = await customDatePicker(
-            context: context,
-            date: _pickupDate.text.isEmpty
-                ? DateTime.now()
-                : DateTime.parse(_pickupDate.text),
-          );
-          if (d != null) _pickupDate.text = d;
-          setState(() {});
-        },
+        // onPickUpTab: () async {
+        //   String? d = await customDatePicker(
+        //     context: context,
+        //     date: _pickupDate.text.isEmpty
+        //         ? DateTime.now()
+        //         : DateTime.parse(_pickupDate.text),
+        //   );
+        //   if (d != null) _pickupDate.text = d;
+        //   setState(() {});
+        // },
         onPickUpTimeTab: () async {
           String? d = await customTimePicker(
             context: context,
@@ -196,9 +193,9 @@ class _DeliveryFormState extends State<DeliveryForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Header(title: 'Delivery'),
-            Padding(
-              padding: const EdgeInsets.symmetric(
+            const Header(title: 'Delivery'),
+            const Padding(
+              padding: EdgeInsets.symmetric(
                 horizontal: values.BASE_PADDING,
               ),
               child: Text(
@@ -217,7 +214,7 @@ class _DeliveryFormState extends State<DeliveryForm> {
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: 4,
                 itemBuilder: (_, i) {
                   return _buildPages[i];
@@ -234,12 +231,11 @@ class _DeliveryFormState extends State<DeliveryForm> {
     if (_pageController.page!.toInt() > 0) {
       _page = _pageController.page!.toInt() - 1;
       setState(() {});
-      _pageController
-        ..animateToPage(
-          _pageController.page!.toInt() - 1,
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeIn,
-        );
+      _pageController.animateToPage(
+        _pageController.page!.toInt() - 1,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+      );
     }
   }
 
@@ -252,15 +248,14 @@ class _DeliveryFormState extends State<DeliveryForm> {
       if (_long == null) return;
       _toNextPage();
     } else if (index == 1) {
-      if (_type.text.length < 2) return;
-      if (_description.text.length < 2) return;
-      if (_height.text.length < 1) return;
-      if (_length.text.length < 1) return;
-      if (_weight.text.length < 1) return;
-      if (_weight.text.length < 1) return;
+      if (_type == null) return;
+      // if (_height.text.isEmpty) return;
+      // if (_length.text.isEmpty) return;
+      // if (_width.text.isEmpty) return;
+      if (_weight.text.isEmpty) return;
       _toNextPage();
     } else if (index == 2) {
-      if (_pickupDate.text.isEmpty) return;
+      // if (_pickupDate.text.isEmpty) return;
       if (_pickupTime.text.isEmpty) return;
       if (_deliveryTime.text.isEmpty) return;
       _toNextPage();
@@ -278,12 +273,11 @@ class _DeliveryFormState extends State<DeliveryForm> {
     if (_pageController.page!.toInt() < 3) {
       _page = _pageController.page!.toInt() + 1;
       setState(() {});
-      _pageController
-        ..animateToPage(
-          _pageController.page!.toInt() + 1,
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeIn,
-        );
+      _pageController.animateToPage(
+        _pageController.page!.toInt() + 1,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeIn,
+      );
     }
   }
 
@@ -293,34 +287,43 @@ class _DeliveryFormState extends State<DeliveryForm> {
     var progressDialog = getProgressDialog(context: context);
     progressDialog.show(useSafeArea: false);
 
-    var result = await context.read<DeliveryProvider>().requestDelivery(
+    int? size;
+    int? weight;
+    try {
+      weight = double.parse(_weight.text).round();
+      size = (double.parse(_height.text) *
+              double.parse(_length.text) *
+              double.parse(_width.text))
+          .round();
+    } catch (e) {
+      log(e.toString());
+    }
+
+    var result = await context.read<PackageController>().sendDeliveryRequest(
           senderName: _senderName.text,
           senderAddress: _address.text,
-          senderPhone: _mobile.text,
-          senderLat: _lat ?? 0.0,
-          senderLong: _long ?? 0.0,
+          senderMobileNumber: _mobile.text,
+          senderLatitude: _lat ?? 0.0,
+          senderLongitude: _long ?? 0.0,
           receiverName: _nameDrop.text,
           receiverAddress: _addressDrop.text,
-          receiverPhone: _mobileDrop.text,
-          receiverLat: _latDrop ?? 0.0,
-          receiverLong: _longDrop ?? 0.0,
-          packageType: _type.text,
-          packageWeight: _weight.text,
-          packageSize: '${_height.text}*${_length.text}*${_width.text}',
+          receiverMobileNumber: _mobileDrop.text,
+          receiverLatitude: _latDrop ?? 0.0,
+          receiverLongitude: _longDrop ?? 0.0,
+          packageType: _type?.id ?? 0,
+          packageWeight: weight ?? 0,
+          packageSize: size ?? 0,
           pickUpTime: _pickupTime.text,
           dropOffTime: _deliveryTime.text,
           fragile: _fragile ? 1 : 0,
+          // Todo: Package price from form
+          packagePrice: '',
           express: _express ? 1 : 0,
         );
 
-    if (result is bool) {
-      context.read<RequestProvider>().fetchPending(
-            userId: context.read<AuthenticationProvider>().consumer!.id ?? 43,
-          );
-      context.read<RequestProvider>().fetchApproved(
-            userId: context.read<AuthenticationProvider>().consumer!.id ?? 43,
-          );
-      progressDialog.dismiss();
+    progressDialog.dismiss();
+
+    if (result.isEmpty) {
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -331,7 +334,7 @@ class _DeliveryFormState extends State<DeliveryForm> {
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => MainPage(
+                  builder: (_) => const MainPage(
                     index: 1,
                   ),
                 ),
@@ -358,7 +361,7 @@ class _DeliveryFormState extends State<DeliveryForm> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(height: values.BASE_PADDING),
+                        const SizedBox(height: values.BASE_PADDING),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: values.BASE_PADDING * 2,
@@ -369,8 +372,8 @@ class _DeliveryFormState extends State<DeliveryForm> {
                             fit: BoxFit.fitWidth,
                           ),
                         ),
-                        SizedBox(height: values.BASE_PADDING),
-                        Text(
+                        const SizedBox(height: values.BASE_PADDING),
+                        const Text(
                           'Delivery request has been sent successfully !!',
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -379,8 +382,8 @@ class _DeliveryFormState extends State<DeliveryForm> {
                             color: colors.TEXT_BLUE,
                           ),
                         ),
-                        SizedBox(height: values.BASE_PADDING),
-                        Text(
+                        const SizedBox(height: values.BASE_PADDING),
+                        const Text(
                           'Our customer service will contact you once your request is verified.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -388,7 +391,7 @@ class _DeliveryFormState extends State<DeliveryForm> {
                             color: colors.YELLOW,
                           ),
                         ),
-                        SizedBox(height: values.BASE_PADDING),
+                        const SizedBox(height: values.BASE_PADDING),
                         CustomButton(
                           title: 'Finish',
                           onTab: () {
@@ -396,7 +399,7 @@ class _DeliveryFormState extends State<DeliveryForm> {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => MainPage(
+                                builder: (_) => const MainPage(
                                   index: 1,
                                 ),
                               ),
@@ -404,7 +407,7 @@ class _DeliveryFormState extends State<DeliveryForm> {
                             );
                           },
                         ),
-                        SizedBox(height: values.BASE_PADDING),
+                        const SizedBox(height: values.BASE_PADDING),
                       ],
                     ),
                   ),
@@ -414,21 +417,13 @@ class _DeliveryFormState extends State<DeliveryForm> {
           );
         },
       );
-    } else if (result is String) {
-      progressDialog.dismiss();
-      showBottomDialog(
-        context: context,
-        dialogType: DialogType.ERROR,
-        title: 'Delivery Request Error',
-        message: result,
-      );
     } else {
       progressDialog.dismiss();
       showBottomDialog(
         context: context,
         dialogType: DialogType.ERROR,
-        title: 'Delivery Request Error',
-        message: 'Oops! Something went wrong. Please try again.',
+        title: 'Delivery Request Error!',
+        message: result,
       );
     }
   }

@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logistic_management_customer/controllers/package_controller.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
+import '../models/package_type_model.dart';
 import '../widgets/custom_input.dart';
 
 class DeliveryFormTwo extends StatelessWidget {
-  final TextEditingController type;
+  final PackageTypeModel? type;
+  final void Function(PackageTypeModel?)? onChanged;
   final TextEditingController description;
   final bool fragile;
   final ValueChanged<bool?> onChangedFragile;
@@ -21,7 +25,7 @@ class DeliveryFormTwo extends StatelessWidget {
 
   const DeliveryFormTwo({
     Key? key,
-    required this.type,
+    this.type,
     required this.description,
     this.fragile = false,
     this.express = false,
@@ -33,12 +37,14 @@ class DeliveryFormTwo extends StatelessWidget {
     required this.onNext,
     required this.onChangedFragile,
     required this.onChangedExpress,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final package = context.watch<PackageController>();
     return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: values.BASE_PADDING,
@@ -47,7 +53,7 @@ class DeliveryFormTwo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            const Text(
               'Package Information',
               style: TextStyle(
                 fontSize: values.TITLE_TEXT,
@@ -55,30 +61,79 @@ class DeliveryFormTwo extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: values.BASE_PADDING / 2),
-            CustomInput(
-              controller: type,
-              hint: 'Type of Package',
+            const SizedBox(height: values.BASE_PADDING / 2),
+            // Todo: dropdown from packages types
+            DropdownButtonFormField<PackageTypeModel>(
+              value: type,
+              items: package.packageTypes
+                  .map(
+                    (p) => DropdownMenuItem<PackageTypeModel>(
+                      value: p,
+                      child: Text(p.name ?? ''),
+                    ),
+                  )
+                  .toList(),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(values.RADIUS),
+                  borderSide: BorderSide(width: 0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(values.RADIUS),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                    width: 1,
+                    style: BorderStyle.solid,
+                  ),
+                ),
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(values.RADIUS),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                    width: 1,
+                    style: BorderStyle.solid,
+                  ),
+                ),
+                fillColor: colors.FIELD_BACKGROUND,
+                filled: true,
+                focusColor: colors.TEXT_SECONDARY,
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(values.RADIUS),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                    width: 1,
+                    style: BorderStyle.solid,
+                  ),
+                ),
+                hintText: 'Type of Package',
+                hintStyle: TextStyle(
+                  color: colors.TEXT_SECONDARY,
+                  fontWeight: FontWeight.w500,
+                  height: 1.5,
+                ),
+              ),
+              style: TextStyle(
+                color: colors.TEXT_BLACK,
+                fontWeight: FontWeight.w600,
+                height: 1.5,
+              ),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              onChanged: onChanged,
             ),
-            SizedBox(height: values.BASE_PADDING / 2),
-            CustomInput(
-              controller: description,
-              hint: 'Package Description',
-            ),
-            SizedBox(height: values.BASE_PADDING / 2),
+            const SizedBox(height: values.BASE_PADDING / 2),
             Material(
               color: colors.FIELD_BACKGROUND,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(values.RADIUS),
               ),
               child: ListTile(
-                contentPadding: EdgeInsets.only(
+                contentPadding: const EdgeInsets.only(
                   left: values.BASE_PADDING,
                   top: values.BASE_PADDING / 4,
                   bottom: values.BASE_PADDING / 4,
                   right: values.BASE_PADDING / 2,
                 ),
-                title: Text(
+                title: const Text(
                   'Fragile ',
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -94,20 +149,20 @@ class DeliveryFormTwo extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: values.BASE_PADDING / 2),
+            const SizedBox(height: values.BASE_PADDING / 2),
             Material(
               color: colors.FIELD_BACKGROUND,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(values.RADIUS),
               ),
               child: ListTile(
-                contentPadding: EdgeInsets.only(
+                contentPadding: const EdgeInsets.only(
                   left: values.BASE_PADDING,
                   top: values.BASE_PADDING / 4,
                   bottom: values.BASE_PADDING / 4,
                   right: values.BASE_PADDING / 2,
                 ),
-                title: Text(
+                title: const Text(
                   'Express ',
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -123,8 +178,8 @@ class DeliveryFormTwo extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: values.BASE_PADDING),
-            Text(
+            const SizedBox(height: values.BASE_PADDING),
+            const Text(
               'Size of package',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -133,17 +188,18 @@ class DeliveryFormTwo extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: values.BASE_PADDING / 2),
+            const SizedBox(height: values.BASE_PADDING / 2),
             Row(
               children: [
                 Flexible(
                   flex: 1,
                   child: CustomInput(
+                    type: TextInputType.number,
                     controller: height,
                     hint: 'Height',
                   ),
                 ),
-                Text(
+                const Text(
                   ' X ',
                   style: TextStyle(
                     fontSize: values.TITLE_TEXT,
@@ -154,11 +210,12 @@ class DeliveryFormTwo extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: CustomInput(
+                    type: TextInputType.number,
                     controller: length,
                     hint: 'Length',
                   ),
                 ),
-                Text(
+                const Text(
                   ' X ',
                   style: TextStyle(
                     fontSize: values.TITLE_TEXT,
@@ -169,24 +226,26 @@ class DeliveryFormTwo extends StatelessWidget {
                 Flexible(
                   flex: 1,
                   child: CustomInput(
+                    type: TextInputType.number,
                     controller: width,
                     hint: 'Width',
                   ),
                 ),
               ],
             ),
-            SizedBox(height: values.BASE_PADDING / 2),
+            const SizedBox(height: values.BASE_PADDING / 2),
             CustomInput(
+              type: TextInputType.number,
               controller: weight,
               hint: 'Weight',
             ),
-            SizedBox(height: values.BASE_PADDING / 2),
+            const SizedBox(height: values.BASE_PADDING / 2),
             Row(
               children: [
                 TextButton(
                   onPressed: onPre,
                   child: Row(
-                    children: [
+                    children: const [
                       Icon(
                         CupertinoIcons.chevron_left,
                         color: colors.TEXT_WHITE,
@@ -208,7 +267,7 @@ class DeliveryFormTwo extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(values.RADIUS),
                     ),
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 12.0,
                       vertical: 4.0,
                     ),
@@ -218,7 +277,7 @@ class DeliveryFormTwo extends StatelessWidget {
                 TextButton(
                   onPressed: onNext,
                   child: Row(
-                    children: [
+                    children: const [
                       Text(
                         ' Next  ',
                         style: TextStyle(
@@ -240,7 +299,7 @@ class DeliveryFormTwo extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(values.RADIUS),
                     ),
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 12.0,
                       vertical: 4.0,
                     ),
@@ -248,7 +307,7 @@ class DeliveryFormTwo extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 120),
+            const SizedBox(height: 120),
           ],
         ),
       ),

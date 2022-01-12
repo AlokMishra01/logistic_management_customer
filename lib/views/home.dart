@@ -1,13 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logistic_management_customer/providers/blog_provider.dart';
-import 'package:logistic_management_customer/widgets/blog_list_item.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
-import '../providers/authentication.dart';
+import '../controllers/profile_controller.dart';
 import '../widgets/header.dart';
 import 'all_blogs.dart';
 
@@ -19,32 +17,32 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  CarouselController _carouselController = CarouselController();
+  final CarouselController _carouselController = CarouselController();
 
   @override
   Widget build(BuildContext context) {
-    final auth = context.watch<AuthenticationProvider>();
-    final blog = context.watch<BlogProvider>();
+    final profile = context.watch<ProfileController>();
+    // final blog = context.watch<BlogProvider>();
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Header(title: 'Home'),
+          const Header(title: 'Home'),
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: values.BASE_PADDING,
             ),
             child: Text(
               "Good Morning, "
-              "${auth.consumer!.firstname} ${auth.consumer!.lastname}",
-              style: TextStyle(
+              "${profile.user?.name ?? ''}",
+              style: const TextStyle(
                 fontSize: values.TITLE_TEXT,
                 color: colors.TEXT_SECONDARY,
                 fontWeight: FontWeight.w600,
               ),
             ),
           ),
-          SizedBox(height: values.BASE_PADDING),
+          const SizedBox(height: values.BASE_PADDING),
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: values.BASE_PADDING - 4,
@@ -78,10 +76,10 @@ class _HomeState extends State<Home> {
                     backgroundColor: colors.TEXT_WHITE,
                     child: IconButton(
                       onPressed: () => _carouselController.nextPage(
-                        duration: Duration(milliseconds: 250),
+                        duration: const Duration(milliseconds: 250),
                         curve: Curves.linear,
                       ),
-                      icon: Icon(
+                      icon: const Icon(
                         CupertinoIcons.chevron_forward,
                         color: colors.TEXT_BLUE,
                       ),
@@ -91,7 +89,7 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),
-          SizedBox(height: values.BASE_PADDING),
+          const SizedBox(height: values.BASE_PADDING),
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: values.BASE_PADDING - 4,
@@ -99,7 +97,7 @@ class _HomeState extends State<Home> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   "Blog / News",
                   style: TextStyle(
                     color: colors.TEXT_BLUE,
@@ -114,17 +112,17 @@ class _HomeState extends State<Home> {
                       MaterialPageRoute(builder: (_) => AllBlogs()),
                     );
                   },
-                  child: Text('View All'),
+                  child: const Text('View All'),
                   style: TextButton.styleFrom(
                     backgroundColor: colors.FIELD_BACKGROUND,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(values.RADIUS),
                     ),
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 12.0,
                       vertical: 4.0,
                     ),
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                       color: colors.TEXT_BLUE,
                       fontSize: values.DETAILS_TEXT + 2,
                       fontWeight: FontWeight.w600,
@@ -140,16 +138,20 @@ class _HomeState extends State<Home> {
               vertical: values.BASE_PADDING / 2,
             ),
             child: ListView.separated(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: blog.blogs.length > 2 ? 2 : blog.blogs.length,
+              itemCount: 0,
               itemBuilder: (_, i) {
-                return BlogListItem(
-                  model: blog.blogs[i],
-                );
+                return Container();
               },
+              // itemCount: blog.blogs.length > 2 ? 2 : blog.blogs.length,
+              // itemBuilder: (_, i) {
+              //   return BlogListItem(
+              //     model: blog.blogs[i],
+              //   );
+              // },
               separatorBuilder: (_, i) {
-                return SizedBox(height: values.BASE_PADDING / 2);
+                return const SizedBox(height: values.BASE_PADDING / 2);
               },
             ),
           ),
@@ -167,7 +169,7 @@ class _HomeState extends State<Home> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Expanded(
+                  const Expanded(
                     child: Text(
                       "Be our prime minister and get "
                       "one day delivery service and more",
@@ -178,20 +180,20 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ),
-                  SizedBox(width: values.BASE_PADDING),
+                  const SizedBox(width: values.BASE_PADDING),
                   TextButton(
                     onPressed: () {},
-                    child: Text('BUY NOW'),
+                    child: const Text('BUY NOW'),
                     style: TextButton.styleFrom(
                       backgroundColor: colors.FIELD_BACKGROUND,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(values.RADIUS),
                       ),
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 8.0,
                         vertical: 0.0,
                       ),
-                      textStyle: TextStyle(
+                      textStyle: const TextStyle(
                         color: colors.TEXT_BLUE,
                         fontSize: values.DETAILS_TEXT,
                         fontWeight: FontWeight.w400,

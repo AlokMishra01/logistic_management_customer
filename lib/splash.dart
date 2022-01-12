@@ -1,15 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:logistic_management_customer/providers/authentication.dart';
-import 'package:logistic_management_customer/providers/blog_provider.dart';
-import 'package:logistic_management_customer/providers/request_provider.dart';
-import 'package:logistic_management_customer/views/main_page.dart';
 import 'package:provider/provider.dart';
 
 import 'constants/colors.dart' as colors;
-import 'services/connectivity/network_connection.dart';
+import 'controllers/authentication_controller.dart';
+import 'controllers/connectivity_controller.dart';
+import 'controllers/dio_controller.dart';
+import 'controllers/profile_controller.dart';
+import 'services/preference_service.dart';
 import 'views/login.dart';
+import 'views/main_page.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -22,25 +23,24 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    context.read<NetworkConnection>().hasInternet;
-    context.read<AuthenticationProvider>();
-    context.read<BlogProvider>();
-    Timer(Duration(seconds: 2), () {
-      if (context.read<AuthenticationProvider>().isLoggedIn) {
-        context.read<RequestProvider>().fetchPending(
-              userId: context.read<AuthenticationProvider>().consumer!.id ?? 43,
-            );
-        context.read<RequestProvider>().fetchApproved(
-              userId: context.read<AuthenticationProvider>().consumer!.id ?? 43,
-            );
+    context.read<ConnectivityController>();
+    context.read<DioController>();
+    context.read<AuthenticationController>();
+    context.read<ProfileController>();
+    _checkLogin();
+  }
+
+  _checkLogin() {
+    Timer(const Duration(seconds: 2), () async {
+      if (await PreferenceService.service.isLogin) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (cxt) => MainPage()),
+          MaterialPageRoute(builder: (cxt) => const MainPage()),
         );
       } else {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (cxt) => Login()),
+          MaterialPageRoute(builder: (cxt) => const Login()),
         );
       }
     });
@@ -48,7 +48,7 @@ class _SplashState extends State<Splash> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: colors.TEXT_WHITE,
     );
   }

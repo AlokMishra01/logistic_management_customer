@@ -4,8 +4,7 @@ import 'package:flutter/services.dart';
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
 
-class CustomInput extends StatelessWidget {
-  final TextEditingController controller;
+class CustomDropdown extends StatelessWidget {
   final String hint;
   final TextInputType type;
   final List<TextInputFormatter> formatters;
@@ -18,9 +17,8 @@ class CustomInput extends StatelessWidget {
   final int? maxLines;
   final int? minLines;
 
-  const CustomInput({
+  const CustomDropdown({
     Key? key,
-    required this.controller,
     required this.hint,
     this.type = TextInputType.text,
     this.formatters = const [],
@@ -38,8 +36,14 @@ class CustomInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTab,
-      child: TextFormField(
-        enabled: enabled,
+      child: DropdownButtonFormField<dynamic>(
+        items: ['dsjfk', 'skdkjs']
+            .map(
+              (e) => DropdownMenuItem(
+                child: Text(e),
+              ),
+            )
+            .toList(),
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(values.RADIUS),
@@ -91,15 +95,8 @@ class CustomInput extends StatelessWidget {
           fontWeight: FontWeight.w600,
           height: 1.5,
         ),
-        maxLines: !obscureText ? maxLines : 1,
-        minLines: !obscureText ? minLines : 1,
-        enableSuggestions: true,
-        inputFormatters: formatters,
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        validator: validator,
-        keyboardType: type,
-        obscureText: obscureText,
-        controller: controller,
+        onChanged: (value) {},
       ),
     );
   }

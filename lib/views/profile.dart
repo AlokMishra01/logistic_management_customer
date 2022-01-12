@@ -1,23 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logistic_management_customer/providers/authentication.dart';
-import 'package:logistic_management_customer/views/login.dart';
-import 'package:logistic_management_customer/views/my_request.dart';
-import 'package:logistic_management_customer/widgets/custom_button.dart';
-import 'package:logistic_management_customer/widgets/custom_button_outline.dart';
-import 'package:logistic_management_customer/widgets/header.dart';
-import 'package:logistic_management_customer/widgets/profile_info_heading.dart';
-import 'package:logistic_management_customer/widgets/single_personal_detail.dart';
+import 'package:logistic_management_customer/views/profile_update.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
+import '../controllers/authentication_controller.dart';
+import '../controllers/profile_controller.dart';
+import '../widgets/custom_button.dart';
+import '../widgets/custom_button_outline.dart';
+import '../widgets/header.dart';
+import '../widgets/profile_info_heading.dart';
+import '../widgets/single_personal_detail.dart';
+import 'login.dart';
+import 'my_request.dart';
 
 class Profile extends StatelessWidget {
+  const Profile({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final auth = context.watch<AuthenticationProvider>();
+    final profile = context.watch<ProfileController>();
     return Column(
       children: [
         Header(
@@ -27,8 +31,15 @@ class Profile extends StatelessWidget {
             child: CircleAvatar(
               backgroundColor: colors.FIELD_BACKGROUND,
               child: IconButton(
-                onPressed: () {},
-                icon: Icon(CupertinoIcons.pen),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ProfileUpdate(),
+                    ),
+                  );
+                },
+                icon: const Icon(CupertinoIcons.pen),
                 color: colors.TEXT_BLUE,
               ),
             ),
@@ -36,76 +47,75 @@ class Profile extends StatelessWidget {
         ),
         Expanded(
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Center(
                   child: CircleAvatar(
-                    backgroundImage: NetworkImage(
+                    backgroundImage: const NetworkImage(
                       'https://media.carphonewarehouse.com/is/image/cpw2/essentials-bundle-for-google-pixel-4aNA?\$accessories\$',
                     ),
                     radius: size.width * 0.2,
                     backgroundColor: colors.TEXT_BLUE.withOpacity(0.2),
                   ),
                 ),
-                SizedBox(height: values.BASE_PADDING / 2),
+                const SizedBox(height: values.BASE_PADDING / 2),
                 Text(
-                  '${auth.consumer!.firstname} ${auth.consumer!.lastname}',
+                  profile.user?.name ?? '',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: colors.TEXT_BLUE,
                     fontSize: values.SUB_HEADER_TEXT,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: values.BASE_PADDING / 2),
+                const SizedBox(height: values.BASE_PADDING / 2),
                 Text(
-                  '${auth.consumer!.mobile}',
+                  profile.user?.phone ?? '',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: colors.TEXT_SECONDARY,
                     fontSize: values.TITLE_TEXT,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: values.BASE_PADDING / 2),
-                Divider(
+                const SizedBox(height: values.BASE_PADDING / 2),
+                const Divider(
                   thickness: 2,
                   color: colors.FIELD_BACKGROUND,
                 ),
-                SizedBox(height: values.BASE_PADDING),
+                const SizedBox(height: values.BASE_PADDING),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: values.BASE_PADDING),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ProfileInfoHeading(title: 'Basic Information'),
+                      const ProfileInfoHeading(title: 'Basic Information'),
                       ProfileDetailRow(
                         title: 'Name',
-                        value:
-                            '${auth.consumer!.firstname} ${auth.consumer!.lastname}',
+                        value: profile.user?.name ?? '',
                       ),
-                      ProfileDetailRow(
+                      const ProfileDetailRow(
                         title: 'Address',
                         value: 'N/a',
                       ),
                       ProfileDetailRow(
                         title: 'Mobile No.',
-                        value: '${auth.consumer!.mobile}',
+                        value: profile.user?.phone ?? '',
                       ),
                       ProfileDetailRow(
                         title: 'Email',
-                        value: '${auth.consumer!.email}',
+                        value: profile.user?.email ?? '',
                       ),
-                      SizedBox(height: values.BASE_PADDING),
-                      ProfileInfoHeading(title: 'Membership Information'),
-                      ProfileDetailRow(
+                      const SizedBox(height: values.BASE_PADDING),
+                      const ProfileInfoHeading(title: 'Membership Information'),
+                      const ProfileDetailRow(
                         title: 'Membership',
                         value: 'N/a',
                       ),
-                      ProfileDetailRow(
+                      const ProfileDetailRow(
                         title: 'Expiry Date',
                         value: 'N/a',
                       ),
@@ -122,7 +132,7 @@ class Profile extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => MyRequest(),
+                          builder: (_) => const MyRequest(),
                         ),
                       );
                     },
@@ -142,16 +152,16 @@ class Profile extends StatelessWidget {
                     title: 'Logout',
                     color: colors.RED,
                     onTab: () {
-                      context.read<AuthenticationProvider>().logOut();
+                      context.read<AuthenticationController>().logOut();
                       Navigator.pushAndRemoveUntil(
                         context,
-                        MaterialPageRoute(builder: (_) => Login()),
+                        MaterialPageRoute(builder: (_) => const Login()),
                         (route) => false,
                       );
                     },
                   ),
                 ),
-                SizedBox(height: 120),
+                const SizedBox(height: 120),
               ],
             ),
           ),

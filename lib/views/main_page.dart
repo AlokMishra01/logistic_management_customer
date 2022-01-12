@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logistic_management_customer/controllers/package_controller.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
 import 'delivery.dart';
@@ -40,6 +42,7 @@ class _MainPageState extends State<MainPage> {
         ),
       );
     }
+    context.read<PackageController>();
   }
 
   @override

@@ -9,7 +9,7 @@ import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
 import '../widgets/custom_input.dart';
 
-class DeliveryFormOne extends StatelessWidget {
+class DeliveryFormOne extends StatefulWidget {
   final TextEditingController name;
   // final TextEditingController lastName;
   final TextEditingController mobile;
@@ -36,10 +36,23 @@ class DeliveryFormOne extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<DeliveryFormOne> createState() => _DeliveryFormOneState();
+}
+
+class _DeliveryFormOneState extends State<DeliveryFormOne> {
+  late GoogleMapController _mapController;
+
+  @override
+  void dispose() {
+    _mapController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: values.BASE_PADDING,
@@ -48,7 +61,7 @@ class DeliveryFormOne extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            const Text(
               'Sender Detail',
               style: TextStyle(
                 fontSize: values.TITLE_TEXT,
@@ -56,9 +69,9 @@ class DeliveryFormOne extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: values.BASE_PADDING / 2),
+            const SizedBox(height: values.BASE_PADDING / 2),
             CustomInput(
-              controller: name,
+              controller: widget.name,
               hint: 'Name',
             ),
             // SizedBox(height: values.BASE_PADDING / 2),
@@ -66,22 +79,22 @@ class DeliveryFormOne extends StatelessWidget {
             //   controller: lastName,
             //   hint: 'Last Name',
             // ),
-            SizedBox(height: values.BASE_PADDING / 2),
+            const SizedBox(height: values.BASE_PADDING / 2),
             CustomInput(
-              controller: mobile,
+              controller: widget.mobile,
               hint: 'Mobile Number',
               type: TextInputType.phone,
-              formatters: [
+              formatters: const [
                 // PhoneInputFormatter(),
               ],
             ),
-            SizedBox(height: values.BASE_PADDING / 2),
+            const SizedBox(height: values.BASE_PADDING / 2),
             CustomInput(
-              controller: address,
+              controller: widget.address,
               hint: 'Address',
             ),
-            SizedBox(height: values.BASE_PADDING),
-            Align(
+            const SizedBox(height: values.BASE_PADDING),
+            const Align(
               alignment: Alignment.center,
               child: Text(
                 'Select pickup location',
@@ -93,53 +106,75 @@ class DeliveryFormOne extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: values.BASE_PADDING / 2),
+            const SizedBox(height: values.BASE_PADDING / 2),
             SizedBox(
               height: (size.width - (values.BASE_PADDING * 2)) / 2,
               width: size.width - (values.BASE_PADDING * 2),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(values.RADIUS),
-                child: GoogleMap(
-                  myLocationEnabled: false,
-                  rotateGesturesEnabled: false,
-                  tiltGesturesEnabled: false,
-                  zoomGesturesEnabled: false,
-                  zoomControlsEnabled: false,
-                  onTap: (_) => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => PlacePicker(
-                        initLocation: LatLng(lat, long),
-                        onCameraMove: onCameraMove,
-                        onSelect: onSelect,
-                      ),
-                    ),
-                  ),
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(lat, long),
-                    zoom: 5,
-                  ),
-                  onMapCreated: (controller) {
-                    controller.animateCamera(
-                      CameraUpdate.newCameraPosition(
-                        CameraPosition(
-                          target: LatLng(lat, long),
-                          zoom: 15,
+                child: Stack(
+                  children: [
+                    GoogleMap(
+                      myLocationEnabled: false,
+                      rotateGesturesEnabled: false,
+                      tiltGesturesEnabled: false,
+                      zoomGesturesEnabled: false,
+                      zoomControlsEnabled: false,
+                      onTap: (_) => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => PlacePicker(
+                            initLocation: LatLng(widget.lat, widget.long),
+                            onCameraMove: widget.onCameraMove,
+                            onSelect: () {
+                              _mapController.animateCamera(
+                                CameraUpdate.newCameraPosition(
+                                  CameraPosition(
+                                    target: LatLng(widget.lat, widget.long),
+                                    zoom: 15,
+                                  ),
+                                ),
+                              );
+                              widget.onSelect();
+                            },
+                          ),
                         ),
                       ),
-                    );
-                  },
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(widget.lat, widget.long),
+                        zoom: 5,
+                      ),
+                      onMapCreated: (controller) {
+                        _mapController = controller;
+                        controller.animateCamera(
+                          CameraUpdate.newCameraPosition(
+                            CameraPosition(
+                              target: LatLng(widget.lat, widget.long),
+                              zoom: 15,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    Center(
+                      child: Image.asset(
+                        'images/pin.png',
+                        width: size.width * 0.1,
+                        height: size.width * 0.1,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            SizedBox(height: values.BASE_PADDING / 2),
+            const SizedBox(height: values.BASE_PADDING / 2),
             Row(
               children: [
                 Expanded(child: Container()),
                 TextButton(
-                  onPressed: onNext,
+                  onPressed: widget.onNext,
                   child: Row(
-                    children: [
+                    children: const [
                       Text(
                         ' Next  ',
                         style: TextStyle(
@@ -161,7 +196,7 @@ class DeliveryFormOne extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(values.RADIUS),
                     ),
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 12.0,
                       vertical: 4.0,
                     ),
@@ -169,7 +204,7 @@ class DeliveryFormOne extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 120),
+            const SizedBox(height: 120),
           ],
         ),
       ),
