@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
@@ -43,11 +44,11 @@ class CustomInput extends StatelessWidget {
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(values.RADIUS),
-            borderSide: BorderSide(width: 0),
+            borderSide: const BorderSide(width: 0),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(values.RADIUS),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white,
               width: 1,
               style: BorderStyle.solid,
@@ -55,7 +56,7 @@ class CustomInput extends StatelessWidget {
           ),
           disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(values.RADIUS),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white,
               width: 1,
               style: BorderStyle.solid,
@@ -66,17 +67,16 @@ class CustomInput extends StatelessWidget {
           focusColor: colors.TEXT_SECONDARY,
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(values.RADIUS),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Colors.white,
               width: 1,
               style: BorderStyle.solid,
             ),
           ),
           hintText: hint,
-          hintStyle: TextStyle(
+          hintStyle: GoogleFonts.comfortaa(
             color: colors.TEXT_SECONDARY,
             fontWeight: FontWeight.w500,
-            height: 1.5,
           ),
           suffixIcon: icon != null
               ? IconButton(
@@ -86,10 +86,9 @@ class CustomInput extends StatelessWidget {
                 )
               : null,
         ),
-        style: TextStyle(
+        style: GoogleFonts.comfortaa(
           color: colors.TEXT_BLACK,
           fontWeight: FontWeight.w600,
-          height: 1.5,
         ),
         maxLines: !obscureText ? maxLines : 1,
         minLines: !obscureText ? minLines : 1,

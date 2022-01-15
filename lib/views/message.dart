@@ -1,20 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logistic_management_customer/controllers/notification_controller.dart';
-import 'package:logistic_management_customer/views/compose_message.dart';
-import 'package:logistic_management_customer/widgets/header.dart';
-import 'package:logistic_management_customer/widgets/message_list_item.dart';
-import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
+import '../widgets/date_text.dart';
+import '../widgets/header.dart';
+import '../widgets/message_list_item.dart';
+import 'compose_message.dart';
 
 class Message extends StatelessWidget {
   const Message({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final notifications = context.watch<NotificationController>();
     return Column(children: [
       Header(
         title: 'Message',
@@ -25,18 +23,25 @@ class Message extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => ComposeMessage(),
+                  builder: (_) => const ComposeMessage(),
                 ),
               );
             },
             child: Row(
-              children: const [
-                Icon(
-                  CupertinoIcons.pencil_outline,
+              children: [
+                const Icon(
+                  Icons.edit_rounded,
                   color: colors.TEXT_BLUE,
-                  size: values.BUTTON_TEXT,
+                  size: 18.0,
                 ),
-                Text(' Compose '),
+                Text(
+                  ' Compose ',
+                  style: GoogleFonts.comfortaa(
+                    color: colors.TEXT_BLUE,
+                    fontSize: values.DETAILS_TEXT,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ],
             ),
             style: TextButton.styleFrom(
@@ -44,40 +49,36 @@ class Message extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(values.RADIUS),
               ),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-              textStyle: const TextStyle(
-                color: colors.TEXT_BLUE,
-                fontSize: values.BUTTON_TEXT,
-                fontWeight: FontWeight.w500,
-                height: 1.25,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 4.0,
               ),
             ),
           ),
         ),
       ),
-      const SizedBox(height: values.BASE_PADDING / 4),
-      // const DateText(date: "2nd Jan,2021"),
+      const SizedBox(height: values.BASE_PADDING),
+      const DateText(date: "2nd Jan,2021"),
+      const SizedBox(height: values.BASE_PADDING / 2),
       ListView.builder(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: notifications.notifications.length,
+        itemCount: 3,
         itemBuilder: (_, i) {
-          return MessageListItem(
-            notice: notifications.notifications[i],
-          );
+          return const MessageListItem();
         },
       ),
-      // const SizedBox(height: values.BASE_PADDING / 4),
-      // const DateText(date: "1st Jan,2021"),
-      // ListView.builder(
-      //   physics: const NeverScrollableScrollPhysics(),
-      //   shrinkWrap: true,
-      //   itemCount: 1,
-      //   itemBuilder: (_, i) {
-      //     return MessageListItem();
-      //   },
-      // ),
+      const SizedBox(height: values.BASE_PADDING),
+      const DateText(date: "1st Jan,2021"),
+      const SizedBox(height: values.BASE_PADDING / 2),
+      ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: 2,
+        itemBuilder: (_, i) {
+          return const MessageListItem();
+        },
+      ),
     ]);
   }
 }

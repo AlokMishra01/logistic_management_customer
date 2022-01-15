@@ -9,6 +9,7 @@ import 'constants/colors.dart';
 import 'controllers/authentication_controller.dart';
 import 'controllers/connectivity_controller.dart';
 import 'controllers/dio_controller.dart';
+import 'controllers/geo_locator_controller.dart';
 import 'controllers/profile_controller.dart';
 import 'splash.dart';
 
@@ -24,6 +25,11 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (cxt) => DioController(cxt),
+        ),
+        ChangeNotifierProxyProvider<ConnectivityController,
+            GeoLocatorController>(
+          create: (cxt) => GeoLocatorController(null),
+          update: (cxt, conn, geo) => GeoLocatorController(conn),
         ),
         ChangeNotifierProxyProvider2<ConnectivityController, DioController,
             AuthenticationController>(

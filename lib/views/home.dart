@@ -1,6 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:logistic_management_customer/controllers/package_controller.dart';
+import 'package:logistic_management_customer/utils/greetings_util.dart';
+import 'package:logistic_management_customer/views/all_notification.dart';
+import 'package:logistic_management_customer/views/all_packages.dart';
+import 'package:logistic_management_customer/widgets/custom_button.dart';
+import 'package:logistic_management_customer/widgets/join_us_today_widget.dart';
+import 'package:logistic_management_customer/widgets/package_list_item.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
@@ -10,7 +18,12 @@ import '../widgets/header.dart';
 import 'all_blogs.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  final Function(int)? changeIndex;
+
+  const Home({
+    Key? key,
+    this.changeIndex,
+  }) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -22,190 +35,251 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final profile = context.watch<ProfileController>();
+    final packages = context.watch<PackageController>();
+    final packageList = packages.packageAll.where((e) {
+      return (e.status == 'Pending' || e.status == 'In Transit');
+    }).toList();
     // final blog = context.watch<BlogProvider>();
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Header(title: 'Home'),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: values.BASE_PADDING,
-            ),
-            child: Text(
-              "Good Morning, "
-              "${profile.user?.name ?? ''}",
-              style: const TextStyle(
-                fontSize: values.TITLE_TEXT,
-                color: colors.TEXT_SECONDARY,
-                fontWeight: FontWeight.w600,
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Header(
+              title: 'Home',
+              trailing: IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const AllNotification()),
+                  );
+                },
+                icon: const Icon(
+                  Icons.notifications_rounded,
+                  color: colors.TEXT_BLUE,
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: values.BASE_PADDING),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: values.BASE_PADDING - 4,
-            ),
-            child: Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(values.RADIUS),
-                  child: CarouselSlider(
-                    carouselController: _carouselController,
-                    options: CarouselOptions(
-                      aspectRatio: 320 / 164,
-                      viewportFraction: 1,
-                    ),
-                    items: [1, 2, 3, 4, 5].map((i) {
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return Image.asset(
-                            'images/banner1.png',
-                            fit: BoxFit.cover,
-                          );
-                        },
-                      );
-                    }).toList(),
-                  ),
-                ),
-                Positioned(
-                  bottom: values.BASE_PADDING / 2,
-                  right: values.BASE_PADDING / 2,
-                  child: CircleAvatar(
-                    backgroundColor: colors.TEXT_WHITE,
-                    child: IconButton(
-                      onPressed: () => _carouselController.nextPage(
-                        duration: const Duration(milliseconds: 250),
-                        curve: Curves.linear,
-                      ),
-                      icon: const Icon(
-                        CupertinoIcons.chevron_forward,
-                        color: colors.TEXT_BLUE,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: values.BASE_PADDING),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: values.BASE_PADDING - 4,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "Blog / News",
-                  style: TextStyle(
-                    color: colors.TEXT_BLUE,
-                    fontSize: values.TITLE_TEXT,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => AllBlogs()),
-                    );
-                  },
-                  child: const Text('View All'),
-                  style: TextButton.styleFrom(
-                    backgroundColor: colors.FIELD_BACKGROUND,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(values.RADIUS),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 4.0,
-                    ),
-                    textStyle: const TextStyle(
-                      color: colors.TEXT_BLUE,
-                      fontSize: values.DETAILS_TEXT + 2,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: values.BASE_PADDING - 4,
-              vertical: values.BASE_PADDING / 2,
-            ),
-            child: ListView.separated(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: 0,
-              itemBuilder: (_, i) {
-                return Container();
-              },
-              // itemCount: blog.blogs.length > 2 ? 2 : blog.blogs.length,
-              // itemBuilder: (_, i) {
-              //   return BlogListItem(
-              //     model: blog.blogs[i],
-              //   );
-              // },
-              separatorBuilder: (_, i) {
-                return const SizedBox(height: values.BASE_PADDING / 2);
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: values.BASE_PADDING - 4,
-              vertical: values.BASE_PADDING / 2,
-            ),
-            child: Container(
-              padding: const EdgeInsets.all(values.BASE_PADDING),
-              decoration: BoxDecoration(
-                color: colors.BUTTON_BLUE,
-                borderRadius: BorderRadius.circular(6),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: values.BASE_PADDING,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              child: Text(
+                "${greetingPartOfDay()}, "
+                "${profile.user?.name ?? ''}",
+                style: const TextStyle(
+                  fontSize: values.TITLE_TEXT,
+                  color: colors.TEXT_SECONDARY,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const SizedBox(height: values.BASE_PADDING),
+
+            /// Banner
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: values.BASE_PADDING,
+              ),
+              child: Stack(
                 children: [
-                  const Expanded(
-                    child: Text(
-                      "Be our prime minister and get "
-                      "one day delivery service and more",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: values.DETAILS_TEXT,
-                        fontWeight: FontWeight.w500,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(values.RADIUS),
+                    child: CarouselSlider(
+                      carouselController: _carouselController,
+                      options: CarouselOptions(
+                        aspectRatio: 320 / 164,
+                        viewportFraction: 1,
                       ),
+                      items: [1, 2, 3, 4, 5].map((i) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Image.asset(
+                              'images/banner1.png',
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        );
+                      }).toList(),
                     ),
                   ),
-                  const SizedBox(width: values.BASE_PADDING),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text('BUY NOW'),
-                    style: TextButton.styleFrom(
-                      backgroundColor: colors.FIELD_BACKGROUND,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(values.RADIUS),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 0.0,
-                      ),
-                      textStyle: const TextStyle(
-                        color: colors.TEXT_BLUE,
-                        fontSize: values.DETAILS_TEXT,
-                        fontWeight: FontWeight.w400,
-                        height: 1.25,
+                  Positioned(
+                    bottom: values.BASE_PADDING / 2,
+                    right: values.BASE_PADDING / 2,
+                    child: CircleAvatar(
+                      backgroundColor: colors.TEXT_WHITE,
+                      child: IconButton(
+                        onPressed: () => _carouselController.nextPage(
+                          duration: const Duration(milliseconds: 250),
+                          curve: Curves.linear,
+                        ),
+                        icon: const Icon(
+                          CupertinoIcons.chevron_forward,
+                          color: colors.TEXT_BLUE,
+                        ),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: values.BASE_PADDING),
+
+            /// pending request or current package in transit
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: values.BASE_PADDING,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Pending and In Transit Request",
+                    style: TextStyle(
+                      color: colors.TEXT_BLUE,
+                      fontSize: values.TITLE_TEXT,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const AllPackages()),
+                      );
+                    },
+                    child: Text(
+                      'View All',
+                      style: GoogleFonts.comfortaa(
+                        color: colors.TEXT_BLUE,
+                        fontSize: values.DETAILS_TEXT,
+                      ),
+                    ),
+                    style: TextButton.styleFrom(
+                      backgroundColor: colors.FIELD_BACKGROUND,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(values.RADIUS),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 4.0,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: values.BASE_PADDING,
+              ),
+              child: ListView.separated(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: packageList.length,
+                // itemCount: 2,
+                itemBuilder: (_, i) {
+                  final p = packageList[i];
+                  return PackageListItem(p: p);
+                },
+                separatorBuilder: (_, i) {
+                  return const SizedBox(height: values.BASE_PADDING / 2);
+                },
+              ),
+            ),
+            const SizedBox(height: values.BASE_PADDING),
+
+            /// Blog - one line only
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: values.BASE_PADDING,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Blog / News",
+                    style: TextStyle(
+                      color: colors.TEXT_BLUE,
+                      fontSize: values.TITLE_TEXT,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => AllBlogs()),
+                      );
+                    },
+                    child: Text(
+                      'View All',
+                      style: GoogleFonts.comfortaa(
+                        color: colors.TEXT_BLUE,
+                        fontSize: values.DETAILS_TEXT,
+                      ),
+                    ),
+                    style: TextButton.styleFrom(
+                      backgroundColor: colors.FIELD_BACKGROUND,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(values.RADIUS),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 4.0,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: values.BASE_PADDING,
+              ),
+              child: ListView.separated(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: 0,
+                itemBuilder: (_, i) {
+                  return Container();
+                },
+                // itemCount: blog.blogs.length > 2 ? 2 : blog.blogs.length,
+                // itemBuilder: (_, i) {
+                //   return BlogListItem(
+                //     model: blog.blogs[i],
+                //   );
+                // },
+                separatorBuilder: (_, i) {
+                  return const SizedBox(height: values.BASE_PADDING / 2);
+                },
+              ),
+            ),
+
+            /// Book a courier button. This button will take to New Order screen
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: values.BASE_PADDING,
+                vertical: values.BASE_PADDING,
+              ),
+              child: CustomButton(
+                title: 'Book a Courier',
+                onTab: () {
+                  if (widget.changeIndex != null) {
+                    widget.changeIndex!(1);
+                  }
+                },
+              ),
+            ),
+
+            /// Services
+            /// Todo
+
+            /// Join us Today button
+            const JoinUsTodayWidget(),
+          ],
+        ),
       ),
     );
   }

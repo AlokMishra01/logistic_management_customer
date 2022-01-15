@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logistic_management_customer/models/package_response_model.dart';
 
 import '../models/package_type_model.dart';
 import '../services/package_service.dart';
@@ -62,7 +63,7 @@ class PackageController with ChangeNotifier {
     notifyListeners();
   }
 
-  getPackageList() async {
+  getPackageList({String status = 'All'}) async {
     if (_isLoadingPackages) {
       return;
     }
@@ -91,12 +92,18 @@ class PackageController with ChangeNotifier {
     notifyListeners();
 
     // All / Not Received / In Transit / Picked Up / At Watehouse / Dispatched / Completed
-    await _packageService.getPackageList(
+    PackageResponseModel? model = await _packageService.getPackageList(
       dio: _dioController!,
-      query: 'All',
+      query: status,
       page: 1,
-      limit: 20,
+      limit: 1000,
     );
+
+    if (model != null) {
+      _packageAll
+        ..clear()
+        ..addAll(model.data?.packages ?? []);
+    }
 
     _isLoadingPackages = false;
     notifyListeners();
@@ -177,6 +184,9 @@ class PackageController with ChangeNotifier {
   bool get isLoadingType => _isLoadingType;
   List<PackageTypeModel> _packageTypes = [];
   List<PackageTypeModel> get packageTypes => _packageTypes;
+
+  List<PackageModel> _packageAll = [];
+  List<PackageModel> get packageAll => _packageAll;
 
   bool _isLoadingPackages = false;
   bool get isLoadingPackages => _isLoadingPackages;

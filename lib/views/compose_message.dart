@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
@@ -7,14 +8,16 @@ import '../widgets/custom_input.dart';
 import '../widgets/header.dart';
 
 class ComposeMessage extends StatefulWidget {
+  const ComposeMessage({Key? key}) : super(key: key);
+
   @override
   _ComposeMessageState createState() => _ComposeMessageState();
 }
 
 class _ComposeMessageState extends State<ComposeMessage> {
-  TextEditingController _from = TextEditingController();
-  TextEditingController _subject = TextEditingController();
-  TextEditingController _message = TextEditingController();
+  final TextEditingController _from = TextEditingController();
+  final TextEditingController _subject = TextEditingController();
+  final TextEditingController _message = TextEditingController();
 
   @override
   void dispose() {
@@ -30,7 +33,10 @@ class _ComposeMessageState extends State<ComposeMessage> {
       body: SafeArea(
         child: Column(
           children: [
-            Header(title: 'Compose Message', backButton: true),
+            const Header(
+              title: 'Compose Message',
+              backButton: true,
+            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
@@ -41,23 +47,10 @@ class _ComposeMessageState extends State<ComposeMessage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Text(
-                          'From',
-                          style: TextStyle(
-                            color: colors.TEXT_BLUE,
-                            fontSize: values.DETAILS_TEXT,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      CustomInput(controller: _from, hint: 'Alok Mishra'),
-                      SizedBox(height: values.BASE_PADDING),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
+                        padding: EdgeInsets.all(4.0),
                         child: Text(
                           'Subject',
-                          style: TextStyle(
+                          style: GoogleFonts.comfortaa(
                             color: colors.TEXT_BLUE,
                             fontSize: values.DETAILS_TEXT,
                             fontWeight: FontWeight.w600,
@@ -65,12 +58,12 @@ class _ComposeMessageState extends State<ComposeMessage> {
                         ),
                       ),
                       CustomInput(controller: _subject, hint: ''),
-                      SizedBox(height: values.BASE_PADDING),
+                      const SizedBox(height: values.BASE_PADDING),
                       Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Text(
                           'Message',
-                          style: TextStyle(
+                          style: GoogleFonts.comfortaa(
                             color: colors.TEXT_BLUE,
                             fontSize: values.DETAILS_TEXT,
                             fontWeight: FontWeight.w600,
@@ -84,7 +77,7 @@ class _ComposeMessageState extends State<ComposeMessage> {
                         minLines: 8,
                         maxLines: 8,
                       ),
-                      SizedBox(height: values.BASE_PADDING * 2),
+                      const SizedBox(height: values.BASE_PADDING * 2),
                       CustomButton(
                         title: ' SEND ',
                         onTab: () {},

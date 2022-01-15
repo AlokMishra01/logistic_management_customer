@@ -105,7 +105,7 @@ class ProfileController with ChangeNotifier {
     _isLoading = true;
 
     if (b) {
-      getProfile();
+      await getProfile();
     }
 
     return b;

@@ -26,21 +26,21 @@ class Header extends StatelessWidget {
             onPressed: () {
               if (Navigator.canPop(context)) Navigator.pop(context);
             },
-            icon: Icon(
+            icon: const Icon(
               CupertinoIcons.chevron_left,
               color: colors.TEXT_BLUE,
             ),
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 28),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 28),
           ),
         Padding(
-          padding: EdgeInsets.all(!backButton ? 16.0 : 0),
+          padding: EdgeInsets.all(!backButton ? values.BASE_PADDING : 0),
           child: Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               color: colors.TEXT_BLUE,
               fontSize: values.SUB_HEADER_TEXT,
               fontWeight: FontWeight.w600,
-              height: 1.5,
+              decoration: TextDecoration.underline,
             ),
           ),
         ),

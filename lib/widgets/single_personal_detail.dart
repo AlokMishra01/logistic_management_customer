@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
@@ -16,24 +17,23 @@ class ProfileDetailRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(
+        horizontal: values.BASE_PADDING,
+        vertical: values.BASE_PADDING / 2,
+      ),
       child: RichText(
         text: TextSpan(
           text: '$title : ',
-          style: TextStyle(
-            fontSize: values.DETAILS_TEXT + 2,
+          style: GoogleFonts.comfortaa(
+            fontSize: values.TITLE_TEXT,
             color: colors.TEXT_SECONDARY,
-            fontWeight: FontWeight.w400,
-            height: 2,
           ),
           children: [
             TextSpan(
               text: value,
-              style: TextStyle(
-                fontSize: values.DETAILS_TEXT + 2,
-                fontWeight: FontWeight.w500,
+              style: GoogleFonts.comfortaa(
+                fontSize: values.TITLE_TEXT,
                 color: colors.TEXT_BLACK,
-                height: 2,
               ),
             ),
           ],

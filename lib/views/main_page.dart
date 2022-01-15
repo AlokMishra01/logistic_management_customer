@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:logistic_management_customer/controllers/package_controller.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
-import 'delivery.dart';
+import '../constants/values.dart' as values;
+import '../controllers/package_controller.dart';
 import 'home.dart';
 import 'message.dart';
+import 'new_order.dart';
 import 'profile.dart';
 import 'track.dart';
 
@@ -56,7 +58,7 @@ class _MainPageState extends State<MainPage> {
         elevation: 0,
         backgroundColor:
             _currentIndex == 2 ? colors.BUTTON_GREEN : colors.BUTTON_BLUE,
-        child: Icon(
+        child: const Icon(
           CupertinoIcons.cube_box,
           color: colors.TEXT_WHITE,
         ),
@@ -64,27 +66,33 @@ class _MainPageState extends State<MainPage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _setCurrentIndex,
-        selectedLabelStyle: TextStyle(
+        selectedLabelStyle: GoogleFonts.comfortaa(
           color: colors.TEXT_BLUE,
           fontWeight: FontWeight.bold,
-          fontSize: 12,
+          fontSize: values.DETAILS_TEXT,
+        ),
+        unselectedLabelStyle: GoogleFonts.comfortaa(
+          color: colors.TEXT_SECONDARY,
+          fontSize: values.DETAILS_TEXT,
         ),
         selectedItemColor: colors.BUTTON_BLUE,
         unselectedItemColor: colors.TEXT_SECONDARY,
         type: BottomNavigationBarType.fixed,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             label: 'Home',
             icon: Icon(CupertinoIcons.house),
           ),
           BottomNavigationBarItem(
-            label: 'Delivery',
-            icon: Icon(CupertinoIcons.car_detailed),
+            label: 'New Order',
+            icon: Icon(
+              CupertinoIcons.cart_badge_plus,
+            ),
           ),
           BottomNavigationBarItem(
             label: 'Track',
             icon: Icon(
-              CupertinoIcons.car_detailed,
+              CupertinoIcons.add,
               color: Colors.transparent,
               size: 16,
             ),
@@ -106,15 +114,18 @@ class _MainPageState extends State<MainPage> {
   _getCurrentPage() {
     switch (_currentIndex) {
       case 0:
-        return Home();
+        return Home(
+          changeIndex: _setCurrentIndex,
+        );
       case 1:
-        return Delivery();
+        return const NewOrder();
+      // return const Delivery();
       case 2:
         return Track();
       case 3:
-        return Message();
+        return const Message();
       case 4:
-        return Profile();
+        return const Profile();
       default:
         return Container();
     }
