@@ -261,45 +261,48 @@ class _NewOrderState extends State<NewOrder> {
                       );
                     },
                   ),
-                  const SizedBox(height: values.BASE_PADDING),
-                  const Text(
-                    'Pickup Time',
-                    style: TextStyle(
-                      fontSize: values.TITLE_TEXT,
-                      color: colors.TEXT_BLACK,
-                      fontWeight: FontWeight.w600,
+                  if (_selected == 1)
+                    const SizedBox(height: values.BASE_PADDING),
+                  if (_selected == 1)
+                    const Text(
+                      'Pickup Time',
+                      style: TextStyle(
+                        fontSize: values.TITLE_TEXT,
+                        color: colors.TEXT_BLACK,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  InkWell(
-                    onTap: () async {
-                      String? d = await customTimePicker(
-                        context: context,
-                        time: _pickupTime.text.isEmpty
-                            ? TimeOfDay.now()
-                            : stringTimeToTimeOfDay(time: _pickupTime.text),
-                      );
-                      if (d != null) _pickupTime.text = d;
-                      setState(() {});
-                    },
-                    child: TextFormField(
-                      controller: _pickupTime,
-                      textCapitalization: TextCapitalization.words,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) {
-                        if ((value ?? '').isEmpty) {
-                          return 'Please select pickup time.';
-                        }
+                  if (_selected == 1)
+                    InkWell(
+                      onTap: () async {
+                        String? d = await customTimePicker(
+                          context: context,
+                          time: _pickupTime.text.isEmpty
+                              ? TimeOfDay.now()
+                              : stringTimeToTimeOfDay(time: _pickupTime.text),
+                        );
+                        if (d != null) _pickupTime.text = d;
+                        setState(() {});
                       },
-                      enabled: false,
-                      decoration: const InputDecoration(
-                        hintText: '- - : - -   - -',
-                        suffixIcon: Icon(
-                          Icons.access_time_rounded,
-                          color: colors.TEXT_BLACK,
+                      child: TextFormField(
+                        controller: _pickupTime,
+                        textCapitalization: TextCapitalization.words,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) {
+                          if ((value ?? '').isEmpty) {
+                            return 'Please select pickup time.';
+                          }
+                        },
+                        enabled: false,
+                        decoration: const InputDecoration(
+                          hintText: '- - : - -   - -',
+                          suffixIcon: Icon(
+                            Icons.access_time_rounded,
+                            color: colors.TEXT_BLACK,
+                          ),
                         ),
                       ),
                     ),
-                  ),
                   if (_selected == 1)
                     const SizedBox(height: values.BASE_PADDING),
                   if (_selected == 1)
@@ -462,45 +465,48 @@ class _NewOrderState extends State<NewOrder> {
                       );
                     },
                   ),
-                  const SizedBox(height: values.BASE_PADDING),
-                  const Text(
-                    'Delivery Time',
-                    style: TextStyle(
-                      fontSize: values.TITLE_TEXT,
-                      color: colors.TEXT_BLACK,
-                      fontWeight: FontWeight.w600,
+                  if (_selected == 1)
+                    const SizedBox(height: values.BASE_PADDING),
+                  if (_selected == 1)
+                    const Text(
+                      'Delivery Time',
+                      style: TextStyle(
+                        fontSize: values.TITLE_TEXT,
+                        color: colors.TEXT_BLACK,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  InkWell(
-                    onTap: () async {
-                      String? d = await customTimePicker(
-                        context: context,
-                        time: _dropOffTime.text.isEmpty
-                            ? TimeOfDay.now()
-                            : stringTimeToTimeOfDay(time: _dropOffTime.text),
-                      );
-                      if (d != null) _dropOffTime.text = d;
-                      setState(() {});
-                    },
-                    child: TextFormField(
-                      controller: _dropOffTime,
-                      textCapitalization: TextCapitalization.words,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) {
-                        if ((value ?? '').isEmpty) {
-                          return 'Please select delivery time.';
-                        }
+                  if (_selected == 1)
+                    InkWell(
+                      onTap: () async {
+                        String? d = await customTimePicker(
+                          context: context,
+                          time: _dropOffTime.text.isEmpty
+                              ? TimeOfDay.now()
+                              : stringTimeToTimeOfDay(time: _dropOffTime.text),
+                        );
+                        if (d != null) _dropOffTime.text = d;
+                        setState(() {});
                       },
-                      enabled: false,
-                      decoration: const InputDecoration(
-                        hintText: '- - : - -   - -',
-                        suffixIcon: Icon(
-                          Icons.access_time_rounded,
-                          color: colors.TEXT_BLACK,
+                      child: TextFormField(
+                        controller: _dropOffTime,
+                        textCapitalization: TextCapitalization.words,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) {
+                          if ((value ?? '').isEmpty) {
+                            return 'Please select delivery time.';
+                          }
+                        },
+                        enabled: false,
+                        decoration: const InputDecoration(
+                          hintText: '- - : - -   - -',
+                          suffixIcon: Icon(
+                            Icons.access_time_rounded,
+                            color: colors.TEXT_BLACK,
+                          ),
                         ),
                       ),
                     ),
-                  ),
                   if (_selected == 1)
                     const SizedBox(height: values.BASE_PADDING),
                   if (_selected == 1)
@@ -943,7 +949,7 @@ class _NewOrderState extends State<NewOrder> {
     if (_fromLat == null || _fromLon == null) {
       return;
     }
-    if (_pickupTime.text.isEmpty) {
+    if (_selected == 1 && _pickupTime.text.isEmpty) {
       return;
     }
     if (_selected == 1 && _pickupDate.text.isEmpty) {
@@ -962,7 +968,7 @@ class _NewOrderState extends State<NewOrder> {
     if (_toLat == null || _fromLon == null) {
       return;
     }
-    if (_dropOffTime.text.isEmpty) {
+    if (_selected == 1 && _dropOffTime.text.isEmpty) {
       return;
     }
     if (_selected == 1 && _dropOffDate.text.isEmpty) {
@@ -1017,8 +1023,8 @@ class _NewOrderState extends State<NewOrder> {
           packageType: _type!.id!,
           packageWeight: weight!,
           packageSize: size!,
-          pickUpTime: _pickupTime.text,
-          dropOffTime: _dropOffTime.text,
+          // pickUpTime: _pickupTime.text,
+          // dropOffTime: _dropOffTime.text,
           fragile: _isFragile ? 1 : 0,
           // Todo: Package price from form
           packagePrice: '',

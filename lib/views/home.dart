@@ -3,12 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logistic_management_customer/controllers/package_controller.dart';
+import 'package:logistic_management_customer/providers/blog_provider.dart';
 import 'package:logistic_management_customer/utils/greetings_util.dart';
 import 'package:logistic_management_customer/views/all_notification.dart';
 import 'package:logistic_management_customer/views/all_packages.dart';
+import 'package:logistic_management_customer/widgets/blog_list_item.dart';
 import 'package:logistic_management_customer/widgets/custom_button.dart';
 import 'package:logistic_management_customer/widgets/join_us_today_widget.dart';
 import 'package:logistic_management_customer/widgets/package_list_item.dart';
+import 'package:logistic_management_customer/widgets/services_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
@@ -35,11 +38,8 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final profile = context.watch<ProfileController>();
+    final blog = context.watch<BlogProvider>();
     final packages = context.watch<PackageController>();
-    final packageList = packages.packageAll.where((e) {
-      return (e.status == 'Pending' || e.status == 'In Transit');
-    }).toList();
-    // final blog = context.watch<BlogProvider>();
     return Scaffold(
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -135,7 +135,7 @@ class _HomeState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "Pending and In Transit Request",
+                    "My Requests",
                     style: TextStyle(
                       color: colors.TEXT_BLUE,
                       fontSize: values.TITLE_TEXT,
@@ -177,11 +177,10 @@ class _HomeState extends State<Home> {
               child: ListView.separated(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: packageList.length,
-                // itemCount: 2,
+                itemCount: packages.myRequest != null ? 1 : 0,
                 itemBuilder: (_, i) {
-                  final p = packageList[i];
-                  return PackageListItem(p: p);
+                  final p = packages.myRequest;
+                  return PackageListItem(p: p!);
                 },
                 separatorBuilder: (_, i) {
                   return const SizedBox(height: values.BASE_PADDING / 2);
@@ -241,16 +240,12 @@ class _HomeState extends State<Home> {
               child: ListView.separated(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: 0,
+                itemCount: blog.blogs.length > 1 ? 1 : blog.blogs.length,
                 itemBuilder: (_, i) {
-                  return Container();
+                  return BlogListItem(
+                    model: blog.blogs[i],
+                  );
                 },
-                // itemCount: blog.blogs.length > 2 ? 2 : blog.blogs.length,
-                // itemBuilder: (_, i) {
-                //   return BlogListItem(
-                //     model: blog.blogs[i],
-                //   );
-                // },
                 separatorBuilder: (_, i) {
                   return const SizedBox(height: values.BASE_PADDING / 2);
                 },
@@ -274,10 +269,12 @@ class _HomeState extends State<Home> {
             ),
 
             /// Services
-            /// Todo
+            const ServiceWidget(),
 
             /// Join us Today button
             const JoinUsTodayWidget(),
+
+            const SizedBox(height: 120.0),
           ],
         ),
       ),

@@ -34,10 +34,11 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   timeline_tile: ^2.0.0
   validators: ^3.0.0
-  flutter_html: ^2.2.1
+#  flutter_html: ^2.2.1
   url_launcher: ^6.0.18
   image_picker: ^0.8.4+4
-  image_cropping: ^0.0.9
+  image_cropper: ^1.4.1
+  flutter_svg: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -51,3 +52,4 @@ flutter:
 
   assets:
     - images/
+    - images/services/

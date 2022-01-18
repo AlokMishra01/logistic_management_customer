@@ -7,7 +7,12 @@ import 'constants/colors.dart' as colors;
 import 'controllers/authentication_controller.dart';
 import 'controllers/connectivity_controller.dart';
 import 'controllers/dio_controller.dart';
+import 'controllers/geo_locator_controller.dart';
+import 'controllers/message_controller.dart';
+import 'controllers/notification_controller.dart';
+import 'controllers/package_controller.dart';
 import 'controllers/profile_controller.dart';
+import 'providers/blog_provider.dart';
 import 'services/preference_service.dart';
 import 'views/login.dart';
 import 'views/main_page.dart';
@@ -24,14 +29,19 @@ class _SplashState extends State<Splash> {
   void initState() {
     super.initState();
     context.read<ConnectivityController>();
+    context.read<GeoLocatorController>();
     context.read<DioController>();
     context.read<AuthenticationController>();
     context.read<ProfileController>();
+    context.read<PackageController>();
+    context.read<BlogProvider>();
+    context.read<MessageController>();
+    context.read<NotificationController>();
     _checkLogin();
   }
 
   _checkLogin() {
-    Timer(const Duration(seconds: 2), () async {
+    Timer(const Duration(seconds: 5), () async {
       if (await PreferenceService.service.isLogin) {
         Navigator.pushReplacement(
           context,

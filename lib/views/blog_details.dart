@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:logistic_management_customer/models/blog_model.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:validators/validators.dart';
 
 import '../constants/colors.dart' as colors;
@@ -58,18 +56,18 @@ class BlogDetails extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: values.BASE_PADDING / 2,
-                      ),
-                      child: Html(
-                        data: model.description,
-                        shrinkWrap: true,
-                        onLinkTap: (url, cxt, map, element) {
-                          launch(url ?? '');
-                        },
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(
+                    //     horizontal: values.BASE_PADDING / 2,
+                    //   ),
+                    //   child: Html(
+                    //     data: model.description,
+                    //     shrinkWrap: true,
+                    //     onLinkTap: (url, cxt, map, element) {
+                    //       launch(url ?? '');
+                    //     },
+                    //   ),
+                    // ),
                     SizedBox(height: 120.0),
                   ],
                 ),

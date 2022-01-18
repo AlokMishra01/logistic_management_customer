@@ -25,19 +25,17 @@ class JoinUsTodayWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
-              'Be our Partner to connect with us and add an extra '
-              'quality to your service. Take your Business and transport '
-              'to Next Level',
-              textAlign: TextAlign.justify,
+              'Connect with us and add on extra quality to your service.',
+              textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: values.DETAILS_TEXT,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(height: values.BASE_PADDING / 2),
+            const SizedBox(height: values.BASE_PADDING),
             Align(
-              alignment: Alignment.centerRight,
+              alignment: Alignment.center,
               child: TextButton(
                 onPressed: () {
                   launch('https://logistics.intopros.com.np/membership');
@@ -45,12 +43,13 @@ class JoinUsTodayWidget extends StatelessWidget {
                 child: Text(
                   'Join us Today',
                   style: GoogleFonts.comfortaa(
-                    color: colors.TEXT_BLUE,
-                    fontSize: values.DETAILS_TEXT,
+                    color: colors.TEXT_WHITE,
+                    fontSize: values.TITLE_TEXT + 2,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 style: TextButton.styleFrom(
-                  backgroundColor: colors.FIELD_BACKGROUND,
+                  backgroundColor: colors.BUTTON_BLUE,
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(values.RADIUS),

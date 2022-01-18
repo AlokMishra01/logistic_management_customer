@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
+import '../constants/enums.dart';
 import '../constants/values.dart' as values;
+import '../controllers/message_controller.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_input.dart';
+import '../widgets/dialogs/bottom_dialog.dart';
+import '../widgets/dialogs/loading_dialog.dart';
 import '../widgets/header.dart';
 
 class ComposeMessage extends StatefulWidget {
@@ -15,13 +20,11 @@ class ComposeMessage extends StatefulWidget {
 }
 
 class _ComposeMessageState extends State<ComposeMessage> {
-  final TextEditingController _from = TextEditingController();
   final TextEditingController _subject = TextEditingController();
   final TextEditingController _message = TextEditingController();
 
   @override
   void dispose() {
-    _from.dispose();
     _subject.dispose();
     _message.dispose();
     super.dispose();
@@ -47,13 +50,13 @@ class _ComposeMessageState extends State<ComposeMessage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(4.0),
+                        padding: const EdgeInsets.all(4.0),
                         child: Text(
                           'Subject',
                           style: GoogleFonts.comfortaa(
                             color: colors.TEXT_BLUE,
-                            fontSize: values.DETAILS_TEXT,
-                            fontWeight: FontWeight.w600,
+                            fontSize: values.TITLE_TEXT,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ),
@@ -65,8 +68,8 @@ class _ComposeMessageState extends State<ComposeMessage> {
                           'Message',
                           style: GoogleFonts.comfortaa(
                             color: colors.TEXT_BLUE,
-                            fontSize: values.DETAILS_TEXT,
-                            fontWeight: FontWeight.w600,
+                            fontSize: values.TITLE_TEXT,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ),
@@ -80,7 +83,7 @@ class _ComposeMessageState extends State<ComposeMessage> {
                       const SizedBox(height: values.BASE_PADDING * 2),
                       CustomButton(
                         title: ' SEND ',
-                        onTab: () {},
+                        onTab: _save,
                       )
                     ],
                   ),
@@ -91,5 +94,54 @@ class _ComposeMessageState extends State<ComposeMessage> {
         ),
       ),
     );
+  }
+
+  _save() async {
+    FocusScope.of(context).requestFocus(FocusNode());
+    if (_subject.text.isEmpty) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'ERROR!',
+        message: 'Please enter subject',
+      );
+      return;
+    }
+    if (_message.text.isEmpty) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'ERROR!',
+        message: 'Please enter message',
+      );
+      return;
+    }
+
+    var progressDialog = getProgressDialog(context: context);
+    progressDialog.show(useSafeArea: false);
+
+    var result = await context.read<MessageController>().sendMessage(
+          subject: _subject.text,
+          message: _message.text,
+        );
+
+    progressDialog.dismiss();
+
+    if (result.isEmpty) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.SUCCESS,
+        title: 'Message Sent Successfully',
+        message: 'Your message is sent successfully.',
+      );
+      Navigator.pop(context);
+    } else {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Error',
+        message: result,
+      );
+    }
   }
 }

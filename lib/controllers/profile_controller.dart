@@ -102,7 +102,101 @@ class ProfileController with ChangeNotifier {
       phone: phone,
     );
 
+    _isLoading = false;
+
+    if (b) {
+      await getProfile();
+    }
+
+    return b;
+  }
+
+  Future<bool> updateAddress({
+    required String city,
+    required String street,
+    required String province,
+    required String district,
+    required String country,
+  }) async {
+    if (_isLoading) {
+      return false;
+    }
+
+    if (_connectivityController == null) {
+      return false;
+    }
+
+    if (_dioController == null) {
+      return false;
+    }
+
+    if (_authenticationController == null) {
+      return false;
+    }
+
+    if (!(_connectivityController?.hasInternet ?? false)) {
+      return false;
+    }
+
+    if (!(_authenticationController?.isLoggedIn ?? false)) {
+      return false;
+    }
+
     _isLoading = true;
+    notifyListeners();
+
+    bool b = await _profileService.updateAddress(
+      dio: _dioController!,
+      city: city,
+      street: street,
+      country: country,
+      district: district,
+      province: province,
+    );
+
+    _isLoading = false;
+
+    if (b) {
+      await getProfile();
+    }
+
+    return b;
+  }
+
+  Future<bool> updateImage({required String path}) async {
+    if (_isLoading) {
+      return false;
+    }
+
+    if (_connectivityController == null) {
+      return false;
+    }
+
+    if (_dioController == null) {
+      return false;
+    }
+
+    if (_authenticationController == null) {
+      return false;
+    }
+
+    if (!(_connectivityController?.hasInternet ?? false)) {
+      return false;
+    }
+
+    if (!(_authenticationController?.isLoggedIn ?? false)) {
+      return false;
+    }
+
+    _isLoading = true;
+    notifyListeners();
+
+    bool b = await _profileService.updateImage(
+      dio: _dioController!,
+      path: path,
+    );
+
+    _isLoading = false;
 
     if (b) {
       await getProfile();

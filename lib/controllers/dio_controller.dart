@@ -61,6 +61,7 @@ class DioController with ChangeNotifier {
 
   _onError(DioError error, ErrorInterceptorHandler handler) async {
     log(prettyJson(error.type.toString()), name: 'API Error');
+    log(prettyJson(error.response?.data ?? {}), name: 'API Error');
     // if (error.response!.statusCode == 401) {
     //   final model = _context.read<LoginWithRollingNexusController>().tokenModel;
     //   if (model is AccessTokenModel) {

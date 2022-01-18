@@ -54,6 +54,28 @@ class PackageService {
     }
   }
 
+  Future<PackageModel?> getMyRequests({
+    required DioController dio,
+  }) async {
+    try {
+      Response response = await dio.dioClient.get(
+        'consumer/delivery/latest',
+      );
+      log(prettyJson(response.data), name: 'Get My Request Response');
+      if (response.statusCode == 200) {
+        if (response.data['status'] ?? false) {
+          return PackageModel.fromJson(response.data['data']);
+        }
+        return null;
+      } else {
+        return null;
+      }
+    } on Exception catch (e, s) {
+      log('Get My Request Error!', stackTrace: s, error: e);
+      return null;
+    }
+  }
+
   getPackageById({
     required DioController dio,
     required int id,
@@ -88,8 +110,8 @@ class PackageService {
     required int packageType,
     required int packageWeight,
     required int packageSize,
-    required String pickUpTime,
-    required String dropOffTime,
+    // required String pickUpTime,
+    // required String dropOffTime,
     required int fragile,
     required String packagePrice,
     required int express,
@@ -111,8 +133,8 @@ class PackageService {
           "package_type": packageType,
           "package_weight": packageWeight,
           "package_size": packageSize,
-          "pickup_time": pickUpTime,
-          "dropoff_time": dropOffTime,
+          // "pickup_time": pickUpTime,
+          // "dropoff_time": dropOffTime,
           "fragile": fragile,
           "package_price": packagePrice,
           "express": express,

@@ -22,8 +22,9 @@ class PackageController with ChangeNotifier {
     if (_connectivityController != null &&
         _authenticationController != null &&
         _dioController != null) {
-      getPackageType();
+      getMyRequest();
       getPackageList();
+      getPackageType();
     }
   }
 
@@ -109,6 +110,42 @@ class PackageController with ChangeNotifier {
     notifyListeners();
   }
 
+  getMyRequest() async {
+    if (_isLoadingMyRequest) {
+      return;
+    }
+
+    if (_connectivityController == null) {
+      return;
+    }
+
+    if (_dioController == null) {
+      return;
+    }
+
+    if (_authenticationController == null) {
+      return;
+    }
+
+    if (!(_connectivityController?.hasInternet ?? false)) {
+      return;
+    }
+
+    if (!(_authenticationController?.isLoggedIn ?? false)) {
+      return;
+    }
+
+    _isLoadingMyRequest = true;
+    notifyListeners();
+
+    _myRequest = await _packageService.getMyRequests(
+      dio: _dioController!,
+    );
+
+    _isLoadingMyRequest = false;
+    notifyListeners();
+  }
+
   Future<String> sendDeliveryRequest({
     required String senderName,
     required String senderAddress,
@@ -123,8 +160,8 @@ class PackageController with ChangeNotifier {
     required int packageType,
     required int packageWeight,
     required int packageSize,
-    required String pickUpTime,
-    required String dropOffTime,
+    // required String pickUpTime,
+    // required String dropOffTime,
     required int fragile,
     required String packagePrice,
     required int express,
@@ -166,8 +203,8 @@ class PackageController with ChangeNotifier {
       packageType: packageType,
       packageWeight: packageWeight,
       packageSize: packageSize,
-      pickUpTime: pickUpTime,
-      dropOffTime: dropOffTime,
+      // pickUpTime: pickUpTime,
+      // dropOffTime: dropOffTime,
       fragile: fragile,
       packagePrice: packagePrice,
       express: express,
@@ -187,7 +224,11 @@ class PackageController with ChangeNotifier {
 
   List<PackageModel> _packageAll = [];
   List<PackageModel> get packageAll => _packageAll;
-
   bool _isLoadingPackages = false;
   bool get isLoadingPackages => _isLoadingPackages;
+
+  PackageModel? _myRequest;
+  PackageModel? get myRequest => _myRequest;
+  bool _isLoadingMyRequest = false;
+  bool get isLoadingMyRequest => _isLoadingMyRequest;
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logistic_management_customer/controllers/package_controller.dart';
+import 'package:logistic_management_customer/widgets/package_list_item.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
@@ -19,7 +20,13 @@ class _MyRequestState extends State<MyRequest> {
 
   @override
   Widget build(BuildContext context) {
-    final request = context.watch<PackageController>();
+    final packages = context.watch<PackageController>();
+    final packageListPending = packages.packageAll.where((e) {
+      return (e.status == 'Pending');
+    }).toList();
+    final packageListApproved = packages.packageAll.where((e) {
+      return (e.status == 'Approved');
+    }).toList();
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -45,6 +52,7 @@ class _MyRequestState extends State<MyRequest> {
             Padding(
               padding: const EdgeInsets.all(values.BASE_PADDING),
               child: Container(
+                height: 48.0,
                 decoration: BoxDecoration(
                   color: colors.FIELD_BACKGROUND,
                   borderRadius: BorderRadius.circular(32),
@@ -77,51 +85,26 @@ class _MyRequestState extends State<MyRequest> {
                 padding: const EdgeInsets.symmetric(
                   horizontal: values.BASE_PADDING,
                 ),
-                child: ListView(),
-                // child: RefreshIndicator(
-                //   onRefresh: () => _selected == 0
-                //       ? request.fetchPending(
-                //           userId: context
-                //                   .read<AuthenticationProvider>()
-                //                   .consumer!
-                //                   .id ??
-                //               43,
-                //         )
-                //       : request.fetchApproved(
-                //           userId: context
-                //                   .read<AuthenticationProvider>()
-                //                   .consumer!
-                //                   .id ??
-                //               43,
-                //         ),
-                //   child: ListView.separated(
-                //     physics: AlwaysScrollableScrollPhysics(),
-                //     itemCount: _selected == 0
-                //         ? request.pendingList.length
-                //         : request.approvedList.length,
-                //     separatorBuilder: (_, i) => SizedBox(
-                //       height: values.BASE_PADDING / 2,
-                //     ),
-                //     itemBuilder: (_, i) {
-                //       final r = _selected == 0
-                //           ? request.pendingList[i]
-                //           : request.approvedList[i];
-                //       return Padding(
-                //         padding: EdgeInsets.only(
-                //             bottom: i + 1 ==
-                //                     (_selected == 0
-                //                         ? request.pendingList.length
-                //                         : request.approvedList.length)
-                //                 ? 120
-                //                 : 0),
-                //         child: RequestItem(
-                //           approved: _selected == 1,
-                //           request: r,
-                //         ),
-                //       );
-                //     },
-                //   ),
-                // ),
+                child: RefreshIndicator(
+                  onRefresh: () => packages.getPackageList(),
+                  child: ListView.separated(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: _selected == 0
+                        ? packageListPending.length
+                        : packageListApproved.length,
+                    itemBuilder: (_, i) {
+                      if (_selected == 0) {
+                        final p = packageListPending[i];
+                        return PackageListItem(p: p);
+                      }
+                      final p = packageListApproved[i];
+                      return PackageListItem(p: p);
+                    },
+                    separatorBuilder: (_, i) {
+                      return const SizedBox(height: values.BASE_PADDING / 2);
+                    },
+                  ),
+                ),
               ),
             ),
           ],

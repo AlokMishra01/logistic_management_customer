@@ -1,16 +1,19 @@
 import 'package:flutter/cupertino.dart';
+import 'package:logistic_management_customer/models/message_response_model.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
 
 class MessageListItem extends StatelessWidget {
+  final MessageModel message;
+
   const MessageListItem({
     Key? key,
+    required this.message,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       color: colors.FIELD_BACKGROUND,
@@ -30,26 +33,26 @@ class MessageListItem extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                SizedBox(height: values.BASE_PADDING),
+              children: [
+                const SizedBox(height: values.BASE_PADDING),
                 Text(
-                  'Welcome to our platform.',
-                  style: TextStyle(
+                  message.subject ?? '',
+                  style: const TextStyle(
                     color: colors.TEXT_BLACK,
                     fontSize: values.TITLE_TEXT,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: values.BASE_PADDING / 2),
+                const SizedBox(height: values.BASE_PADDING / 2),
                 Text(
-                  'Thank you for signing up in our app. We promise to provide the quality service.',
-                  style: TextStyle(
+                  message.message ?? '',
+                  style: const TextStyle(
                     color: colors.TEXT_SECONDARY,
                     fontSize: values.DETAILS_TEXT,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(height: values.BASE_PADDING),
+                const SizedBox(height: values.BASE_PADDING),
               ],
             ),
           )
