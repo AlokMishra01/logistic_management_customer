@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:logistic_management_customer/controllers/general_controller.dart';
 import 'package:provider/provider.dart';
 
 import 'constants/colors.dart' as colors;
@@ -35,6 +36,7 @@ class _SplashState extends State<Splash> {
     context.read<ProfileController>();
     context.read<PackageController>();
     context.read<BlogProvider>();
+    context.read<GeneralController>();
     context.read<MessageController>();
     context.read<NotificationController>();
     _checkLogin();
@@ -58,8 +60,29 @@ class _SplashState extends State<Splash> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    final size = MediaQuery.of(context).size;
+    return Scaffold(
       backgroundColor: colors.TEXT_WHITE,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const SizedBox(height: 88.0, width: double.infinity),
+          Image.asset(
+            'images/icon.png',
+            fit: BoxFit.cover,
+            width: size.width / 2,
+            height: size.width / 4,
+          ),
+          const Padding(
+            padding: EdgeInsets.all(32.0),
+            child: SizedBox(
+              height: 24.0,
+              width: 24.0,
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

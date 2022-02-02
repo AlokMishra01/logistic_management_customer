@@ -37,11 +37,19 @@ class ServiceWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SvgPicture.asset(
-                    'images/services/bus.svg',
-                    semanticsLabel: 'Shipment Service Logo',
-                    width: 52.0,
-                    height: 52.0,
+                  CircleAvatar(
+                    backgroundColor: colors.FIELD_BACKGROUND,
+                    radius: 26.0,
+                    child: CircleAvatar(
+                      backgroundColor: colors.TEXT_WHITE,
+                      radius: 25.0,
+                      child: SvgPicture.asset(
+                        'images/services/bus.svg',
+                        semanticsLabel: 'Shipment Service Logo',
+                        width: 32.0,
+                        height: 32.0,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: values.BASE_PADDING),
                   const Text(
@@ -64,11 +72,19 @@ class ServiceWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SvgPicture.asset(
-                    'images/services/route.svg',
-                    semanticsLabel: 'Live GPS Tracking Logo',
-                    width: 52.0,
-                    height: 52.0,
+                  CircleAvatar(
+                    backgroundColor: colors.FIELD_BACKGROUND,
+                    radius: 26.0,
+                    child: CircleAvatar(
+                      backgroundColor: colors.TEXT_WHITE,
+                      radius: 25.0,
+                      child: SvgPicture.asset(
+                        'images/services/route.svg',
+                        semanticsLabel: 'Live GPS Tracking Logo',
+                        width: 32.0,
+                        height: 32.0,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: values.BASE_PADDING),
                   const Text(
@@ -91,11 +107,19 @@ class ServiceWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SvgPicture.asset(
-                    'images/services/secure-shield.svg',
-                    semanticsLabel: 'Secure Delivery Logo',
-                    width: 52.0,
-                    height: 52.0,
+                  CircleAvatar(
+                    backgroundColor: colors.FIELD_BACKGROUND,
+                    radius: 26.0,
+                    child: CircleAvatar(
+                      backgroundColor: colors.TEXT_WHITE,
+                      radius: 25.0,
+                      child: SvgPicture.asset(
+                        'images/services/secure-shield.svg',
+                        semanticsLabel: 'Secure Delivery Logo',
+                        width: 32.0,
+                        height: 32.0,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: values.BASE_PADDING),
                   const Text(
@@ -118,11 +142,19 @@ class ServiceWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SvgPicture.asset(
-                    'images/services/cash.svg',
-                    semanticsLabel: 'Cash on Delivery Logo',
-                    width: 52.0,
-                    height: 52.0,
+                  CircleAvatar(
+                    backgroundColor: colors.FIELD_BACKGROUND,
+                    radius: 26.0,
+                    child: CircleAvatar(
+                      backgroundColor: colors.TEXT_WHITE,
+                      radius: 25.0,
+                      child: SvgPicture.asset(
+                        'images/services/cash.svg',
+                        semanticsLabel: 'Cash on Delivery Logo',
+                        width: 32.0,
+                        height: 32.0,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: values.BASE_PADDING),
                   const Text(

@@ -160,11 +160,14 @@ class PackageController with ChangeNotifier {
     required int packageType,
     required int packageWeight,
     required int packageSize,
-    // required String pickUpTime,
-    // required String dropOffTime,
+    required String pickUpTime,
+    required String dropOffTime,
     required int fragile,
     required String packagePrice,
     required int express,
+    required String packageDescription,
+    required String pickUpDate,
+    required String dropOffDate,
   }) async {
     if (_connectivityController == null) {
       return 'Internet connection issue. '
@@ -203,14 +206,18 @@ class PackageController with ChangeNotifier {
       packageType: packageType,
       packageWeight: packageWeight,
       packageSize: packageSize,
-      // pickUpTime: pickUpTime,
-      // dropOffTime: dropOffTime,
+      packageDescription: packageDescription,
+      pickUpTime: pickUpTime,
+      dropOffTime: dropOffTime,
+      pickUpDate: pickUpDate,
+      dropOffDate: dropOffDate,
       fragile: fragile,
       packagePrice: packagePrice,
       express: express,
     );
 
     if (s.isEmpty) {
+      await getMyRequest();
       getPackageList();
     }
 

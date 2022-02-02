@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logistic_management_customer/controllers/general_controller.dart';
 import 'package:logistic_management_customer/controllers/message_controller.dart';
 import 'package:logistic_management_customer/controllers/notification_controller.dart';
 import 'package:logistic_management_customer/controllers/package_controller.dart';
@@ -56,6 +57,15 @@ class MyApp extends StatelessWidget {
             AuthenticationController, DioController, ProfileController>(
           create: (cxt) => ProfileController(null, null, null),
           update: (cxt, conn, auth, dio, profile) => ProfileController(
+            conn,
+            auth,
+            dio,
+          ),
+        ),
+        ChangeNotifierProxyProvider3<ConnectivityController,
+            AuthenticationController, DioController, GeneralController>(
+          create: (cxt) => GeneralController(null, null, null),
+          update: (cxt, conn, auth, dio, pack) => GeneralController(
             conn,
             auth,
             dio,

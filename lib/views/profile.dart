@@ -6,17 +6,16 @@ import 'package:provider/provider.dart';
 import '../constants/colors.dart' as colors;
 import '../constants/enums.dart';
 import '../constants/values.dart' as values;
-import '../controllers/authentication_controller.dart';
 import '../controllers/profile_controller.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/dialogs/bottom_dialog.dart';
+import '../widgets/dialogs/custom_dialog.dart' as customDialog;
 import '../widgets/dialogs/loading_dialog.dart';
 import '../widgets/header.dart';
 import '../widgets/join_us_today_widget.dart';
 import '../widgets/profile_info_heading.dart';
 import '../widgets/single_personal_detail.dart';
 import 'address_update.dart';
-import 'login.dart';
 import 'my_request.dart';
 import 'profile_update.dart';
 
@@ -33,12 +32,16 @@ class Profile extends StatelessWidget {
             title: 'Profile',
             trailing: IconButton(
               onPressed: () {
-                context.read<AuthenticationController>().logOut();
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (_) => const Login()),
-                  (route) => false,
+                customDialog.CustomDialogs.dialogs.showCustomDialog(
+                  context: context,
+                  type: customDialog.DialogType.logout,
                 );
+                // context.read<AuthenticationController>().logOut();
+                // Navigator.pushAndRemoveUntil(
+                //   context,
+                //   MaterialPageRoute(builder: (_) => const Login()),
+                //   (route) => false,
+                // );
               },
               icon: const Icon(
                 Icons.exit_to_app_rounded,

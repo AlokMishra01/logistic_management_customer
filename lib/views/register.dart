@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:validators/validators.dart';
 
+import '../constants/colors.dart' as colors;
 import '../constants/enums.dart';
 import '../constants/values.dart' as values;
 import '../controllers/authentication_controller.dart';
@@ -28,6 +31,7 @@ class _RegisterState extends State<Register> {
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirmPassword = TextEditingController();
   bool _showPassword = false;
+  bool _showConfirmPassword = false;
 
   @override
   void dispose() {
@@ -44,6 +48,7 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: colors.TEXT_WHITE,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -51,14 +56,23 @@ class _RegisterState extends State<Register> {
               horizontal: values.BASE_PADDING,
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: size.height * 0.1),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: HeaderText(text: 'Register'),
+                Image.asset(
+                  'images/icon.png',
+                  fit: BoxFit.cover,
+                  width: size.width / 2,
+                  height: size.width / 4,
                 ),
-                SizedBox(height: size.height * 0.05),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: HeaderText(text: 'Register'),
+                  ),
+                ),
+                const SizedBox(height: values.BASE_PADDING),
                 CustomInput(
                   hint: "First Name",
                   type: TextInputType.name,
@@ -128,15 +142,50 @@ class _RegisterState extends State<Register> {
                 CustomInput(
                   hint: "Confirm Password",
                   controller: _confirmPassword,
-                  obscureText: true,
+                  obscureText: !_showConfirmPassword,
                   validator: (value) {
                     if (_password.text != (value as String)) {
                       return 'Password do not match';
                     }
                   },
+                  icon: _showConfirmPassword
+                      ? CupertinoIcons.eye_slash_fill
+                      : CupertinoIcons.eye_fill,
+                  onSuffixTab: () {
+                    _showConfirmPassword = !_showConfirmPassword;
+                    setState(() {});
+                  },
                 ),
                 const SizedBox(height: values.BASE_PADDING * 1.5),
                 CustomButton(title: "CONFIRM", onTab: _register),
+                const SizedBox(height: values.BASE_PADDING),
+                RichText(
+                  text: TextSpan(
+                    text: 'Already have an account?',
+                    children: [
+                      TextSpan(
+                        text: ' Login ',
+                        style: GoogleFonts.comfortaa(
+                          fontWeight: FontWeight.bold,
+                          fontSize: values.TITLE_TEXT,
+                          color: colors.TEXT_BLUE,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => Navigator.pop(context),
+                      ),
+                    ],
+                    style: GoogleFonts.comfortaa(
+                      fontWeight: FontWeight.bold,
+                      fontSize: values.TITLE_TEXT,
+                      color: colors.TEXT_BLACK,
+                    ),
+                  ),
+                ),
+                // CustomButton(
+                //   title: "LOGIN",
+                //   onTab: () => Navigator.pop(context),
+                // ),
+                const SizedBox(height: 120.0),
               ],
             ),
           ),

@@ -15,7 +15,7 @@ Color geStatusColor({required String status}) {
       return Colors.purple;
     case 'Dispatched':
       return Colors.deepOrange;
-    case 'Completed':
+    case 'Delivered':
       return Colors.green;
     case 'Pending':
       return Colors.amber;

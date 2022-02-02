@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
@@ -19,47 +18,61 @@ class Message extends StatelessWidget {
       children: [
         Header(
           title: 'Message',
-          trailing: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: values.BASE_PADDING),
-            child: TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const ComposeMessage(),
-                  ),
-                );
-              },
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.edit_rounded,
-                    color: colors.TEXT_BLUE,
-                    size: 18.0,
-                  ),
-                  Text(
-                    ' Compose ',
-                    style: GoogleFonts.comfortaa(
-                      color: colors.TEXT_BLUE,
-                      fontSize: values.DETAILS_TEXT,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-              style: TextButton.styleFrom(
-                backgroundColor: colors.FIELD_BACKGROUND,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(values.RADIUS),
+          trailing: IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const ComposeMessage(),
                 ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12.0,
-                  vertical: 4.0,
-                ),
-              ),
+              );
+            },
+            icon: const Icon(
+              Icons.edit_rounded,
+              color: colors.TEXT_BLUE,
             ),
           ),
+          // trailing: Padding(
+          //   padding:
+          //       const EdgeInsets.symmetric(horizontal: values.BASE_PADDING),
+          //   child: TextButton(
+          //     onPressed: () {
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (_) => const ComposeMessage(),
+          //         ),
+          //       );
+          //     },
+          //     child: Row(
+          //       children: [
+          //         const Icon(
+          //           Icons.edit_rounded,
+          //           color: colors.TEXT_BLUE,
+          //           size: 18.0,
+          //         ),
+          //         Text(
+          //           ' Compose ',
+          //           style: GoogleFonts.comfortaa(
+          //             color: colors.TEXT_BLUE,
+          //             fontSize: values.DETAILS_TEXT,
+          //             fontWeight: FontWeight.w500,
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //     style: TextButton.styleFrom(
+          //       backgroundColor: colors.FIELD_BACKGROUND,
+          //       shape: RoundedRectangleBorder(
+          //         borderRadius: BorderRadius.circular(values.RADIUS),
+          //       ),
+          //       padding: const EdgeInsets.symmetric(
+          //         horizontal: 12.0,
+          //         vertical: 4.0,
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ),
         const SizedBox(height: values.BASE_PADDING),
         // const DateText(date: "2nd Jan,2021"),
@@ -75,7 +88,33 @@ class Message extends StatelessWidget {
             );
           },
         ),
-        const SizedBox(height: 120.0),
+        if (message.messages.isNotEmpty) const SizedBox(height: 120.0),
+        if (message.messages.isEmpty)
+          Expanded(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(values.BASE_PADDING * 2),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'No messages right now.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: colors.TEXT_SECONDARY,
+                        fontSize: values.SUB_HEADER_TEXT,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => message.getMessages(),
+                      icon: const Icon(Icons.refresh_rounded),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         // const SizedBox(height: values.BASE_PADDING),
         // const DateText(date: "1st Jan,2021"),
         // const SizedBox(height: values.BASE_PADDING / 2),

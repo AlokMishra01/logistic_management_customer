@@ -313,10 +313,12 @@ class _DeliveryFormState extends State<DeliveryForm> {
           packageType: _type?.id ?? 0,
           packageWeight: weight ?? 0,
           packageSize: size ?? 0,
-          // pickUpTime: _pickupTime.text,
-          // dropOffTime: _deliveryTime.text,
+          pickUpTime: _pickupTime.text,
+          dropOffTime: _deliveryTime.text,
+          pickUpDate: _pickupDate.text,
+          dropOffDate: '',
+          packageDescription: '',
           fragile: _fragile ? 1 : 0,
-          // Todo: Package price from form
           packagePrice: '',
           express: _express ? 1 : 0,
         );

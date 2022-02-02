@@ -166,7 +166,9 @@ class PackageListItem extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            Jiffy(p.pickupTime, 'hh:mm:ss').jm,
+                            p.pickupTime == null
+                                ? ''
+                                : Jiffy(p.pickupTime, 'hh:mm:ss').jm,
                             style: const TextStyle(
                               fontSize: values.TITLE_TEXT,
                               color: colors.TEXT_SECONDARY,
@@ -221,7 +223,9 @@ class PackageListItem extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            Jiffy(p.dropoffTime, 'hh:mm:ss').jm,
+                            p.dropoffTime == null
+                                ? ''
+                                : Jiffy(p.dropoffTime, 'hh:mm:ss').jm,
                             style: const TextStyle(
                               fontSize: values.TITLE_TEXT,
                               color: colors.TEXT_SECONDARY,

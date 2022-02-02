@@ -80,33 +80,78 @@ class _MyRequestState extends State<MyRequest> {
                 ),
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: values.BASE_PADDING,
-                ),
-                child: RefreshIndicator(
-                  onRefresh: () => packages.getPackageList(),
-                  child: ListView.separated(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: _selected == 0
-                        ? packageListPending.length
-                        : packageListApproved.length,
-                    itemBuilder: (_, i) {
-                      if (_selected == 0) {
-                        final p = packageListPending[i];
+            if ((_selected == 0 && packageListPending.isNotEmpty) ||
+                (_selected == 1 && packageListApproved.isNotEmpty))
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: values.BASE_PADDING,
+                  ),
+                  child: RefreshIndicator(
+                    onRefresh: () => packages.getPackageList(),
+                    child: ListView.separated(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: _selected == 0
+                          ? packageListPending.length
+                          : packageListApproved.length,
+                      itemBuilder: (_, i) {
+                        if (_selected == 0) {
+                          final p = packageListPending[i];
+                          return PackageListItem(p: p);
+                        }
+                        final p = packageListApproved[i];
                         return PackageListItem(p: p);
-                      }
-                      final p = packageListApproved[i];
-                      return PackageListItem(p: p);
-                    },
-                    separatorBuilder: (_, i) {
-                      return const SizedBox(height: values.BASE_PADDING / 2);
-                    },
+                      },
+                      separatorBuilder: (_, i) {
+                        return const SizedBox(height: values.BASE_PADDING / 2);
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
+            if (_selected == 0 && packageListPending.isEmpty)
+              Padding(
+                padding: const EdgeInsets.all(values.BASE_PADDING * 2),
+                child: Column(
+                  children: [
+                    const Text(
+                      'No pending packages right now',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: colors.TEXT_SECONDARY,
+                        fontSize: values.SUB_HEADER_TEXT,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => packages.getPackageList(),
+                      icon: const Icon(Icons.refresh_rounded),
+                    ),
+                  ],
+                ),
+              ),
+            if (_selected == 1 && packageListApproved.isEmpty)
+              Padding(
+                padding: const EdgeInsets.all(values.BASE_PADDING * 2),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'No approved packages right now',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: colors.TEXT_SECONDARY,
+                        fontSize: values.SUB_HEADER_TEXT,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => packages.getPackageList(),
+                      icon: const Icon(Icons.refresh_rounded),
+                    ),
+                  ],
+                ),
+              ),
           ],
         ),
       ),

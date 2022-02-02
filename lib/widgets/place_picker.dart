@@ -43,7 +43,7 @@ class _PlacePickerState extends State<PlacePicker> {
                   GoogleMap(
                     initialCameraPosition: const CameraPosition(
                       target: LatLng(27.68824985954312, 85.33550716801042),
-                      zoom: 5,
+                      zoom: 12,
                     ),
                     myLocationEnabled: true,
                     myLocationButtonEnabled: true,

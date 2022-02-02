@@ -27,16 +27,19 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(values.RADIUS),
         ),
       ),
-      child: SizedBox(
-        width: double.infinity,
-        height: 28.0,
-        child: Center(
-          child: Text(
-            title,
-            style: GoogleFonts.comfortaa(
-              color: colors.TEXT_WHITE,
-              fontSize: values.BUTTON_TEXT,
-              fontWeight: FontWeight.w900,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: values.BASE_PADDING),
+        child: SizedBox(
+          width: double.infinity,
+          height: 28.0,
+          child: Center(
+            child: Text(
+              title,
+              style: GoogleFonts.comfortaa(
+                color: colors.TEXT_WHITE,
+                fontSize: values.BUTTON_TEXT,
+                fontWeight: FontWeight.w900,
+              ),
             ),
           ),
         ),

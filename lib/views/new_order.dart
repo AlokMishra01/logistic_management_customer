@@ -5,6 +5,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:jiffy/jiffy.dart';
+import 'package:logistic_management_customer/controllers/geo_locator_controller.dart';
+import 'package:logistic_management_customer/widgets/custom_date_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,9 +22,9 @@ import '../widgets/custom_time_picker.dart';
 import '../widgets/dialogs/bottom_dialog.dart';
 import '../widgets/dialogs/loading_dialog.dart';
 import '../widgets/header.dart';
-import '../widgets/place_picker.dart';
 import '../widgets/type_bar.dart';
 import 'main_page.dart';
+import 'request_location_picker.dart';
 
 class NewOrder extends StatefulWidget {
   const NewOrder({Key? key}) : super(key: key);
@@ -41,6 +44,7 @@ class _NewOrderState extends State<NewOrder> {
   double? _fromLon;
   final _pickupTime = TextEditingController();
   final _pickupDate = TextEditingController();
+  String _fromAddressString = '';
 
   /// To Data
   final _toName = TextEditingController();
@@ -50,6 +54,7 @@ class _NewOrderState extends State<NewOrder> {
   double? _toLon;
   final _dropOffTime = TextEditingController();
   final _dropOffDate = TextEditingController();
+  String _toAddressString = '';
 
   /// Package Details
   PackageTypeModel? _type;
@@ -60,9 +65,7 @@ class _NewOrderState extends State<NewOrder> {
   final _packageWeight = TextEditingController();
   bool _isFragile = false;
 
-  CameraPosition? _tempCamPos;
-
-  int? _paymentType;
+  int _paymentType = 1;
 
   @override
   void dispose() {
@@ -86,6 +89,7 @@ class _NewOrderState extends State<NewOrder> {
 
   @override
   Widget build(BuildContext context) {
+    final location = context.watch<GeoLocatorController>();
     final package = context.watch<PackageController>();
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -235,30 +239,53 @@ class _NewOrderState extends State<NewOrder> {
                   ),
                   const SizedBox(height: values.BASE_PADDING),
                   CustomButton(
-                    title: 'Select a Pickup Address',
+                    title: _fromAddressString.isEmpty
+                        ? 'Select a Pickup Address'
+                        : _fromAddressString,
                     onTab: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => PlacePicker(
-                            initLocation: LatLng(
-                              _fromLat ?? 0.0,
-                              _fromLat ?? 0.0,
+                          builder: (_) => RequestLocationPicker(
+                            selectedLocation: LatLng(
+                              _fromLat ??
+                                  location.location?.latitude ??
+                                  27.6905911,
+                              _fromLon ??
+                                  location.location?.longitude ??
+                                  85.3297026,
                             ),
-                            onCameraMove: (pos) {
-                              _tempCamPos = pos;
+                            onSelect: (latLng) {
+                              _fromLat = latLng.latitude;
+                              _fromLon = latLng.longitude;
+                              setState(() {});
                             },
-                            onSelect: () {
-                              Navigator.pop(context);
-                              if (_tempCamPos != null) {
-                                _fromLat = _tempCamPos?.target.latitude;
-                                _fromLon = _tempCamPos?.target.longitude;
-                                _tempCamPos = null;
-                              }
+                            onAddress: (address) {
+                              _fromAddressString = address;
+                              setState(() {});
                             },
                           ),
                         ),
                       );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (_) => PlacePicker(
+                      //       initLocation: LatLng(
+                      //         _fromLat ?? 0.0,
+                      //         _fromLat ?? 0.0,
+                      //       ),
+                      //       onSelect: () {
+                      //         Navigator.pop(context);
+                      //         if (_tempCamPos != null) {
+                      //           _fromLat = _tempCamPos?.target.latitude;
+                      //           _fromLon = _tempCamPos?.target.longitude;
+                      //           _tempCamPos = null;
+                      //         }
+                      //       },
+                      //     ),
+                      //   ),
+                      // );
                     },
                   ),
                   if (_selected == 1)
@@ -317,14 +344,14 @@ class _NewOrderState extends State<NewOrder> {
                   if (_selected == 1)
                     InkWell(
                       onTap: () async {
-                        // String? d = await customDatePicker(
-                        //   context: context,
-                        //   date: _pickupDate.text.isEmpty
-                        //       ? DateTime.now()
-                        //       : stringDateToDateTime(date: _pickupDate.text),
-                        // );
-                        // if (d != null) _pickupDate.text = d;
-                        // setState(() {});
+                        String? d = await customDatePicker(
+                          context: context,
+                          date: _pickupDate.text.isEmpty
+                              ? DateTime.now()
+                              : Jiffy(_pickupDate.text, "yyyy-MM-d").dateTime,
+                        );
+                        if (d != null) _pickupDate.text = d;
+                        setState(() {});
                       },
                       child: TextFormField(
                         controller: _pickupDate,
@@ -439,30 +466,56 @@ class _NewOrderState extends State<NewOrder> {
                   ),
                   const SizedBox(height: values.BASE_PADDING),
                   CustomButton(
-                    title: 'Select a Delivery Address',
+                    title: _toAddressString.isEmpty
+                        ? 'Select a Delivery Address'
+                        : _toAddressString,
                     onTab: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => PlacePicker(
-                            initLocation: LatLng(
-                              _toLat ?? 0.0,
-                              _toLat ?? 0.0,
+                          builder: (_) => RequestLocationPicker(
+                            selectedLocation: LatLng(
+                              _toLat ??
+                                  location.location?.latitude ??
+                                  27.6905911,
+                              _toLon ??
+                                  location.location?.longitude ??
+                                  85.3297026,
                             ),
-                            onCameraMove: (pos) {
-                              _tempCamPos = pos;
+                            onSelect: (latLng) {
+                              _toLat = latLng.latitude;
+                              _toLon = latLng.longitude;
+                              setState(() {});
                             },
-                            onSelect: () {
-                              Navigator.pop(context);
-                              if (_tempCamPos != null) {
-                                _toLat = _tempCamPos?.target.latitude;
-                                _toLon = _tempCamPos?.target.longitude;
-                                _tempCamPos = null;
-                              }
+                            onAddress: (address) {
+                              _toAddressString = address;
+                              setState(() {});
                             },
                           ),
                         ),
                       );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (_) => PlacePicker(
+                      //       initLocation: LatLng(
+                      //         _toLat ?? 0.0,
+                      //         _toLat ?? 0.0,
+                      //       ),
+                      //       onCameraMove: (pos) {
+                      //         _tempCamPos = pos;
+                      //       },
+                      //       onSelect: () {
+                      //         Navigator.pop(context);
+                      //         if (_tempCamPos != null) {
+                      //           _toLat = _tempCamPos?.target.latitude;
+                      //           _toLon = _tempCamPos?.target.longitude;
+                      //           _tempCamPos = null;
+                      //         }
+                      //       },
+                      //     ),
+                      //   ),
+                      // );
                     },
                   ),
                   if (_selected == 1)
@@ -521,14 +574,16 @@ class _NewOrderState extends State<NewOrder> {
                   if (_selected == 1)
                     InkWell(
                       onTap: () async {
-                        // String? d = await customDatePicker(
-                        //   context: context,
-                        //   date: _pickupDate.text.isEmpty
-                        //       ? DateTime.now()
-                        //       : stringDateToDateTime(date: _pickupDate.text),
-                        // );
-                        // if (d != null) _pickupDate.text = d;
-                        // setState(() {});
+                        String? d = await customDatePicker(
+                          context: context,
+                          date: _dropOffDate.text.isEmpty
+                              ? DateTime.now()
+                              : Jiffy(_dropOffDate.text, "yyyy-MM-d").dateTime,
+                          // : stringDateToDateTime(date: _pickupDate.text),
+                        );
+                        log(d.toString());
+                        if (d != null) _dropOffDate.text = d;
+                        setState(() {});
                       },
                       child: TextFormField(
                         controller: _dropOffDate,
@@ -542,6 +597,7 @@ class _NewOrderState extends State<NewOrder> {
                         enabled: false,
                         decoration: const InputDecoration(
                           hintText: 'mm/dd/yyyy',
+                          enabled: false,
                           suffixIcon: Icon(
                             Icons.calendar_today_rounded,
                             color: colors.TEXT_BLACK,
@@ -639,12 +695,12 @@ class _NewOrderState extends State<NewOrder> {
                     controller: _packageLength,
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
-                      suffixText: 'Millimeter(mm)',
+                      suffixText: 'Centimeter(cm)',
                     ),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (int.tryParse((value ?? '0').toString()) == null) {
-                        return 'Please enter valid length in Millimeter(mm).';
+                        return 'Please enter valid length in Centimeter(cm).';
                       }
                     },
                   ),
@@ -661,12 +717,12 @@ class _NewOrderState extends State<NewOrder> {
                     controller: _packageWidth,
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
-                      suffixText: 'Millimeter(mm)',
+                      suffixText: 'Centimeter(cm)',
                     ),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (int.tryParse((value ?? '0').toString()) == null) {
-                        return 'Please enter valid width in Millimeter(mm).';
+                        return 'Please enter valid width in Centimeter(cm).';
                       }
                     },
                   ),
@@ -683,12 +739,12 @@ class _NewOrderState extends State<NewOrder> {
                     controller: _packageHeight,
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
-                      suffixText: 'Millimeter(mm)',
+                      suffixText: 'Centimeter(cm)',
                     ),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (int.tryParse((value ?? '0').toString()) == null) {
-                        return 'Please enter valid height in Millimeter(mm).';
+                        return 'Please enter valid height in Centimeter(cm).';
                       }
                     },
                   ),
@@ -705,12 +761,12 @@ class _NewOrderState extends State<NewOrder> {
                     controller: _packageWeight,
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
-                      suffixText: 'Gram(g)',
+                      suffixText: 'Kilogram(kg)',
                     ),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (int.tryParse((value ?? '0').toString()) == null) {
-                        return 'Please enter valid weight in gram(g).';
+                        return 'Please enter valid weight in Kilogram(kg).';
                       }
                     },
                   ),
@@ -938,60 +994,158 @@ class _NewOrderState extends State<NewOrder> {
     FocusManager.instance.primaryFocus?.unfocus();
 
     if (_fromName.text.isEmpty) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error!',
+        message: 'Please enter sender full name.',
+      );
       return;
     }
     if (_fromMobile.text.length != 10) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error!',
+        message: 'Please enter sender valid mobile number.',
+      );
       return;
     }
     if (_fromAddress.text.isEmpty) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error!',
+        message: 'Please enter pickup address.',
+      );
       return;
     }
     if (_fromLat == null || _fromLon == null) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error!',
+        message: 'Please select pickup location.',
+      );
       return;
     }
     if (_selected == 1 && _pickupTime.text.isEmpty) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error!',
+        message: 'Please select pickup time.',
+      );
       return;
     }
     if (_selected == 1 && _pickupDate.text.isEmpty) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error!',
+        message: 'Please select pickup date.',
+      );
       return;
     }
 
     if (_toName.text.isEmpty) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error!',
+        message: 'Please enter receiver full name.',
+      );
       return;
     }
     if (_toMobile.text.length != 10) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error!',
+        message: 'Please enter receiver valid mobile number.',
+      );
       return;
     }
     if (_toAddress.text.isEmpty) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error!',
+        message: 'Please enter delivery address.',
+      );
       return;
     }
     if (_toLat == null || _fromLon == null) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error!',
+        message: 'Please select delivery location.',
+      );
       return;
     }
     if (_selected == 1 && _dropOffTime.text.isEmpty) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error!',
+        message: 'Please select delivery date.',
+      );
       return;
     }
     if (_selected == 1 && _dropOffDate.text.isEmpty) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error!',
+        message: 'Please select delivery date.',
+      );
       return;
     }
 
     if (_type == null) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error!',
+        message: 'Please select package type.',
+      );
       return;
     }
     if (int.tryParse((_packageLength.text).toString()) == null) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error!',
+        message: 'Please enter valid length.',
+      );
       return;
     }
     if (int.tryParse((_packageWidth.text).toString()) == null) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error!',
+        message: 'Please enter valid width.',
+      );
       return;
     }
     if (int.tryParse((_packageHeight.text).toString()) == null) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error!',
+        message: 'Please enter valid height.',
+      );
       return;
     }
     if (int.tryParse((_packageWeight.text).toString()) == null) {
-      return;
-    }
-
-    if (_paymentType == null) {
+      showBottomDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        title: 'Delivery Request Error!',
+        message: 'Please enter valid weight.',
+      );
       return;
     }
 
@@ -1023,13 +1177,18 @@ class _NewOrderState extends State<NewOrder> {
           packageType: _type!.id!,
           packageWeight: weight!,
           packageSize: size!,
-          // pickUpTime: _pickupTime.text,
-          // dropOffTime: _dropOffTime.text,
+          packageDescription: _packageDescription.text,
+          pickUpTime: _selected == 0
+              ? Jiffy(DateTime.now()).format("h:mm a")
+              : _pickupTime.text,
+          dropOffTime: _selected == 0 ? '' : _dropOffTime.text,
+          pickUpDate: _selected == 0 ? '' : _pickupDate.text,
+          dropOffDate: _selected == 0 ? '' : _dropOffDate.text,
           fragile: _isFragile ? 1 : 0,
           // Todo: Package price from form
           packagePrice: '',
           // express: _express ? 1 : 0,
-          express: 1,
+          express: _selected == 0 ? 1 : 0,
         );
 
     progressDialog.dismiss();

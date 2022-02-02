@@ -16,24 +16,26 @@ class JoinUsTodayWidget extends StatelessWidget {
         vertical: values.BASE_PADDING,
       ),
       child: Container(
-        padding: const EdgeInsets.all(values.BASE_PADDING),
+        height: 52.0,
+        // padding: const EdgeInsets.all(values.BASE_PADDING / 2),
         decoration: BoxDecoration(
           color: colors.BUTTON_BLUE,
           borderRadius: BorderRadius.circular(values.RADIUS),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Connect with us and add on extra quality to your service.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: values.DETAILS_TEXT,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: values.BASE_PADDING),
+            // const Text(
+            //   'Connect with us and add on extra quality to your service.',
+            //   textAlign: TextAlign.center,
+            //   style: TextStyle(
+            //     color: Colors.white,
+            //     fontSize: values.DETAILS_TEXT,
+            //     fontWeight: FontWeight.w500,
+            //   ),
+            // ),
+            // const SizedBox(height: values.BASE_PADDING),
             Align(
               alignment: Alignment.center,
               child: TextButton(
