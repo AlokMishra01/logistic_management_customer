@@ -16,6 +16,7 @@ import 'package:logistic_management_customer/widgets/join_us_today_widget.dart';
 import 'package:logistic_management_customer/widgets/package_list_item.dart';
 import 'package:logistic_management_customer/widgets/services_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
@@ -36,7 +37,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final _trackText = TextEditingController();
   final CarouselController _carouselController = CarouselController();
+
+  @override
+  void dispose() {
+    _trackText.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,8 +112,17 @@ class _HomeState extends State<Home> {
                   horizontal: values.BASE_PADDING,
                 ),
                 child: CustomInput(
-                  controller: TextEditingController(),
+                  controller: _trackText,
                   hint: 'Enter Tracking Number',
+                  icon: Icons.search_rounded,
+                  onSuffixTab: () {
+                    if (_trackText.text.isNotEmpty) {
+                      launch(
+                        'https://tracking.logistics.intopros.com.np/'
+                        '?trackingcode=${_trackText.text}',
+                      );
+                    }
+                  },
                 ),
               ),
               const SizedBox(height: values.BASE_PADDING),
