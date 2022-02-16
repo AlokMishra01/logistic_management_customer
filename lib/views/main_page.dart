@@ -1,6 +1,8 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logistic_management_customer/controllers/profile_controller.dart';
 import 'package:logistic_management_customer/widgets/dialogs/custom_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +36,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     _currentIndex = widget.index;
+    _registerDevice();
     if (widget.dialog != null) {
       Future.delayed(
         Duration.zero,
@@ -46,6 +49,11 @@ class _MainPageState extends State<MainPage> {
       );
     }
     context.read<PackageController>();
+  }
+
+  _registerDevice() async {
+    String token = await FirebaseMessaging.instance.getToken() ?? '';
+    context.read<ProfileController>().registerDevice(token: token);
   }
 
   @override

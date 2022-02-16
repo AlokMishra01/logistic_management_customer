@@ -24,6 +24,8 @@ class PackageController with ChangeNotifier {
         _dioController != null) {
       getMyRequest();
       getPackageList();
+      getPackageList(status: 'Pending');
+      getPackageList(status: 'Completed');
       getPackageType();
     }
   }
@@ -65,9 +67,9 @@ class PackageController with ChangeNotifier {
   }
 
   getPackageList({String status = 'All'}) async {
-    if (_isLoadingPackages) {
-      return;
-    }
+    // if (_isLoadingPackages) {
+    //   return;
+    // }
 
     if (_connectivityController == null) {
       return;
@@ -89,8 +91,8 @@ class PackageController with ChangeNotifier {
       return;
     }
 
-    _isLoadingPackages = true;
-    notifyListeners();
+    // _isLoadingPackages = true;
+    // notifyListeners();
 
     // All / Not Received / In Transit / Picked Up / At Watehouse / Dispatched / Completed
     PackageResponseModel? model = await _packageService.getPackageList(
@@ -100,20 +102,34 @@ class PackageController with ChangeNotifier {
       limit: 1000,
     );
 
-    if (model != null) {
-      _packageAll
-        ..clear()
-        ..addAll(model.data?.packages ?? []);
+    if (status == 'Pending') {
+      if (model != null) {
+        _packagePending
+          ..clear()
+          ..addAll(model.data?.packages ?? []);
+      }
+    } else if (status == 'Completed') {
+      if (model != null) {
+        _packageCompleted
+          ..clear()
+          ..addAll(model.data?.packages ?? []);
+      }
+    } else {
+      if (model != null) {
+        _packageAll
+          ..clear()
+          ..addAll(model.data?.packages ?? []);
+      }
     }
 
-    _isLoadingPackages = false;
+    // _isLoadingPackages = false;
     notifyListeners();
   }
 
   getMyRequest() async {
-    if (_isLoadingMyRequest) {
-      return;
-    }
+    // if (_isLoadingMyRequest) {
+    //   return;
+    // }
 
     if (_connectivityController == null) {
       return;
@@ -135,14 +151,14 @@ class PackageController with ChangeNotifier {
       return;
     }
 
-    _isLoadingMyRequest = true;
-    notifyListeners();
+    // _isLoadingMyRequest = true;
+    // notifyListeners();
 
     _myRequest = await _packageService.getMyRequests(
       dio: _dioController!,
     );
 
-    _isLoadingMyRequest = false;
+    // _isLoadingMyRequest = false;
     notifyListeners();
   }
 
@@ -219,6 +235,8 @@ class PackageController with ChangeNotifier {
     if (s.isEmpty) {
       await getMyRequest();
       getPackageList();
+      getPackageList(status: 'Pending');
+      getPackageList(status: 'Completed');
     }
 
     return s;
@@ -231,8 +249,14 @@ class PackageController with ChangeNotifier {
 
   List<PackageModel> _packageAll = [];
   List<PackageModel> get packageAll => _packageAll;
-  bool _isLoadingPackages = false;
-  bool get isLoadingPackages => _isLoadingPackages;
+  // bool _isLoadingPackages = false;
+  // bool get isLoadingPackages => _isLoadingPackages;
+
+  List<PackageModel> _packagePending = [];
+  List<PackageModel> get packagePending => _packagePending;
+
+  List<PackageModel> _packageCompleted = [];
+  List<PackageModel> get packageCompleted => _packageCompleted;
 
   PackageModel? _myRequest;
   PackageModel? get myRequest => _myRequest;

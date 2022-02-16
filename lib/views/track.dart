@@ -178,18 +178,13 @@ class _TrackState extends State<Track> {
             child: ListView.separated(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: packages.packageAll
-                  .where(
-                    (e) => e.status == (val == 0 ? 'Pending' : 'Completed'),
-                  )
-                  .toList()
-                  .length,
+              itemCount: val == 0
+                  ? packages.packagePending.length
+                  : packages.packageCompleted.length,
               itemBuilder: (_, i) {
-                final p = packages.packageAll
-                    .where(
-                      (e) => e.status == (val == 0 ? 'Pending' : 'Completed'),
-                    )
-                    .toList()[i];
+                final p = (val == 0
+                    ? packages.packagePending
+                    : packages.packageCompleted)[i];
                 return PackageListItem(p: p);
               },
               separatorBuilder: (_, i) {
@@ -198,9 +193,7 @@ class _TrackState extends State<Track> {
             ),
           ),
 
-          if (packages.packageAll
-              .where((e) => e.status == (val == 0 ? 'Pending' : 'Completed'))
-              .toList()
+          if ((val == 0 ? packages.packagePending : packages.packageCompleted)
               .isEmpty)
             Padding(
               padding: const EdgeInsets.all(values.BASE_PADDING * 2),
@@ -217,7 +210,9 @@ class _TrackState extends State<Track> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () => packages.getPackageList(),
+                    onPressed: () => packages.getPackageList(
+                      status: val == 0 ? 'Pending' : 'Completed',
+                    ),
                     icon: const Icon(Icons.refresh_rounded),
                   ),
                 ],

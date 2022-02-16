@@ -205,6 +205,35 @@ class ProfileController with ChangeNotifier {
     return b;
   }
 
+  Future<bool> registerDevice({required String token}) async {
+    if (_connectivityController == null) {
+      return false;
+    }
+
+    if (_dioController == null) {
+      return false;
+    }
+
+    if (_authenticationController == null) {
+      return false;
+    }
+
+    if (!(_connectivityController?.hasInternet ?? false)) {
+      return false;
+    }
+
+    if (!(_authenticationController?.isLoggedIn ?? false)) {
+      return false;
+    }
+
+    bool b = await _profileService.registerDeviceToken(
+      dio: _dioController!,
+      token: token,
+    );
+
+    return b;
+  }
+
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
