@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/colors.dart';
 import '../../controllers/authentication_controller.dart';
@@ -217,8 +218,10 @@ class _LogoutDialog extends StatelessWidget {
                 ),
                 const SizedBox(width: 8.0),
                 MaterialButton(
-                  onPressed: () {
+                  onPressed: () async {
                     context.read<AuthenticationController>().logOut();
+                    SharedPreferences s = await SharedPreferences.getInstance();
+                    await s.clear();
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (_) => const Login()),

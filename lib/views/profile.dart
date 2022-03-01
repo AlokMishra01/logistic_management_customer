@@ -4,8 +4,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
+import '../constants/colors.dart';
 import '../constants/enums.dart';
 import '../constants/values.dart' as values;
+import '../constants/values.dart';
 import '../controllers/profile_controller.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/dialogs/bottom_dialog.dart';
@@ -16,6 +18,7 @@ import '../widgets/join_us_today_widget.dart';
 import '../widgets/profile_info_heading.dart';
 import '../widgets/single_personal_detail.dart';
 import 'address_update.dart';
+import 'change_password.dart';
 import 'my_request.dart';
 import 'profile_update.dart';
 
@@ -145,6 +148,31 @@ class Profile extends StatelessWidget {
                       color: colors.TEXT_SECONDARY,
                       fontSize: values.TITLE_TEXT,
                       fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const ChangePassword(),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Change Password',
+                      style: TextStyle(
+                        color: RED,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(RADIUS),
+                        // side: BorderSide(
+                        //   color: RED,
+                        // ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: values.BASE_PADDING),
@@ -361,7 +389,7 @@ class Profile extends StatelessWidget {
   }
 
   _saveImage(BuildContext context, XFile image) async {
-    final croppedImage = await ImageCropper.cropImage(
+    final croppedImage = await ImageCropper().cropImage(
       sourcePath: image.path,
       aspectRatioPresets: [CropAspectRatioPreset.square],
       androidUiSettings: const AndroidUiSettings(
