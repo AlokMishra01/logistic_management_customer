@@ -163,6 +163,50 @@ class ProfileController with ChangeNotifier {
     return b;
   }
 
+  Future<String> updatePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    if (_isLoading) {
+      return 'Oops! Some thing went wrong. Please try again.';
+    }
+
+    if (_connectivityController == null) {
+      return 'Oops! Internet connectivity issue. '
+          'Please check your internet connection and try again.';
+    }
+
+    if (_dioController == null) {
+      return 'Oops! Some thing went wrong. Please try again.';
+    }
+
+    if (_authenticationController == null) {
+      return 'Oops! Some thing went wrong. Please try again.';
+    }
+
+    if (!(_connectivityController?.hasInternet ?? false)) {
+      return 'Oops! Internet connectivity issue. '
+          'Please check your internet connection and try again.';
+    }
+
+    if (!(_authenticationController?.isLoggedIn ?? false)) {
+      return 'Oops! Some thing went wrong. Please try again.';
+    }
+
+    _isLoading = true;
+    notifyListeners();
+
+    String str = await _profileService.updatePassword(
+      dio: _dioController!,
+      oldPassword: oldPassword,
+      newPassword: newPassword,
+    );
+
+    _isLoading = false;
+
+    return str;
+  }
+
   Future<bool> updateImage({required String path}) async {
     if (_isLoading) {
       return false;

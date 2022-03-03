@@ -87,6 +87,35 @@ class ProfileService {
     }
   }
 
+  Future<String> updatePassword({
+    required DioController dio,
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    try {
+      Response response = await dio.dioClient.post(
+        'consumer/password/update',
+        data: {
+          "current_password": oldPassword,
+          "new_password": newPassword,
+        },
+      );
+      log(prettyJson(response.data), name: 'Update Password');
+      if (response.statusCode == 200) {
+        bool b = (response.data['status'] ?? false) as bool;
+        if (!b) {
+          return response.data['message'] as String;
+        }
+        return '';
+      } else {
+        return 'Oops! Some thing went wrong. Please try again.';
+      }
+    } on Exception catch (e, s) {
+      log('Update Password Error!', stackTrace: s, error: e);
+      return 'Oops! Some thing went wrong. Please try again.';
+    }
+  }
+
   Future<bool> updateImage({
     required DioController dio,
     required String path,
