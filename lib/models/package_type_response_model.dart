@@ -1,10 +1,5 @@
 import 'package_type_model.dart';
 
-/// status : true
-/// status_code : 200
-/// message : "Package Type List"
-/// data : [{"id":1,"name":"Document","description":"Documents, paper,"},{"id":2,"name":"Electronics","description":"electronics"}]
-
 class PackageTypeResponseModel {
   PackageTypeResponseModel({
     bool? status,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logistic_management_customer/models/banner_response_model.dart';
+import 'package:logistic_management_customer/models/pricing_response_model.dart';
 import 'package:logistic_management_customer/services/general_service.dart';
 
 import 'authentication_controller.dart';
@@ -52,6 +53,39 @@ class GeneralController with ChangeNotifier {
       ..clear()
       ..addAll(model?.banners ?? []);
     notifyListeners();
+  }
+
+  Future<PricingResponseModel?> getPricing({
+    required String from,
+    required String to,
+  }) async {
+    if (_connectivityController == null) {
+      return null;
+    }
+
+    if (_dioController == null) {
+      return null;
+    }
+
+    if (_authenticationController == null) {
+      return null;
+    }
+
+    if (!(_connectivityController?.hasInternet ?? false)) {
+      return null;
+    }
+
+    if (!(_authenticationController?.isLoggedIn ?? false)) {
+      return null;
+    }
+
+    PricingResponseModel? model = await _service.getPricing(
+      dio: _dioController!,
+      from: from,
+      to: to,
+    );
+
+    return model;
   }
 
   final List<BannerData> _banners = [];

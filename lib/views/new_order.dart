@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:logistic_management_customer/controllers/general_controller.dart';
 import 'package:logistic_management_customer/controllers/geo_locator_controller.dart';
 import 'package:logistic_management_customer/widgets/custom_date_picker.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,7 @@ import '../constants/enums.dart';
 import '../constants/values.dart' as values;
 import '../controllers/package_controller.dart';
 import '../models/package_type_model.dart';
+import '../models/pricing_response_model.dart';
 import '../utils/string_time_to_time_of_day.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_time_picker.dart';
@@ -42,6 +44,7 @@ class _NewOrderState extends State<NewOrder> {
   final _fromAddress = TextEditingController();
   double? _fromLat;
   double? _fromLon;
+  String? _fromDistrict;
   final _pickupTime = TextEditingController();
   final _pickupDate = TextEditingController();
   String _fromAddressString = '';
@@ -52,6 +55,7 @@ class _NewOrderState extends State<NewOrder> {
   final _toAddress = TextEditingController();
   double? _toLat;
   double? _toLon;
+  String? _toDistrict;
   final _dropOffTime = TextEditingController();
   final _dropOffDate = TextEditingController();
   String _toAddressString = '';
@@ -65,6 +69,7 @@ class _NewOrderState extends State<NewOrder> {
   final _packageWeight = TextEditingController();
   bool _isFragile = false;
 
+  final _deliveryPrice = TextEditingController();
   int _paymentType = 1;
 
   @override
@@ -84,6 +89,7 @@ class _NewOrderState extends State<NewOrder> {
     _packageWidth.dispose();
     _packageHeight.dispose();
     _packageWeight.dispose();
+    _deliveryPrice.dispose();
     super.dispose();
   }
 
@@ -263,6 +269,12 @@ class _NewOrderState extends State<NewOrder> {
                             onAddress: (address) {
                               _fromAddressString = address;
                               setState(() {});
+                              _fromDistrict =
+                                  _fromAddressString.split(',').last.trim();
+                              if (_fromDistrict != null &&
+                                  _toDistrict != null) {
+                                _getPrice();
+                              }
                             },
                           ),
                         ),
@@ -490,6 +502,12 @@ class _NewOrderState extends State<NewOrder> {
                             onAddress: (address) {
                               _toAddressString = address;
                               setState(() {});
+                              _toDistrict =
+                                  _toAddressString.split(',').last.trim();
+                              if (_fromDistrict != null &&
+                                  _toDistrict != null) {
+                                _getPrice();
+                              }
                             },
                           ),
                         ),
@@ -859,6 +877,32 @@ class _NewOrderState extends State<NewOrder> {
                 ),
               ),
             ),
+
+            const SizedBox(height: values.BASE_PADDING * 2),
+
+            const Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: values.BASE_PADDING * 2,
+              ),
+              child: Text(
+                'Delivery Pricing',
+                style: TextStyle(
+                  fontSize: values.TITLE_TEXT,
+                  color: colors.TEXT_BLACK,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: values.BASE_PADDING * 2,
+              ),
+              child: TextFormField(
+                controller: _deliveryPrice,
+                enabled: false,
+              ),
+            ),
+
             Container(
               margin: const EdgeInsets.all(values.BASE_PADDING),
               padding: const EdgeInsets.all(values.BASE_PADDING),
@@ -1293,6 +1337,21 @@ class _NewOrderState extends State<NewOrder> {
         title: 'Delivery Request Error!',
         message: result,
       );
+    }
+  }
+
+  _getPrice() async {
+    _deliveryPrice.text = 'Loading Pricing...';
+    PricingResponseModel? r = await context
+        .read<GeneralController>()
+        .getPricing(from: _fromDistrict ?? '', to: _toDistrict ?? '');
+
+    if (r == null) {
+      _deliveryPrice.text = 'Customer support will contact you';
+    } else {
+      _deliveryPrice.text = ((r.price ?? '0') == '0')
+          ? 'Customer support will contact you'
+          : 'NRs. ${r.price} Only';
     }
   }
 }
