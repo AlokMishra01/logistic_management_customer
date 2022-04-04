@@ -40,7 +40,7 @@ class JoinUsTodayWidget extends StatelessWidget {
               alignment: Alignment.center,
               child: TextButton(
                 onPressed: () {
-                  launch('https://logistics.intopros.com.np/membership');
+                  launch('https://ikimaexpress.com/membership');
                 },
                 child: Text(
                   'Join us Today',

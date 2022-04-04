@@ -118,7 +118,7 @@ class _HomeState extends State<Home> {
                   onSuffixTab: () {
                     if (_trackText.text.isNotEmpty) {
                       launch(
-                        'https://tracking.logistics.intopros.com.np/'
+                        'https://tracking.ikimaexpress.com'
                         '?trackingcode=${_trackText.text}',
                       );
                     }

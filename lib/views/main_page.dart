@@ -67,6 +67,7 @@ class _MainPageState extends State<MainPage> {
         return false;
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -139,7 +140,7 @@ class _MainPageState extends State<MainPage> {
         return const NewOrder();
       // return const Delivery();
       case 2:
-        return Track();
+        return const Track();
       case 3:
         return const Message();
       case 4:

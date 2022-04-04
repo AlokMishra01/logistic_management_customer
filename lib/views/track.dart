@@ -111,7 +111,7 @@ class _TrackState extends State<Track> {
             onPressed: () {
               if (_trackingCode.text.isNotEmpty) {
                 launch(
-                  'https://tracking.logistics.intopros.com.np/'
+                  'https://tracking.ikimaexpress.com'
                   '?trackingcode=${_trackingCode.text}',
                 );
               }

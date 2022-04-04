@@ -900,6 +900,9 @@ class _NewOrderState extends State<NewOrder> {
               child: TextFormField(
                 controller: _deliveryPrice,
                 enabled: false,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
 
@@ -991,7 +994,7 @@ class _NewOrderState extends State<NewOrder> {
                         ..onTap = () {
                           FocusManager.instance.primaryFocus?.unfocus();
                           launch(
-                            'https://logistics.intopros.com.np/terms-and-conditions',
+                            'https://ikimaexpress.com/terms-and-conditions',
                           );
                         },
                     ),
@@ -1010,12 +1013,12 @@ class _NewOrderState extends State<NewOrder> {
                         ..onTap = () {
                           FocusManager.instance.primaryFocus?.unfocus();
                           launch(
-                            'https://logistics.intopros.com.np/privacy-policy',
+                            'https://ikimaexpress.com/privacy-policy',
                           );
                         },
                     ),
                     const TextSpan(
-                      text: '  of LMS.',
+                      text: '  of Ikima Express.',
                     ),
                   ],
                   style: GoogleFonts.comfortaa(
