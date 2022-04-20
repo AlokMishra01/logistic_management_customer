@@ -1,4 +1,4 @@
-package com.intopros.logistic_management_customer
+package com.ikima.express
 
 import io.flutter.embedding.android.FlutterActivity
 

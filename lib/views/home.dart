@@ -151,6 +151,22 @@ class _HomeState extends State<Home> {
                                     width: double.infinity,
                                     imageUrl: i.image ?? '',
                                     fit: BoxFit.cover,
+                                    placeholder: (_, __) {
+                                      return const Center(
+                                        child: Icon(
+                                          CupertinoIcons.photo,
+                                          color: colors.TEXT_SECONDARY_LIGHT,
+                                        ),
+                                      );
+                                    },
+                                    errorWidget: (_, __, ___) {
+                                      return const Center(
+                                        child: Icon(
+                                          CupertinoIcons.photo,
+                                          color: colors.TEXT_SECONDARY_LIGHT,
+                                        ),
+                                      );
+                                    },
                                   ),
                                   Container(
                                     width: double.infinity,

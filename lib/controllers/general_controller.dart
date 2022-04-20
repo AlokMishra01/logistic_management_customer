@@ -31,15 +31,7 @@ class GeneralController with ChangeNotifier {
       return;
     }
 
-    if (_authenticationController == null) {
-      return;
-    }
-
     if (!(_connectivityController?.hasInternet ?? false)) {
-      return;
-    }
-
-    if (!(_authenticationController?.isLoggedIn ?? false)) {
       return;
     }
 
@@ -67,15 +59,7 @@ class GeneralController with ChangeNotifier {
       return null;
     }
 
-    if (_authenticationController == null) {
-      return null;
-    }
-
     if (!(_connectivityController?.hasInternet ?? false)) {
-      return null;
-    }
-
-    if (!(_authenticationController?.isLoggedIn ?? false)) {
       return null;
     }
 

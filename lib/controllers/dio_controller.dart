@@ -3,11 +3,9 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_json/pretty_json.dart';
-import 'package:provider/provider.dart';
 
 import '../constants/api_constants.dart';
 import '../services/preference_service.dart';
-import 'authentication_controller.dart';
 
 class DioController with ChangeNotifier {
   final BuildContext _context;
@@ -44,17 +42,6 @@ class DioController with ChangeNotifier {
     log(prettyJson(response.data), name: 'API Response Data');
     if (response.data['status_code'] == 401) {
       log('Logging Out User', name: 'API 401 Error!');
-      final auth = _context.read<AuthenticationController>();
-      if (auth.isLoggedIn) {
-        _context.read<AuthenticationController>().logOut();
-        // Navigator.pushAndRemoveUntil(
-        //   _context,
-        //   MaterialPageRoute(
-        //     builder: (_) => Login(),
-        //   ),
-        //   (route) => false,
-        // );
-      }
     }
     return handler.next(response);
   }

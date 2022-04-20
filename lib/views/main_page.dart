@@ -2,13 +2,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:logistic_management_customer/controllers/profile_controller.dart';
-import 'package:logistic_management_customer/widgets/dialogs/custom_dialog.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
 import '../controllers/package_controller.dart';
+import '../controllers/profile_controller.dart';
+import '../widgets/dialogs/custom_dialog.dart';
 import 'home.dart';
 import 'message.dart';
 import 'new_order.dart';

@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:logistic_management_customer/controllers/general_controller.dart';
-import 'package:logistic_management_customer/controllers/message_controller.dart';
-import 'package:logistic_management_customer/controllers/notification_controller.dart';
-import 'package:logistic_management_customer/controllers/package_controller.dart';
-import 'package:logistic_management_customer/providers/blog_provider.dart';
 import 'package:material_color_generator/material_color_generator.dart';
 import 'package:provider/provider.dart';
 
@@ -12,8 +7,13 @@ import 'constants/colors.dart';
 import 'controllers/authentication_controller.dart';
 import 'controllers/connectivity_controller.dart';
 import 'controllers/dio_controller.dart';
+import 'controllers/general_controller.dart';
 import 'controllers/geo_locator_controller.dart';
+import 'controllers/message_controller.dart';
+import 'controllers/notification_controller.dart';
+import 'controllers/package_controller.dart';
 import 'controllers/profile_controller.dart';
+import 'providers/blog_provider.dart';
 import 'splash.dart';
 
 class MyApp extends StatelessWidget {
@@ -90,8 +90,6 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ],
-
-      // Todo: use go router
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Logistic Management Customer',
