@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logistic_management_customer/constants/api_constants.dart';
 import 'package:logistic_management_customer/controllers/general_controller.dart';
 import 'package:logistic_management_customer/controllers/package_controller.dart';
 import 'package:logistic_management_customer/providers/blog_provider.dart';
@@ -98,7 +99,7 @@ class _HomeState extends State<Home> {
                   horizontal: values.BASE_PADDING,
                 ),
                 child: Text(
-                  'Enter your tracking number and view details about your parcel',
+                  'Track your parcel with your HAWB number',
                   textAlign: TextAlign.justify,
                   style: TextStyle(
                     fontSize: values.TITLE_TEXT,
@@ -107,18 +108,21 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
+              const SizedBox(height: values.BASE_PADDING / 2),
+
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: values.BASE_PADDING,
                 ),
                 child: CustomInput(
                   controller: _trackText,
-                  hint: 'Enter Tracking Number',
+                  hint: 'Enter your HAWB number',
                   icon: Icons.search_rounded,
                   onSuffixTab: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
                     if (_trackText.text.isNotEmpty) {
                       launch(
-                        'https://tracking.ikimaexpress.com'
+                        '${APIConstants.tracking}'
                         '?trackingcode=${_trackText.text}',
                       );
                     }

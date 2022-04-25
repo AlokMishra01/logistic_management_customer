@@ -5,6 +5,7 @@ import 'package:logistic_management_customer/widgets/type_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../constants/api_constants.dart';
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
 import '../widgets/header.dart';
@@ -39,7 +40,7 @@ class _TrackState extends State<Track> {
             ),
             child: Text(
               'You can now track your package live just '
-              'enter the Airway bill number and proceed.',
+              'enter the housing airway bill number and proceed.',
               style: TextStyle(
                 color: colors.TEXT_BLACK,
                 fontSize: values.TITLE_TEXT,
@@ -52,7 +53,7 @@ class _TrackState extends State<Track> {
             child: TextFormField(
               controller: _trackingCode,
               decoration: InputDecoration(
-                hintText: "Enter your Tracking Number",
+                hintText: "Enter your HAWB number",
                 hintStyle: const TextStyle(
                   color: colors.TEXT_SECONDARY,
                   fontSize: values.TITLE_TEXT,
@@ -109,9 +110,10 @@ class _TrackState extends State<Track> {
           const SizedBox(height: values.BASE_PADDING),
           TextButton(
             onPressed: () {
+              FocusManager.instance.primaryFocus?.unfocus();
               if (_trackingCode.text.isNotEmpty) {
                 launch(
-                  'https://tracking.ikimaexpress.com'
+                  '${APIConstants.tracking}'
                   '?trackingcode=${_trackingCode.text}',
                 );
               }

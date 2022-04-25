@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:logistic_management_customer/models/blog_model.dart';
 import 'package:validators/validators.dart';
 
+import '../constants/api_constants.dart';
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
+import '../utils/string_parser.dart';
 import '../widgets/header.dart';
 
 class BlogDetails extends StatelessWidget {
@@ -20,11 +22,11 @@ class BlogDetails extends StatelessWidget {
           children: [
             Header(
               backButton: true,
-              title: 'Blog / News',
+              title: model.title ?? '',
             ),
             Expanded(
               child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -33,9 +35,9 @@ class BlogDetails extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(values.RADIUS),
                         child: Image.network(
-                          isURL(model.image ?? '', requireProtocol: true)
-                              ? model.image ??
-                                  'https://media.carphonewarehouse.com/is/image/cpw2/essentials-bundle-for-google-pixel-4aNA?\$accessories\$'
+                          isURL('${APIConstants.url}${model.image}',
+                                  requireProtocol: true)
+                              ? '${APIConstants.url}${model.image}'
                               : 'https://media.carphonewarehouse.com/is/image/cpw2/essentials-bundle-for-google-pixel-4aNA?\$accessories\$',
                           width: double.infinity,
                           fit: BoxFit.fitWidth,
@@ -49,8 +51,22 @@ class BlogDetails extends StatelessWidget {
                       ),
                       child: Text(
                         '${model.title}',
-                        style: TextStyle(
-                          color: colors.TEXT_BLUE,
+                        style: const TextStyle(
+                          color: colors.TEXT_BLACK,
+                          fontWeight: FontWeight.bold,
+                          fontSize: values.SUB_HEADER_TEXT,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: values.BASE_PADDING / 2),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: values.BASE_PADDING,
+                      ),
+                      child: Text(
+                        removeAllHtmlTags(model.description ?? ''),
+                        style: const TextStyle(
+                          color: colors.TEXT_SECONDARY,
                           fontWeight: FontWeight.bold,
                           fontSize: values.TITLE_TEXT,
                         ),
@@ -68,7 +84,7 @@ class BlogDetails extends StatelessWidget {
                     //     },
                     //   ),
                     // ),
-                    SizedBox(height: 120.0),
+                    const SizedBox(height: 120.0),
                   ],
                 ),
               ),

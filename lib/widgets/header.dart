@@ -32,19 +32,22 @@ class Header extends StatelessWidget {
             ),
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 28),
           ),
-        Padding(
-          padding: EdgeInsets.all(!backButton ? values.BASE_PADDING : 0),
-          child: Text(
-            title,
-            style: const TextStyle(
-              color: colors.TEXT_BLUE,
-              fontSize: values.SUB_HEADER_TEXT,
-              fontWeight: FontWeight.w600,
-              decoration: TextDecoration.underline,
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(!backButton ? values.BASE_PADDING : 0),
+            child: Text(
+              title,
+              maxLines: 1,
+              style: const TextStyle(
+                color: colors.TEXT_BLUE,
+                fontSize: values.SUB_HEADER_TEXT,
+                fontWeight: FontWeight.w600,
+                decoration: TextDecoration.underline,
+              ),
             ),
           ),
         ),
-        Expanded(child: Container()),
+        // Expanded(child: Container()),
         trailing ?? Container(),
       ],
     );

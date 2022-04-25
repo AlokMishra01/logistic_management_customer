@@ -4,6 +4,7 @@ import 'package:logistic_management_customer/utils/string_parser.dart';
 import 'package:logistic_management_customer/views/blog_details.dart';
 import 'package:validators/validators.dart';
 
+import '../constants/api_constants.dart';
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
 
@@ -41,9 +42,9 @@ class BlogListItem extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(values.RADIUS),
                   child: Image.network(
-                    isURL(model.image ?? '', requireProtocol: true)
-                        ? model.image ??
-                            'https://media.carphonewarehouse.com/is/image/cpw2/essentials-bundle-for-google-pixel-4aNA?\$accessories\$'
+                    isURL('${APIConstants.url}${model.image}',
+                            requireProtocol: true)
+                        ? '${APIConstants.url}${model.image}'
                         : 'https://media.carphonewarehouse.com/is/image/cpw2/essentials-bundle-for-google-pixel-4aNA?\$accessories\$',
                     height: size.width * 0.2,
                     width: size.width * 0.2,
@@ -60,7 +61,7 @@ class BlogListItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 8.0),
+                    const SizedBox(height: 8.0),
                     Text(
                       model.title ?? '',
                       maxLines: 1,

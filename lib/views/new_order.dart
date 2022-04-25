@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:logistic_management_customer/constants/api_constants.dart';
 import 'package:logistic_management_customer/controllers/general_controller.dart';
 import 'package:logistic_management_customer/controllers/geo_locator_controller.dart';
 import 'package:logistic_management_customer/widgets/custom_date_picker.dart';
@@ -973,17 +974,18 @@ class _NewOrderState extends State<NewOrder> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: values.BASE_PADDING,
+                horizontal: values.BASE_PADDING * 2,
+                vertical: values.BASE_PADDING,
               ),
               child: RichText(
                 text: TextSpan(
                   children: [
                     const TextSpan(
-                      text: 'By Clicking “Send order Request”, '
-                          'you are agreeing to ',
+                      text: 'By clicking "Send order request", you are '
+                          'agreeing to have read and understood the ',
                     ),
                     TextSpan(
-                      text: 'Terms and Conditions',
+                      text: 'terms and conditions',
                       style: GoogleFonts.comfortaa(
                         fontSize: values.TITLE_TEXT,
                         color: colors.TEXT_BLUE,
@@ -994,32 +996,34 @@ class _NewOrderState extends State<NewOrder> {
                         ..onTap = () {
                           FocusManager.instance.primaryFocus?.unfocus();
                           launch(
-                            'https://ikimaexpress.com/terms-and-conditions',
+                            '${APIConstants.url}/terms-and-conditions',
                           );
                         },
                     ),
                     const TextSpan(
-                      text: ' and ',
+                      text: ' that shipment does not contain any currency or '
+                          'any material which violates the conditions of '
+                          'carriage.',
                     ),
-                    TextSpan(
-                      text: 'Privacy Policy',
-                      style: GoogleFonts.comfortaa(
-                        fontSize: values.TITLE_TEXT,
-                        color: colors.TEXT_BLUE,
-                        fontWeight: FontWeight.w600,
-                        decoration: TextDecoration.underline,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          launch(
-                            'https://ikimaexpress.com/privacy-policy',
-                          );
-                        },
-                    ),
-                    const TextSpan(
-                      text: '  of Ikima Express.',
-                    ),
+                    // TextSpan(
+                    //   text: 'Privacy Policy',
+                    //   style: GoogleFonts.comfortaa(
+                    //     fontSize: values.TITLE_TEXT,
+                    //     color: colors.TEXT_BLUE,
+                    //     fontWeight: FontWeight.w600,
+                    //     decoration: TextDecoration.underline,
+                    //   ),
+                    //   recognizer: TapGestureRecognizer()
+                    //     ..onTap = () {
+                    //       FocusManager.instance.primaryFocus?.unfocus();
+                    //       launch(
+                    //         ${APIConstants.url}/privacy-policy',
+                    //       );
+                    //     },
+                    // ),
+                    // const TextSpan(
+                    //   text: '  of Ikima Express.',
+                    // ),
                   ],
                   style: GoogleFonts.comfortaa(
                     fontSize: values.TITLE_TEXT,
