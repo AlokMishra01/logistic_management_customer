@@ -220,8 +220,8 @@ class _NewOrderState extends State<NewOrder> {
                     textCapitalization: TextCapitalization.words,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
-                      if ((value ?? '').length != 10) {
-                        return 'Please enter valid mobile number.';
+                      if ((value ?? '').isEmpty) {
+                        return 'Please enter mobile number.';
                       }
                     },
                   ),
@@ -453,8 +453,8 @@ class _NewOrderState extends State<NewOrder> {
                     textCapitalization: TextCapitalization.words,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
-                      if ((value ?? '').length != 10) {
-                        return 'Please enter valid mobile number.';
+                      if ((value ?? '').isEmpty) {
+                        return 'Please enter mobile number.';
                       }
                     },
                   ),
@@ -717,11 +717,6 @@ class _NewOrderState extends State<NewOrder> {
                       suffixText: 'Centimeter(cm)',
                     ),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (value) {
-                      if (int.tryParse((value ?? '0').toString()) == null) {
-                        return 'Please enter valid length in Centimeter(cm).';
-                      }
-                    },
                   ),
                   const SizedBox(height: values.BASE_PADDING),
                   const Text(
@@ -739,11 +734,6 @@ class _NewOrderState extends State<NewOrder> {
                       suffixText: 'Centimeter(cm)',
                     ),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (value) {
-                      if (int.tryParse((value ?? '0').toString()) == null) {
-                        return 'Please enter valid width in Centimeter(cm).';
-                      }
-                    },
                   ),
                   const SizedBox(height: values.BASE_PADDING),
                   const Text(
@@ -761,11 +751,6 @@ class _NewOrderState extends State<NewOrder> {
                       suffixText: 'Centimeter(cm)',
                     ),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (value) {
-                      if (int.tryParse((value ?? '0').toString()) == null) {
-                        return 'Please enter valid height in Centimeter(cm).';
-                      }
-                    },
                   ),
                   const SizedBox(height: values.BASE_PADDING),
                   const Text(
@@ -783,11 +768,6 @@ class _NewOrderState extends State<NewOrder> {
                       suffixText: 'Kilogram(kg)',
                     ),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (value) {
-                      if (int.tryParse((value ?? '0').toString()) == null) {
-                        return 'Please enter valid weight in Kilogram(kg).';
-                      }
-                    },
                   ),
                   const SizedBox(height: values.BASE_PADDING),
                   Row(
@@ -1053,12 +1033,12 @@ class _NewOrderState extends State<NewOrder> {
       );
       return;
     }
-    if (_fromMobile.text.length != 10) {
+    if (_fromMobile.text.isEmpty) {
       showBottomDialog(
         context: context,
         dialogType: DialogType.ERROR,
         title: 'Delivery Request Error!',
-        message: 'Please enter sender valid mobile number.',
+        message: 'Please enter sender mobile number.',
       );
       return;
     }
@@ -1108,12 +1088,12 @@ class _NewOrderState extends State<NewOrder> {
       );
       return;
     }
-    if (_toMobile.text.length != 10) {
+    if (_toMobile.text.isEmpty) {
       showBottomDialog(
         context: context,
         dialogType: DialogType.ERROR,
         title: 'Delivery Request Error!',
-        message: 'Please enter receiver valid mobile number.',
+        message: 'Please enter receiver mobile number.',
       );
       return;
     }
@@ -1163,42 +1143,6 @@ class _NewOrderState extends State<NewOrder> {
       );
       return;
     }
-    if (int.tryParse((_packageLength.text).toString()) == null) {
-      showBottomDialog(
-        context: context,
-        dialogType: DialogType.ERROR,
-        title: 'Delivery Request Error!',
-        message: 'Please enter valid length.',
-      );
-      return;
-    }
-    if (int.tryParse((_packageWidth.text).toString()) == null) {
-      showBottomDialog(
-        context: context,
-        dialogType: DialogType.ERROR,
-        title: 'Delivery Request Error!',
-        message: 'Please enter valid width.',
-      );
-      return;
-    }
-    if (int.tryParse((_packageHeight.text).toString()) == null) {
-      showBottomDialog(
-        context: context,
-        dialogType: DialogType.ERROR,
-        title: 'Delivery Request Error!',
-        message: 'Please enter valid height.',
-      );
-      return;
-    }
-    if (int.tryParse((_packageWeight.text).toString()) == null) {
-      showBottomDialog(
-        context: context,
-        dialogType: DialogType.ERROR,
-        title: 'Delivery Request Error!',
-        message: 'Please enter valid weight.',
-      );
-      return;
-    }
 
     var progressDialog = getProgressDialog(context: context);
     progressDialog.show(useSafeArea: false);
@@ -1226,8 +1170,8 @@ class _NewOrderState extends State<NewOrder> {
           receiverLatitude: _toLat!,
           receiverLongitude: _toLon!,
           packageType: _type!.id!,
-          packageWeight: weight!,
-          packageSize: size!,
+          packageWeight: weight ?? 0,
+          packageSize: size ?? 0,
           packageDescription: _packageDescription.text,
           pickUpTime: _selected == 0
               ? Jiffy(DateTime.now()).format("h:mm a")
@@ -1238,7 +1182,6 @@ class _NewOrderState extends State<NewOrder> {
           fragile: _isFragile ? 1 : 0,
           // Todo: Package price from form
           packagePrice: '',
-          // express: _express ? 1 : 0,
           express: _selected == 0 ? 1 : 0,
         );
 

@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
 import '../widgets/header.dart';
-import '../widgets/type_bar.dart';
 
 class MyRequest extends StatefulWidget {
   const MyRequest({Key? key}) : super(key: key);
@@ -16,140 +15,68 @@ class MyRequest extends StatefulWidget {
 }
 
 class _MyRequestState extends State<MyRequest> {
-  int _selected = 0;
+  // int _selected = 0;
 
   @override
   Widget build(BuildContext context) {
     final packages = context.watch<PackageController>();
-    final packageListPending = packages.packageAll.where((e) {
-      return (e.status == 'Pending');
-    }).toList();
-    final packageListApproved = packages.packageAll.where((e) {
-      return (e.status == 'Approved');
-    }).toList();
+    final listItems = packages.packageAll;
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
             const Header(
-              title: 'My Requests',
+              title: 'History',
               backButton: true,
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: values.BASE_PADDING,
-              ),
-              child: Text(
-                'You can see the list of pending and approved '
-                'request for deliver or pickups.',
-                style: TextStyle(
-                  fontSize: values.TITLE_TEXT,
-                  color: colors.TEXT_SECONDARY,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(values.BASE_PADDING),
-              child: Container(
-                height: 48.0,
-                decoration: BoxDecoration(
-                  color: colors.FIELD_BACKGROUND,
-                  borderRadius: BorderRadius.circular(32),
-                ),
-                child: Flex(
-                  direction: Axis.horizontal,
-                  children: [
-                    TypeBar(
-                      title: "Pending",
-                      selected: _selected == 0,
-                      onTab: () {
-                        _selected = 0;
-                        setState(() {});
-                      },
-                    ),
-                    TypeBar(
-                      title: "Approved",
-                      selected: _selected == 1,
-                      onTab: () {
-                        _selected = 1;
-                        setState(() {});
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            if ((_selected == 0 && packageListPending.isNotEmpty) ||
-                (_selected == 1 && packageListApproved.isNotEmpty))
+            if (listItems.isNotEmpty)
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: values.BASE_PADDING,
-                  ),
-                  child: RefreshIndicator(
-                    onRefresh: () => packages.getPackageList(),
-                    child: ListView.separated(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemCount: _selected == 0
-                          ? packageListPending.length
-                          : packageListApproved.length,
-                      itemBuilder: (_, i) {
-                        if (_selected == 0) {
-                          final p = packageListPending[i];
-                          return PackageListItem(p: p);
-                        }
-                        final p = packageListApproved[i];
-                        return PackageListItem(p: p);
-                      },
-                      separatorBuilder: (_, i) {
-                        return const SizedBox(height: values.BASE_PADDING / 2);
-                      },
+                child: RefreshIndicator(
+                  onRefresh: () => packages.getPackageList(),
+                  child: ListView.separated(
+                    padding: const EdgeInsets.only(
+                      right: values.BASE_PADDING,
+                      left: values.BASE_PADDING,
+                      bottom: 80.0,
                     ),
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: listItems.length,
+                    // itemCount: 2,
+                    itemBuilder: (_, i) {
+                      final p = listItems[i];
+                      return PackageListItem(p: p);
+                    },
+                    separatorBuilder: (_, i) {
+                      return const SizedBox(height: values.BASE_PADDING / 2);
+                    },
                   ),
                 ),
               ),
-            if (_selected == 0 && packageListPending.isEmpty)
-              Padding(
-                padding: const EdgeInsets.all(values.BASE_PADDING * 2),
-                child: Column(
-                  children: [
-                    const Text(
-                      'No pending packages right now',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: colors.TEXT_SECONDARY,
-                        fontSize: values.SUB_HEADER_TEXT,
-                        fontWeight: FontWeight.bold,
-                      ),
+            if (listItems.isEmpty)
+              Expanded(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(values.BASE_PADDING * 2),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          'No request right now.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: colors.TEXT_SECONDARY,
+                            fontSize: values.SUB_HEADER_TEXT,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () => packages.getPackageList(),
+                          icon: const Icon(Icons.refresh_rounded),
+                        ),
+                      ],
                     ),
-                    IconButton(
-                      onPressed: () => packages.getPackageList(),
-                      icon: const Icon(Icons.refresh_rounded),
-                    ),
-                  ],
-                ),
-              ),
-            if (_selected == 1 && packageListApproved.isEmpty)
-              Padding(
-                padding: const EdgeInsets.all(values.BASE_PADDING * 2),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text(
-                      'No approved packages right now',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: colors.TEXT_SECONDARY,
-                        fontSize: values.SUB_HEADER_TEXT,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () => packages.getPackageList(),
-                      icon: const Icon(Icons.refresh_rounded),
-                    ),
-                  ],
+                  ),
                 ),
               ),
           ],

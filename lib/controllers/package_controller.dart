@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:logistic_management_customer/models/package_response_model.dart';
 
@@ -25,7 +27,7 @@ class PackageController with ChangeNotifier {
       getMyRequest();
       getPackageList();
       getPackageList(status: 'Pending');
-      getPackageList(status: 'Completed');
+      getPackageList(status: 'Delivered');
       getPackageType();
     }
   }
@@ -102,13 +104,20 @@ class PackageController with ChangeNotifier {
       limit: 1000,
     );
 
-    if (status == 'Pending') {
+    log(status);
+    if (status == 'Active') {
+      if (model != null) {
+        _packageActive
+          ..clear()
+          ..addAll(model.data?.packages ?? []);
+      }
+    } else if (status == 'Pending') {
       if (model != null) {
         _packagePending
           ..clear()
           ..addAll(model.data?.packages ?? []);
       }
-    } else if (status == 'Completed') {
+    } else if (status == 'Delivered') {
       if (model != null) {
         _packageCompleted
           ..clear()
@@ -154,9 +163,18 @@ class PackageController with ChangeNotifier {
     // _isLoadingMyRequest = true;
     // notifyListeners();
 
-    _myRequest = await _packageService.getMyRequests(
+    // _myRequest = await _packageService.getMyRequests(
+    //   dio: _dioController!,
+    // );
+
+    final response = await _packageService.getPackageList(
       dio: _dioController!,
+      query: 'Active',
+      page: 1,
+      limit: 1,
     );
+
+    _myRequest = response?.data?.packages?.single;
 
     // _isLoadingMyRequest = false;
     notifyListeners();
@@ -236,7 +254,7 @@ class PackageController with ChangeNotifier {
       await getMyRequest();
       getPackageList();
       getPackageList(status: 'Pending');
-      getPackageList(status: 'Completed');
+      getPackageList(status: 'Delivered');
     }
 
     return s;
@@ -251,6 +269,9 @@ class PackageController with ChangeNotifier {
   List<PackageModel> get packageAll => _packageAll;
   // bool _isLoadingPackages = false;
   // bool get isLoadingPackages => _isLoadingPackages;
+
+  List<PackageModel> _packageActive = [];
+  List<PackageModel> get packageActive => _packageActive;
 
   List<PackageModel> _packagePending = [];
   List<PackageModel> get packagePending => _packagePending;

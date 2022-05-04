@@ -42,6 +42,14 @@ class _HomeState extends State<Home> {
   final CarouselController _carouselController = CarouselController();
 
   @override
+  void initState() {
+    super.initState();
+    context.read<PackageController>().getPackageList(status: 'Active');
+    context.read<PackageController>().getPackageList(status: 'Pending');
+    context.read<PackageController>().getPackageList(status: 'Delivered');
+  }
+
+  @override
   void dispose() {
     _trackText.dispose();
     super.dispose();
@@ -56,351 +64,360 @@ class _HomeState extends State<Home> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Header(
-                title: 'Home',
-                trailing: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const AllNotification()),
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.notifications_rounded,
-                    color: colors.TEXT_BLUE,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: values.BASE_PADDING,
-                ),
-                child: Text(
-                  "${greetingPartOfDay()}, "
-                  "${profile.user?.name ?? ''}",
-                  style: const TextStyle(
-                    fontSize: values.TITLE_TEXT,
-                    color: colors.TEXT_SECONDARY,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              const SizedBox(height: values.BASE_PADDING),
-
-              /// Tracking
-              const Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: values.BASE_PADDING,
-                ),
-                child: Text(
-                  'Track your parcel with your HAWB number',
-                  textAlign: TextAlign.justify,
-                  style: TextStyle(
-                    fontSize: values.TITLE_TEXT,
-                    color: colors.TEXT_SECONDARY,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              const SizedBox(height: values.BASE_PADDING / 2),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: values.BASE_PADDING,
-                ),
-                child: CustomInput(
-                  controller: _trackText,
-                  hint: 'Enter your HAWB number',
-                  icon: Icons.search_rounded,
-                  onSuffixTab: () {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    if (_trackText.text.isNotEmpty) {
-                      launch(
-                        '${APIConstants.tracking}'
-                        '?trackingcode=${_trackText.text}',
+        body: RefreshIndicator(
+          onRefresh: () => packages.getMyRequest(),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Header(
+                  title: 'Home',
+                  trailing: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const AllNotification()),
                       );
-                    }
-                  },
+                    },
+                    icon: const Icon(
+                      Icons.notifications_rounded,
+                      color: colors.TEXT_BLUE,
+                    ),
+                  ),
                 ),
-              ),
-              const SizedBox(height: values.BASE_PADDING),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: values.BASE_PADDING,
+                  ),
+                  child: Text(
+                    "${greetingPartOfDay()}, "
+                    "${profile.user?.name ?? ''}",
+                    style: const TextStyle(
+                      fontSize: values.TITLE_TEXT,
+                      color: colors.TEXT_SECONDARY,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: values.BASE_PADDING),
 
-              /// Banner
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: values.BASE_PADDING,
+                /// Tracking
+                const Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: values.BASE_PADDING,
+                  ),
+                  child: Text(
+                    'Track your parcel with your HAWB number',
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                      fontSize: values.TITLE_TEXT,
+                      color: colors.TEXT_SECONDARY,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(values.RADIUS),
-                      child: CarouselSlider(
-                        carouselController: _carouselController,
-                        options: CarouselOptions(
-                          aspectRatio: 320 / 164,
-                          viewportFraction: 1,
-                        ),
-                        items: general.banners.map((i) {
-                          return Builder(
-                            builder: (cxt) {
-                              return Stack(
-                                children: [
-                                  CachedNetworkImage(
-                                    width: double.infinity,
-                                    imageUrl: i.image ?? '',
-                                    fit: BoxFit.cover,
-                                    placeholder: (_, __) {
-                                      return const Center(
-                                        child: Icon(
-                                          CupertinoIcons.photo,
-                                          color: colors.TEXT_SECONDARY_LIGHT,
+                const SizedBox(height: values.BASE_PADDING / 2),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: values.BASE_PADDING,
+                  ),
+                  child: CustomInput(
+                    controller: _trackText,
+                    hint: 'Enter your HAWB number',
+                    icon: Icons.search_rounded,
+                    onSuffixTab: () {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      if (_trackText.text.isNotEmpty) {
+                        launch(
+                          '${APIConstants.tracking}'
+                          '?trackingcode=${_trackText.text}',
+                        );
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(height: values.BASE_PADDING),
+
+                /// Banner
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: values.BASE_PADDING,
+                  ),
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(values.RADIUS),
+                        child: CarouselSlider(
+                          carouselController: _carouselController,
+                          options: CarouselOptions(
+                            aspectRatio: 320 / 164,
+                            viewportFraction: 1,
+                          ),
+                          items: general.banners.map((i) {
+                            return Builder(
+                              builder: (cxt) {
+                                return Stack(
+                                  children: [
+                                    CachedNetworkImage(
+                                      width: double.infinity,
+                                      imageUrl: i.image ?? '',
+                                      fit: BoxFit.cover,
+                                      placeholder: (_, __) {
+                                        return const Center(
+                                          child: Icon(
+                                            CupertinoIcons.photo,
+                                            color: colors.TEXT_SECONDARY_LIGHT,
+                                          ),
+                                        );
+                                      },
+                                      errorWidget: (_, __, ___) {
+                                        return const Center(
+                                          child: Icon(
+                                            CupertinoIcons.photo,
+                                            color: colors.TEXT_SECONDARY_LIGHT,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                    Container(
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      color: colors.TEXT_BLACK.withOpacity(0.1),
+                                    ),
+                                    Positioned(
+                                      bottom: values.BASE_PADDING / 2,
+                                      right: values.BASE_PADDING / 2,
+                                      left: values.BASE_PADDING / 2,
+                                      child: Text(
+                                        removeAllHtmlTags(i.description ?? ''),
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          color: colors.TEXT_WHITE,
+                                          fontSize: values.TITLE_TEXT,
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                      );
-                                    },
-                                    errorWidget: (_, __, ___) {
-                                      return const Center(
-                                        child: Icon(
-                                          CupertinoIcons.photo,
-                                          color: colors.TEXT_SECONDARY_LIGHT,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  Container(
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    color: colors.TEXT_BLACK.withOpacity(0.1),
-                                  ),
-                                  Positioned(
-                                    bottom: values.BASE_PADDING / 2,
-                                    right: values.BASE_PADDING / 2,
-                                    left: values.BASE_PADDING / 2,
-                                    child: Text(
-                                      removeAllHtmlTags(i.description ?? ''),
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                        color: colors.TEXT_WHITE,
-                                        fontSize: values.TITLE_TEXT,
-                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
-                                  ),
-                                ],
-                              );
-                              return Image.asset(
-                                'images/banner1.png',
-                                fit: BoxFit.cover,
-                              );
-                            },
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    Positioned(
-                      top: values.BASE_PADDING / 2,
-                      bottom: values.BASE_PADDING / 2,
-                      right: values.BASE_PADDING / 2,
-                      child: CircleAvatar(
-                        backgroundColor: colors.TEXT_BLACK.withOpacity(0.1),
-                        child: IconButton(
-                          onPressed: () => _carouselController.nextPage(
-                            duration: const Duration(milliseconds: 250),
-                            curve: Curves.linear,
-                          ),
-                          icon: const Icon(
-                            CupertinoIcons.chevron_forward,
-                            color: colors.TEXT_WHITE,
-                          ),
+                                  ],
+                                );
+                                return Image.asset(
+                                  'images/banner1.png',
+                                  fit: BoxFit.cover,
+                                );
+                              },
+                            );
+                          }).toList(),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      top: values.BASE_PADDING / 2,
-                      bottom: values.BASE_PADDING / 2,
-                      left: values.BASE_PADDING / 2,
-                      child: CircleAvatar(
-                        backgroundColor: colors.TEXT_BLACK.withOpacity(0.1),
-                        child: IconButton(
-                          onPressed: () => _carouselController.previousPage(
-                            duration: const Duration(milliseconds: 250),
-                            curve: Curves.linear,
-                          ),
-                          icon: const Icon(
-                            CupertinoIcons.chevron_back,
-                            color: colors.TEXT_WHITE,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: values.BASE_PADDING),
-
-              /// pending request or current package in transit
-              if (packages.myRequest != null)
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: values.BASE_PADDING,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "My Requests",
-                        style: TextStyle(
-                          color: colors.TEXT_BLUE,
-                          fontSize: values.TITLE_TEXT,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const AllPackages(),
+                      Positioned(
+                        top: values.BASE_PADDING / 2,
+                        bottom: values.BASE_PADDING / 2,
+                        right: values.BASE_PADDING / 2,
+                        child: CircleAvatar(
+                          backgroundColor: colors.TEXT_BLACK.withOpacity(0.1),
+                          child: IconButton(
+                            onPressed: () => _carouselController.nextPage(
+                              duration: const Duration(milliseconds: 250),
+                              curve: Curves.linear,
                             ),
-                          );
-                        },
-                        child: Text(
-                          'View All',
-                          style: GoogleFonts.comfortaa(
-                            color: colors.TEXT_BLUE,
-                            fontSize: values.DETAILS_TEXT,
+                            icon: const Icon(
+                              CupertinoIcons.chevron_forward,
+                              color: colors.TEXT_WHITE,
+                            ),
                           ),
                         ),
-                        style: TextButton.styleFrom(
-                          backgroundColor: colors.FIELD_BACKGROUND,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(values.RADIUS),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12.0,
-                            vertical: 4.0,
+                      ),
+                      Positioned(
+                        top: values.BASE_PADDING / 2,
+                        bottom: values.BASE_PADDING / 2,
+                        left: values.BASE_PADDING / 2,
+                        child: CircleAvatar(
+                          backgroundColor: colors.TEXT_BLACK.withOpacity(0.1),
+                          child: IconButton(
+                            onPressed: () => _carouselController.previousPage(
+                              duration: const Duration(milliseconds: 250),
+                              curve: Curves.linear,
+                            ),
+                            icon: const Icon(
+                              CupertinoIcons.chevron_back,
+                              color: colors.TEXT_WHITE,
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: values.BASE_PADDING,
-                ),
-                child: ListView.separated(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: packages.myRequest != null ? 1 : 0,
-                  itemBuilder: (_, i) {
-                    final p = packages.myRequest;
-                    return PackageListItem(p: p!);
-                  },
-                  separatorBuilder: (_, i) {
-                    return const SizedBox(height: values.BASE_PADDING / 2);
-                  },
-                ),
-              ),
-              if (packages.myRequest != null)
                 const SizedBox(height: values.BASE_PADDING),
 
-              /// Blog - one line only
-              if (blog.blogs.isNotEmpty)
+                /// pending request or current package in transit
+                if (packages.myRequest != null)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: values.BASE_PADDING,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "My Requests",
+                          style: TextStyle(
+                            color: colors.TEXT_BLUE,
+                            fontSize: values.TITLE_TEXT,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            packages.getPackageList(status: 'Active');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const AllPackages(
+                                  status: 'Active',
+                                ),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'View All',
+                            style: GoogleFonts.comfortaa(
+                              color: colors.TEXT_BLUE,
+                              fontSize: values.DETAILS_TEXT,
+                            ),
+                          ),
+                          style: TextButton.styleFrom(
+                            backgroundColor: colors.FIELD_BACKGROUND,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(values.RADIUS),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                              vertical: 4.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: values.BASE_PADDING,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Blog / News",
-                        style: TextStyle(
-                          color: colors.TEXT_BLUE,
-                          fontSize: values.TITLE_TEXT,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const AllBlogs()),
-                          );
-                        },
-                        child: Text(
-                          'View All',
-                          style: GoogleFonts.comfortaa(
-                            color: colors.TEXT_BLUE,
-                            fontSize: values.DETAILS_TEXT,
-                          ),
-                        ),
-                        style: TextButton.styleFrom(
-                          backgroundColor: colors.FIELD_BACKGROUND,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(values.RADIUS),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12.0,
-                            vertical: 4.0,
-                          ),
-                        ),
-                      ),
-                    ],
+                  child: ListView.separated(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: packages.myRequest != null ? 1 : 0,
+                    itemBuilder: (_, i) {
+                      final p = packages.myRequest;
+                      return PackageListItem(p: p!);
+                    },
+                    separatorBuilder: (_, i) {
+                      return const SizedBox(height: values.BASE_PADDING / 2);
+                    },
                   ),
                 ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: values.BASE_PADDING,
+                if (packages.myRequest != null)
+                  const SizedBox(height: values.BASE_PADDING),
+
+                /// Blog - one line only
+                if (blog.blogs.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: values.BASE_PADDING,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Blog / News",
+                          style: TextStyle(
+                            color: colors.TEXT_BLUE,
+                            fontSize: values.TITLE_TEXT,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const AllBlogs()),
+                            );
+                          },
+                          child: Text(
+                            'View All',
+                            style: GoogleFonts.comfortaa(
+                              color: colors.TEXT_BLUE,
+                              fontSize: values.DETAILS_TEXT,
+                            ),
+                          ),
+                          style: TextButton.styleFrom(
+                            backgroundColor: colors.FIELD_BACKGROUND,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(values.RADIUS),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                              vertical: 4.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: values.BASE_PADDING,
+                  ),
+                  child: ListView.separated(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: blog.blogs.length > 1 ? 1 : blog.blogs.length,
+                    itemBuilder: (_, i) {
+                      return BlogListItem(
+                        model: blog.blogs[i],
+                      );
+                    },
+                    separatorBuilder: (_, i) {
+                      return const SizedBox(height: values.BASE_PADDING / 2);
+                    },
+                  ),
                 ),
-                child: ListView.separated(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: blog.blogs.length > 1 ? 1 : blog.blogs.length,
-                  itemBuilder: (_, i) {
-                    return BlogListItem(
-                      model: blog.blogs[i],
-                    );
-                  },
-                  separatorBuilder: (_, i) {
-                    return const SizedBox(height: values.BASE_PADDING / 2);
-                  },
-                ),
-              ),
-              if (blog.blogs.isNotEmpty)
+                if (blog.blogs.isNotEmpty)
+                  const SizedBox(height: values.BASE_PADDING),
                 const SizedBox(height: values.BASE_PADDING),
-              const SizedBox(height: values.BASE_PADDING),
 
-              // /// Book a courier button. This button will take to New Order screen
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(
-              //     horizontal: values.BASE_PADDING,
-              //     vertical: values.BASE_PADDING,
-              //   ),
-              //   child: CustomButton(
-              //     title: 'Book a Courier',
-              //     onTab: () {
-              //       if (widget.changeIndex != null) {
-              //         widget.changeIndex!(1);
-              //       }
-              //     },
-              //   ),
-              // ),
+                // /// Book a courier button. This button will take to New Order screen
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(
+                //     horizontal: values.BASE_PADDING,
+                //     vertical: values.BASE_PADDING,
+                //   ),
+                //   child: CustomButton(
+                //     title: 'Book a Courier',
+                //     onTab: () {
+                //       if (widget.changeIndex != null) {
+                //         widget.changeIndex!(1);
+                //       }
+                //     },
+                //   ),
+                // ),
 
-              /// Services
-              const ServiceWidget(),
+                /// Services
+                const ServiceWidget(),
 
-              /// Join us Today button
-              const JoinUsTodayWidget(),
+                /// Join us Today button
+                const JoinUsTodayWidget(),
 
-              const SizedBox(height: 120.0),
-            ],
+                const SizedBox(height: 120.0),
+              ],
+            ),
           ),
         ),
       ),

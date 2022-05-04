@@ -8,6 +8,7 @@ import '../constants/colors.dart';
 import '../constants/enums.dart';
 import '../constants/values.dart' as values;
 import '../constants/values.dart';
+import '../controllers/package_controller.dart';
 import '../controllers/profile_controller.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/dialogs/bottom_dialog.dart';
@@ -271,8 +272,9 @@ class Profile extends StatelessWidget {
                       horizontal: values.BASE_PADDING,
                     ),
                     child: CustomButton(
-                      title: 'My Requests',
+                      title: 'History',
                       onTab: () {
+                        context.read<PackageController>().getPackageList();
                         Navigator.push(
                           context,
                           MaterialPageRoute(

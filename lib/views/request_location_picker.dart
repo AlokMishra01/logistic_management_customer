@@ -40,12 +40,7 @@ class _RequestLocationPickerState extends State<RequestLocationPicker> {
   @override
   void initState() {
     super.initState();
-    getAddress(
-      widget.selectedLocation,
-    ).then((value) {
-      _address = value;
-      setState(() {});
-    });
+    _getAddress(init: true);
   }
 
   @override
@@ -84,7 +79,7 @@ class _RequestLocationPickerState extends State<RequestLocationPicker> {
         child: Column(
           children: [
             const Header(
-              title: 'Pick Location',
+              title: 'Select Location',
               backButton: true,
             ),
             Expanded(
@@ -173,6 +168,50 @@ class _RequestLocationPickerState extends State<RequestLocationPicker> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // const SizedBox(height: 16.0),
+                              // Padding(
+                              //   padding: const EdgeInsets.symmetric(
+                              //     horizontal: 12.0,
+                              //   ),
+                              //   child: InkWell(
+                              //     onTap: () {
+                              //       Navigator.push(
+                              //         context,
+                              //         MaterialPageRoute(
+                              //           builder: (_) => SearchPlaces(
+                              //             onItemTap: _onCameraUpdate,
+                              //           ),
+                              //         ),
+                              //       );
+                              //     },
+                              //     child: TextField(
+                              //       enabled: false,
+                              //       decoration: InputDecoration(
+                              //         disabledBorder: OutlineInputBorder(
+                              //           borderRadius: BorderRadius.circular(
+                              //             values.RADIUS,
+                              //           ),
+                              //           borderSide: const BorderSide(
+                              //             color: colors.TEXT_WHITE,
+                              //             width: 1.0,
+                              //           ),
+                              //         ),
+                              //         prefixIcon: const Icon(
+                              //           Icons.search_rounded,
+                              //           size: 24.0,
+                              //           color: colors.TEXT_WHITE,
+                              //         ),
+                              //         hintText: 'Search location here ...',
+                              //         hintStyle: const TextStyle(
+                              //           color: colors.TEXT_SECONDARY_LIGHT,
+                              //           fontWeight: FontWeight.w500,
+                              //           height: 1.25,
+                              //         ),
+                              //         isDense: true,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                               ListTile(
                                 leading: const Icon(
                                   CupertinoIcons.location,
@@ -267,15 +306,24 @@ class _RequestLocationPickerState extends State<RequestLocationPicker> {
     _getAddress();
   }
 
-  _getAddress() async {
-    if (_position != null) {
+  _getAddress({bool init = false}) async {
+    if (!init) {
       _address = await getAddress(_position!);
-      _loading = false;
-      setState(() {});
+    } else {
+      _address = await getAddress(widget.selectedLocation);
     }
+
+    _loading = false;
+    setState(() {});
   }
 
   _onCameraUpdate(LatLng pos) async {
+    _loading = true;
+    setState(() {});
+
+    _position = pos;
+    _getAddress();
+
     _map.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(

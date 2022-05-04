@@ -34,7 +34,7 @@ class PackageService {
   Future<PackageResponseModel?> getPackageList({
     required DioController dio,
     required String query,
-    // All / Not Received / In Transit / Picked Up / At Watehouse / Dispatched / Completed
+    // All / Not Received / In Transit / Picked Up / At Watehouse / Dispatched / Delivered
     required int page,
     required int limit,
   }) async {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:logistic_management_customer/models/package_response_model.dart';
-import 'package:logistic_management_customer/utils/get_status_color.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/values.dart' as values;
@@ -67,8 +66,9 @@ class PackageListItem extends StatelessWidget {
                           ),
                           Expanded(
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
+                                const SizedBox(width: 16.0),
                                 const Text(
                                   'Rs.',
                                   style: TextStyle(
@@ -93,36 +93,63 @@ class PackageListItem extends StatelessWidget {
                           )
                         ],
                       ),
-                      Text(
-                        p.packageType ?? '',
-                        style: const TextStyle(
-                          fontSize: values.TITLE_TEXT,
-                          color: colors.TEXT_SECONDARY,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              p.packageType ?? '',
+                              style: const TextStyle(
+                                fontSize: values.TITLE_TEXT,
+                                color: colors.TEXT_SECONDARY,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'Status: ',
+                                style: TextStyle(
+                                  fontSize: values.TITLE_TEXT,
+                                  color: colors.YELLOW,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                p.status ?? '',
+                                style: const TextStyle(
+                                  fontSize: values.TITLE_TEXT,
+                                  color: colors.TEXT_SECONDARY,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(
-                    values.BASE_PADDING,
-                  ),
-                  decoration: BoxDecoration(
-                    color: geStatusColor(status: p.status ?? ''),
-                    borderRadius: BorderRadius.circular(
-                      values.RADIUS,
-                    ),
-                  ),
-                  child: Text(
-                    p.status ?? '',
-                    style: const TextStyle(
-                      fontSize: values.DETAILS_TEXT,
-                      color: colors.TEXT_WHITE,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                )
+                // Container(
+                //   padding: const EdgeInsets.all(
+                //     values.BASE_PADDING,
+                //   ),
+                //   decoration: BoxDecoration(
+                //     color: geStatusColor(status: p.status ?? ''),
+                //     borderRadius: BorderRadius.circular(
+                //       values.RADIUS,
+                //     ),
+                //   ),
+                //   child: Text(
+                //     p.status ?? '',
+                //     style: const TextStyle(
+                //       fontSize: values.DETAILS_TEXT,
+                //       color: colors.TEXT_WHITE,
+                //       fontWeight: FontWeight.bold,
+                //     ),
+                //   ),
+                // )
               ],
             ),
             const SizedBox(height: values.BASE_PADDING * 2),

@@ -34,7 +34,7 @@ class _PlacePickerState extends State<PlacePicker> {
         child: Column(
           children: [
             const Header(
-              title: 'Pick Location',
+              title: 'Select Location',
               backButton: true,
             ),
             Expanded(
