@@ -394,18 +394,20 @@ class Profile extends StatelessWidget {
     final croppedImage = await ImageCropper().cropImage(
       sourcePath: image.path,
       aspectRatioPresets: [CropAspectRatioPreset.square],
-      androidUiSettings: const AndroidUiSettings(
-        toolbarTitle: 'Crop Profile Image',
-        toolbarColor: colors.BUTTON_BLUE,
-        toolbarWidgetColor: colors.TEXT_WHITE,
-        initAspectRatio: CropAspectRatioPreset.square,
-        lockAspectRatio: false,
-        activeControlsWidgetColor: colors.BUTTON_BLUE,
-      ),
-      iosUiSettings: const IOSUiSettings(
-        title: 'Crop Profile Image',
-        minimumAspectRatio: 1.0,
-      ),
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Crop Profile Image',
+          toolbarColor: colors.BUTTON_BLUE,
+          toolbarWidgetColor: colors.TEXT_WHITE,
+          initAspectRatio: CropAspectRatioPreset.square,
+          lockAspectRatio: false,
+          activeControlsWidgetColor: colors.BUTTON_BLUE,
+        ),
+        IOSUiSettings(
+          title: 'Crop Profile Image',
+          minimumAspectRatio: 1.0,
+        )
+      ],
     );
 
     if (croppedImage != null) {

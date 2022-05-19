@@ -250,12 +250,14 @@ class PackageController with ChangeNotifier {
       express: express,
     );
 
-    if (s.isEmpty) {
-      await getMyRequest();
-      getPackageList();
-      getPackageList(status: 'Pending');
-      getPackageList(status: 'Delivered');
-    }
+    try {
+      if (s.isEmpty) {
+        await getMyRequest();
+        getPackageList();
+        getPackageList(status: 'Pending');
+        getPackageList(status: 'Delivered');
+      }
+    } catch (e) {}
 
     return s;
   }
