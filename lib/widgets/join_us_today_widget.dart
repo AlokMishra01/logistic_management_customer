@@ -42,14 +42,6 @@ class JoinUsTodayWidget extends StatelessWidget {
                 onPressed: () {
                   launch('https://ikimaexpress.com/membership');
                 },
-                child: Text(
-                  'Join us Today',
-                  style: GoogleFonts.comfortaa(
-                    color: colors.TEXT_WHITE,
-                    fontSize: values.TITLE_TEXT + 2,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
                 style: TextButton.styleFrom(
                   backgroundColor: colors.BUTTON_BLUE,
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -59,6 +51,14 @@ class JoinUsTodayWidget extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16.0,
                     vertical: 0.0,
+                  ),
+                ),
+                child: Text(
+                  'Join us Today',
+                  style: GoogleFonts.comfortaa(
+                    color: colors.TEXT_WHITE,
+                    fontSize: values.TITLE_TEXT + 2,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),

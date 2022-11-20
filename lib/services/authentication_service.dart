@@ -62,4 +62,23 @@ class AuthenticationService {
       return null;
     }
   }
+
+  Future<bool> removeAccount({
+    required DioController dio,
+  }) async {
+    try {
+      Response response = await dio.dioClient.delete(
+        'consumer/profile/delete',
+      );
+      log(prettyJson(response.data), name: 'Remove Response');
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } on Exception catch (e, s) {
+      log('Remove Error!', stackTrace: s, error: e);
+      return false;
+    }
+  }
 }

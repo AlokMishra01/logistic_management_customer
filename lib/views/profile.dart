@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/colors.dart' as colors;
 import '../constants/colors.dart';
 import '../constants/enums.dart';
 import '../constants/values.dart' as values;
 import '../constants/values.dart';
+import '../controllers/authentication_controller.dart';
 import '../controllers/package_controller.dart';
 import '../controllers/profile_controller.dart';
 import '../widgets/custom_button.dart';
@@ -20,12 +22,18 @@ import '../widgets/profile_info_heading.dart';
 import '../widgets/single_personal_detail.dart';
 import 'address_update.dart';
 import 'change_password.dart';
+import 'login.dart';
 import 'my_request.dart';
 import 'profile_update.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
 
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -284,22 +292,17 @@ class Profile extends StatelessWidget {
                       },
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(
-                  //       horizontal: values.BASE_PADDING),
-                  //   child: CustomButtonOutline(
-                  //     title: 'Logout',
-                  //     color: colors.RED,
-                  //     onTab: () {
-                  //       context.read<AuthenticationController>().logOut();
-                  //       Navigator.pushAndRemoveUntil(
-                  //         context,
-                  //         MaterialPageRoute(builder: (_) => const Login()),
-                  //         (route) => false,
-                  //       );
-                  //     },
-                  //   ),
-                  // ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: values.BASE_PADDING,
+                      vertical: values.BASE_PADDING,
+                    ),
+                    child: CustomButton(
+                      title: 'Remove Account',
+                      color: colors.RED,
+                      onTab: _remove,
+                    ),
+                  ),
                   const SizedBox(height: 120),
                 ],
               ),
@@ -393,6 +396,10 @@ class Profile extends StatelessWidget {
   _saveImage(BuildContext context, XFile image) async {
     final croppedImage = await ImageCropper().cropImage(
       sourcePath: image.path,
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+      compressFormat: ImageCompressFormat.jpg,
+      maxHeight: 200,
+      maxWidth: 200,
       aspectRatioPresets: [CropAspectRatioPreset.square],
       uiSettings: [
         AndroidUiSettings(
@@ -401,11 +408,11 @@ class Profile extends StatelessWidget {
           toolbarWidgetColor: colors.TEXT_WHITE,
           initAspectRatio: CropAspectRatioPreset.square,
           lockAspectRatio: false,
+          hideBottomControls: true,
           activeControlsWidgetColor: colors.BUTTON_BLUE,
         ),
         IOSUiSettings(
           title: 'Crop Profile Image',
-          minimumAspectRatio: 1.0,
         )
       ],
     );
@@ -441,5 +448,30 @@ class Profile extends StatelessWidget {
         title: 'Update Error',
       );
     }
+  }
+
+  _remove() async {
+    FocusScope.of(context).requestFocus(FocusNode());
+
+    var progressDialog = getProgressDialog(context: context);
+    progressDialog.show(useSafeArea: false);
+
+    bool b = await context.read<AuthenticationController>().removeAccount();
+
+    SharedPreferences s = await SharedPreferences.getInstance();
+    await s.clear();
+    progressDialog.dismiss();
+
+    showBottomDialog(
+      context: context,
+      dialogType: DialogType.SUCCESS,
+      title: 'Success',
+      message: 'Your account is successfully removed.',
+    );
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => const Login()),
+      (route) => false,
+    );
   }
 }

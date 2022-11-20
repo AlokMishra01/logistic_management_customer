@@ -85,6 +85,18 @@ class AuthenticationController with ChangeNotifier {
     _initLogin();
   }
 
+  Future<bool> removeAccount() async {
+    if (_dioController == null) {
+      return false;
+    }
+
+    bool b = await _authenticationService.removeAccount(
+      dio: _dioController!,
+    );
+
+    return b;
+  }
+
   /// Data
   bool _isLoggedIn = false;
   bool get isLoggedIn => _isLoggedIn;

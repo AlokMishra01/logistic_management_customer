@@ -6,19 +6,21 @@ import '../constants/values.dart' as values;
 
 class CustomButton extends StatelessWidget {
   final String title;
+  final Color? color;
   final VoidCallback onTab;
 
   const CustomButton({
     Key? key,
     required this.title,
     required this.onTab,
+    this.color,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
-        backgroundColor: colors.BUTTON_BLUE,
+        backgroundColor: color ?? colors.BUTTON_BLUE,
         padding: const EdgeInsets.symmetric(
           vertical: values.BASE_PADDING + 4.0,
         ),
@@ -27,6 +29,7 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(values.RADIUS),
         ),
       ),
+      onPressed: onTab,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: values.BASE_PADDING),
         child: SizedBox(
@@ -44,7 +47,6 @@ class CustomButton extends StatelessWidget {
           ),
         ),
       ),
-      onPressed: onTab,
     );
   }
 }
